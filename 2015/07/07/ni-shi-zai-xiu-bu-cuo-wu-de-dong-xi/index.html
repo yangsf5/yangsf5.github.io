@@ -1,0 +1,427 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>你是在修补错误的东西吗 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="在错误的设计上做修补，一错再错。 
+一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
+A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你是在修补错误的东西吗">
+<meta property="og:url" content="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="在错误的设计上做修补，一错再错。 
+一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
+A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
+<meta property="og:updated_time" content="2016-06-23T13:01:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你是在修补错误的东西吗">
+<meta name="twitter:description" content="在错误的设计上做修补，一错再错。 
+一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
+A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" title="你是在修补错误的东西吗" itemprop="url">你是在修补错误的东西吗</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-07T15:00:00.000Z" itemprop="datePublished"> 发表于 2015-07-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个程序设计的例子"><span class="toc-number">1.</span> <span class="toc-text">一个程序设计的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个优化办公环境的例子"><span class="toc-number">2.</span> <span class="toc-text">一个优化办公环境的例子</span></a></li></ol>
+		
+		</div>
+		
+		<p>在错误的设计上做修补，一错再错。 </p>
+<h2 id="一个程序设计的例子"><a href="#一个程序设计的例子" class="headerlink" title="一个程序设计的例子"></a>一个程序设计的例子</h2><p>今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 </p>
+<p>A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(keyA, item1) =&gt; count1</span><br><span class="line">(keyA, item2) =&gt; count2</span><br><span class="line">(keyA, item3) =&gt; count3</span><br></pre></td></tr></table></figure></p>
+<p>之前的 get 接口返回为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyA =&gt; (item1, count1;  item2, count2; item3, count3)</span><br></pre></td></tr></table></figure></p>
+<p>之前的 set 接口一次只能设置一个 key 的一个 item ，上边的 keyA 的内容需要调用 3 次 set 接口才能设置好。 这时 B 程序发现 set 接口只能满足给某个 key 添加一个 item 或者修改一个 item ，但是要是删除一个 item 就没法实现了。 </p>
+<p>今天同学们的设计思路或者是第一反应，一个是增加修改 item 名的接口，一个是增加删除接口。这些思路最终都能实现需求，但是实现的会不优雅。如果对整个需求及之前的设计有个整体把握，就能发现 set 的接口其实可以参照 get 接口。每次 B 程序提供某 key 的全量数据，A 程序直接覆盖全量数据。并且存储里也按这个思路来改。整个的实现及维护成本大大降低。 </p>
+<p>当然这里有个前提，就是这里的每个 key 的 item 数量是可以预估到不大的，并且总的 key 的数量都不多，存储上和网络通信上都是小意思。 </p>
+<p>在一个不够好的设计里去修补，与直接重构不够好的设计（并且重构成本不大，即使大，也可以采取小步多次的重构）的对比。前者更像在为一个错误的东西继续错误下去，且导致错误的繁殖成指数趋势。其实这里也是在引申嗅到代码的坏味道及时重构的原因与意义。 </p>
+<p>走得太远不要忘记为啥出发。 </p>
+<h2 id="一个优化办公环境的例子"><a href="#一个优化办公环境的例子" class="headerlink" title="一个优化办公环境的例子"></a>一个优化办公环境的例子</h2><p>另外最近有个其他事情也是类似这种修补错误的东西，就是公司的会议室外墙玻璃上帖了不能拿下的贴纸。公司的会议室是稀缺资源，抢的挺多。加了贴纸之后，外边排队抢会议室的人老看不见里边会议室有没有人或者是否之前的那波人开完会走了，排队的人就一直络绎不绝的去推开办公室的门一探究竟。排队的人有急会就会好几个门都去推下看看，或者都被占着，就多推几轮。已经使用会议室的人就老被人推门打扰。双方都浪费了精力和注意力。 </p>
+<p>然后给出了一个方案，在会议室门旁边挂个牌子，牌子两面分别写“推门请进”、“会议中”。让进入会议室的人自觉去翻牌子，且让排队的人自觉看牌子。当时讨论这个方案的时候我就感觉不合适，装逼的话就是用户体验不好，等于让大家多维护个概念及事项，并且保证大家都有心情去遵守。可惜还是开始执行了。 </p>
+<p>果不其然，基本执行不起来。好几周了，大家开会还是不停的推与被推之中。首先排队的人，因为比较急，有时直接没注意到牌子，或者抱着侥幸心理，“可能是别人出来忘了重置牌子呢”，就推门一看。排到的人进去了，因为都等了好久了，谁还想这去翻牌子为“会议中”。即使没等很久，也基本想不到去弄那个，大家做产品的知道多一个按钮转化率低的事情吧。 </p>
+<p>我最高记录是一次开了1个小时左右的会被推了不下 20 次的门。不要问我为毛开那么久，因为在开设计评审会。还有个奇妙现象是，中途某位同学误推门之后把牌子修正了，结果后续的其他人照推不误。 </p>
+<p>这个事情其实就是在修补错误的东西，而没有找根本原因。 </p>
+<p>透明玻璃上加贴纸，直接按这个透明玻璃失去了意义，变成了砖墙一样。把会议室的默认属性变成了围墙里的秘密。但是真的需要那么多秘密会议室吗，不见得吧。我们不是特务机关啊，没有那么多见不得人的；我们不是大公司啊，没那么多偷懒扯皮会议啊；我们也不是苹果公司啊，没那么多商业机密啊…… </p>
+<p>目前我能想到的我们公司需要相对私密空间的会议就是面试、谈 Offer、发奖金什么的、接待合作伙伴之类的。可以看到这些需求其实不大的，我们一方面可以定几个小会议室做成这样，或者每个会议室都弄成加窗帘的方式，平时默认透明玻璃，方便大家查看，也寓意开放。等什么会议必须私密空间，再把窗帘放下来。 </p>
+<p>另外有人可能会说窗帘这个东西的升降也需要操作，估计大家降下来都懒的升上下。但这个毕竟是少数，每天找行政晚上去搞一遍或者旁边同学轮班巡查下就行了。另外如果有财力支持，可以弄成那种电动遥控的，这种我在《24 小时》里看到过小强杰克用过。 </p>
+<p>这些东西说不定能给大家个启发，我的一定不是最好的办法。 </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" data-title="你是在修补错误的东西吗 | 三疯的技术博客" data-tsina="1671652095" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/"  title="想对运营的同学们说的">
+ <strong>下一篇：</strong><br/> 
+ <span>想对运营的同学们说的
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" data-title="你是在修补错误的东西吗" data-url="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个程序设计的例子"><span class="toc-number">1.</span> <span class="toc-text">一个程序设计的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个优化办公环境的例子"><span class="toc-number">2.</span> <span class="toc-text">一个优化办公环境的例子</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友PY哥">PY哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1671652095&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1671652095" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
