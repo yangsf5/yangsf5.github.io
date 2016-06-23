@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>站立编程乱弹 | 三疯的技术博客</title>
+    <title>近期对PHP与Mysql相关的优化 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都OK了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工作太">
+    <meta name="description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
+有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
+mysql的whe">
 <meta property="og:type" content="article">
-<meta property="og:title" content="站立编程乱弹">
-<meta property="og:url" content="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/index.html">
+<meta property="og:title" content="近期对PHP与Mysql相关的优化">
+<meta property="og:url" content="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都OK了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工作太">
-<meta property="og:updated_time" content="2016-06-23T06:00:36.000Z">
+<meta property="og:description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
+有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
+mysql的whe">
+<meta property="og:updated_time" content="2016-06-23T06:05:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="站立编程乱弹">
-<meta name="twitter:description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都OK了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工作太">
+<meta name="twitter:title" content="近期对PHP与Mysql相关的优化">
+<meta name="twitter:description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
+有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
+mysql的whe">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/13/zhan-li-bian-cheng-luan-tan/" title="站立编程乱弹" itemprop="url">站立编程乱弹</a>
+      <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对PHP与Mysql相关的优化" itemprop="url">近期对PHP与Mysql相关的优化</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-13T14:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-13</time>
+    <time datetime="2014-10-13T15:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-13</time>
     
   </p>
 </header>
@@ -94,12 +97,9 @@
 		
 		</div>
 		
-		<p>国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都OK了，重新开始站立编程。</p>
-<p>来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工作太久职业的职业病。最严重的应该是静脉曲张。我现在的解决办法是，穿静脉曲张袜。平时思考的时候也多坐坐，同一个姿势保持太久都容易对身体造成一个损伤。 </p>
-<p>不过通常站立办公容易腿累，这个我个人倒是没怎么出现，只能说是个人体力肌肉什么的稍强点儿。 </p>
-<p>另外不是有了站立编程，程序员的健康问题就解决了，还需要加强其他的锻炼。现在每周大概在公司健身房跑个2、3次步。由于工作忙，一般只跑个10分钟左右，11.1的速度，跑下2km左右。 </p>
-<p>以后还要捡起羽毛球、游泳、登山、骑行等。 </p>
-<p>良好的身心健康，还依赖家庭和谐。这个高强度的季度，周末都基本在家赶代码度过。只有其中两天是陪老婆出去玩的，最终导致老婆喷发。这个事情以后一定要注意。 </p>
+		<p>BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。</p>
+<p>有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 </p>
+<p>mysql的where in里不要写子查询，用连表方式会数量级上的快，这个原因具体看《高性能Mysql》吧。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -112,7 +112,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/" data-title="站立编程乱弹 | 三疯的技术博客" data-tsina="1671652095" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对PHP与Mysql相关的优化 | 三疯的技术博客" data-tsina="1671652095" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -125,19 +125,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对PHP与Mysql相关的优化">
-  <strong>上一篇：</strong><br/>
-  <span>
-  近期对PHP与Mysql相关的优化</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/08/23/cheng-xu-yuan-ren-cai-jiao-liu-gong-xiang/"  title="程序员人才交流共享">
+<a href="/2014/10/13/zhan-li-bian-cheng-luan-tan/"  title="站立编程乱弹">
  <strong>下一篇：</strong><br/> 
- <span>程序员人才交流共享
+ <span>站立编程乱弹
 </span>
 </a>
 </div>
@@ -146,7 +138,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/13/zhan-li-bian-cheng-luan-tan/" data-title="站立编程乱弹" data-url="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/"></div>
+	<div class="ds-thread" data-thread-key="2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对PHP与Mysql相关的优化" data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/"></div>
 </section>
 
 
