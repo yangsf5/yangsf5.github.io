@@ -4,29 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>近期对PHP与Mysql相关的优化 | 三疯的技术博客</title>
+    <title>近期对 PHP 与 MySQL 相关的优化 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
-有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
-mysql的whe">
+    <meta name="description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
+有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="近期对PHP与Mysql相关的优化">
+<meta property="og:title" content="近期对 PHP 与 MySQL 相关的优化">
 <meta property="og:url" content="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
-有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
-mysql的whe">
-<meta property="og:updated_time" content="2016-06-23T06:05:34.000Z">
+<meta property="og:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
+有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
+<meta property="og:updated_time" content="2016-06-23T07:52:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="近期对PHP与Mysql相关的优化">
-<meta name="twitter:description" content="BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。
-有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 
-mysql的whe">
+<meta name="twitter:title" content="近期对 PHP 与 MySQL 相关的优化">
+<meta name="twitter:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
+有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,7 +74,7 @@ mysql的whe">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对PHP与Mysql相关的优化" itemprop="url">近期对PHP与Mysql相关的优化</a>
+      <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对 PHP 与 MySQL 相关的优化" itemprop="url">近期对 PHP 与 MySQL 相关的优化</a>
   </h1>
   <p class="article-author">By
        
@@ -97,9 +94,9 @@ mysql的whe">
 		
 		</div>
 		
-		<p>BI的线上经常报mysql连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是MyISAM引擎，我把相关表的引擎换成Innodb了。</p>
-<p>有些历史业务逻辑竟然用了n*n数量级条数的mysql查询。这光花费在IO上的时间都是惊人的。优化后直接弄成一条mysql查询，业务响应时间从1、2分钟降到秒开。 </p>
-<p>mysql的where in里不要写子查询，用连表方式会数量级上的快，这个原因具体看《高性能Mysql》吧。 </p>
+		<p>BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。</p>
+<p>有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2 分钟降到秒开。 </p>
+<p>MySQL 的 <code>WHERE IN</code> 里不要写子查询，用连表方式会数量级上的快，这个原因具体看《高性能MySQL》吧。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -112,7 +109,7 @@ mysql的whe">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对PHP与Mysql相关的优化 | 三疯的技术博客" data-tsina="1671652095" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对 PHP 与 MySQL 相关的优化 | 三疯的技术博客" data-tsina="1671652095" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -146,7 +143,7 @@ mysql的whe">
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对PHP与Mysql相关的优化" data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/"></div>
+	<div class="ds-thread" data-thread-key="2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对 PHP 与 MySQL 相关的优化" data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/"></div>
 </section>
 
 
