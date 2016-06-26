@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="三疯的技术博客">
 <meta property="og:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
 有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
-<meta property="og:updated_time" content="2016-06-23T07:52:19.000Z">
+<meta property="og:updated_time" content="2016-06-26T10:03:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="近期对 PHP 与 MySQL 相关的优化">
 <meta name="twitter:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
@@ -102,6 +102,11 @@
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web开发/">Web开发</a>
+</div>
+
 
 </div>
 
@@ -165,6 +170,41 @@
 
 
   
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Web开发/" title="Web开发">Web开发<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>4</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
 
   
 
