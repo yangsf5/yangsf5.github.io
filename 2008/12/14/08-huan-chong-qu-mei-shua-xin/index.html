@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>pure virtual method called | 三疯的技术博客</title>
+    <title>缓冲区没有刷新 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
+    <meta name="description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
+原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
+当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pure virtual method called">
-<meta property="og:url" content="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/index.html">
+<meta property="og:title" content="缓冲区没有刷新">
+<meta property="og:url" content="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
-<meta property="og:updated_time" content="2016-06-27T16:11:23.000Z">
+<meta property="og:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
+原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
+当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
+<meta property="og:updated_time" content="2016-06-28T15:46:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pure virtual method called">
-<meta name="twitter:description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
+<meta name="twitter:title" content="缓冲区没有刷新">
+<meta name="twitter:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
+原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
+当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2008/12/10/08-pure-virtual-method-called/" title="pure virtual method called" itemprop="url">pure virtual method called</a>
+      <a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/" title="缓冲区没有刷新" itemprop="url">缓冲区没有刷新</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2008-12-10T03:00:00.000Z" itemprop="datePublished"> 发表于 2008-12-10</time>
+    <time datetime="2008-12-14T15:01:00.000Z" itemprop="datePublished"> 发表于 2008-12-14</time>
     
   </p>
 </header>
@@ -90,12 +93,15 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单个流多用途时"><span class="toc-number">1.</span> <span class="toc-text">单个流多用途时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#std-cout-没有输出"><span class="toc-number">2.</span> <span class="toc-text">std::cout 没有输出</span></a></li></ol>
 		
 		</div>
 		
-		<p>今天出现一个报错<code>pure virtual method called</code>，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。</p>
-<p>我今天的错误是<code>make</code>之前没有<code>make clean</code>，导致派生类的实现还是以前的版本。</p>
+		<h2 id="单个流多用途时"><a href="#单个流多用途时" class="headerlink" title="单个流多用途时"></a>单个流多用途时</h2><p>文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。</p>
+<p>原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。</p>
+<p>当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才需要在没次他用之前关闭先前的，并回复到 good 状态；而我的是两个流各司其职。</p>
+<h2 id="std-cout-没有输出"><a href="#std-cout-没有输出" class="headerlink" title="std::cout 没有输出"></a>std::cout 没有输出</h2><p>如下代码让程序阻塞了：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"i love u, XXX"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>虽有其他线程在运行，但没跟这个线程交互。当时程序阻塞，还好这种经验有点，马上就找到问题了。应该刷新下缓冲区：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"i love u, XXX"</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -113,7 +119,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/" data-title="pure virtual method called | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/" data-title="缓冲区没有刷新 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -127,18 +133,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/" title="缓冲区没有刷新">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  缓冲区没有刷新</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2008/11/21/08-bian-chang-jie-gou-ti/"  title="变长结构体的技巧">
+<a href="/2008/12/10/08-pure-virtual-method-called/"  title="pure virtual method called">
  <strong>下一篇：</strong><br/> 
- <span>变长结构体的技巧
+ <span>pure virtual method called
 </span>
 </a>
 </div>
@@ -147,7 +153,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2008/12/10/08-pure-virtual-method-called/" data-title="pure virtual method called" data-url="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/"></div>
+	<div class="ds-thread" data-thread-key="2008/12/14/08-huan-chong-qu-mei-shua-xin/" data-title="缓冲区没有刷新" data-url="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/"></div>
 </section>
 
 
@@ -157,7 +163,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单个流多用途时"><span class="toc-number">1.</span> <span class="toc-text">单个流多用途时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#std-cout-没有输出"><span class="toc-number">2.</span> <span class="toc-text">std::cout 没有输出</span></a></li></ol>
  
   </div>
 

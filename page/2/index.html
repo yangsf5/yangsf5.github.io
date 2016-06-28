@@ -256,16 +256,17 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2008/12/10/08-pure-virtual-method-called/" title="pure virtual method called" itemprop="url">
+    <a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/" title="缓冲区没有刷新" itemprop="url">
   
-    <h1 itemprop="name">pure virtual method called</h1>
+    <h1 itemprop="name">缓冲区没有刷新</h1>
     
      
-           <p itemprop="description" >今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。</p>
+           <p itemprop="description" >单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
+原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
+当时这个弄了将近一天，当 cullet</p>
         
     
-    <time datetime="2008-12-10T03:00:00.000Z" itemprop="datePublished">2008-12-10</time>
+    <time datetime="2008-12-14T15:01:00.000Z" itemprop="datePublished">2008-12-14</time>
   </a>
 </section>
 
@@ -292,7 +293,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>2</sup></a></li>
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>3</sup></a></li>
 		  
 		
 		  
