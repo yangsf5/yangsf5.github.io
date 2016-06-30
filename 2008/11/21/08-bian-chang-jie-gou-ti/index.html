@@ -23,7 +23,7 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;;
 count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。
 需要注意的地方：">
-<meta property="og:updated_time" content="2016-06-27T15:58:17.000Z">
+<meta property="og:updated_time" content="2016-06-28T16:06:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="变长结构体的技巧">
 <meta name="twitter:description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。
@@ -101,7 +101,7 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 		</div>
 		
 		<p>本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。</p>
-<p>所以变长结构体只能这样了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct _abc &#123;</span><br><span class="line">	int count;</span><br><span class="line">	char str[0];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>所以变长结构体只能这样了：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> _abc &#123;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">0</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p>count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。</p>
 <p>需要注意的地方：</p>
 <ul>
@@ -182,7 +182,7 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 		<ul>
 		
 		  
-			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>3</sup></a></li>
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>4</sup></a></li>
 		  
 		
 		  
