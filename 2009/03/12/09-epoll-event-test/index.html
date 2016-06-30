@@ -4,38 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>这次把“=”写成了“==” | 三疯的技术博客</title>
+    <title>epoll 的各个事件触发条件测试 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
+    <meta name="description" content="listen fd，有新连接请求，触发 EPOLLIN。
+对端发送普通数据，触发 EPOLLIN。
+带外数据，只触发 EPOLLPRI。
+对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
+再">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这次把“=”写成了“==”">
-<meta property="og:url" content="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/index.html">
+<meta property="og:title" content="epoll 的各个事件触发条件测试">
+<meta property="og:url" content="http://blog.clawz.me/2009/03/12/09-epoll-event-test/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
-<meta property="og:updated_time" content="2016-06-30T16:23:11.000Z">
+<meta property="og:description" content="listen fd，有新连接请求，触发 EPOLLIN。
+对端发送普通数据，触发 EPOLLIN。
+带外数据，只触发 EPOLLPRI。
+对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
+再">
+<meta property="og:updated_time" content="2016-06-30T16:34:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这次把“=”写成了“==”">
-<meta name="twitter:description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
+<meta name="twitter:title" content="epoll 的各个事件触发条件测试">
+<meta name="twitter:description" content="listen fd，有新连接请求，触发 EPOLLIN。
+对端发送普通数据，触发 EPOLLIN。
+带外数据，只触发 EPOLLPRI。
+对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
+再">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -86,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" title="这次把“=”写成了“==”" itemprop="url">这次把“=”写成了“==”</a>
+      <a href="/2009/03/12/09-epoll-event-test/" title="epoll 的各个事件触发条件测试" itemprop="url">epoll 的各个事件触发条件测试</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2009-01-10T02:47:00.000Z" itemprop="datePublished"> 发表于 2009-01-10</time>
+    <time datetime="2009-03-12T09:17:00.000Z" itemprop="datePublished"> 发表于 2009-03-12</time>
     
   </p>
 </header>
@@ -106,13 +103,14 @@
 		
 		</div>
 		
-		<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> op_nu;</span><br><span class="line"><span class="built_in">string</span> tmp_string;</span><br><span class="line">op_nu == atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure>
-<p>无语。</p>
-<p>曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a == b)</span><br></pre></td></tr></table></figure></p>
-<p>写成了<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a = b)</span><br></pre></td></tr></table></figure></p>
-<p>当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op_nu = atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure></p>
-<p>写成了<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op_nu == atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure></p>
-<p>浪费了一两分钟调试。</p>
+		<ul>
+<li>listen fd，有新连接请求，触发 <code>EPOLLIN</code>。</li>
+<li>对端发送普通数据，触发 <code>EPOLLIN</code>。</li>
+<li>带外数据，只触发 <code>EPOLLPRI</code>。</li>
+<li>对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 <code>EPOLLIN</code> 和 <code>EPOLLRDHUP</code>，但是不触发 <code>EPOLLERR</code> 和 <code>EPOLLHUP</code>。关于这点，以前一直以为会触发 <code>EPOLLERR</code> 或者 <code>EPOLLHUP</code>。</li>
+<li>再 <code>man epoll_ctl</code> 看下后两个事件的说明，这两个应该是 Server 端出错才触发的。</li>
+<li>对端异常断开连接（只测了拔网线），没触发任何事件。</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -130,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" data-title="这次把“=”写成了“==” | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -144,18 +142,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2009/03/12/09-epoll-event-test/" title="epoll 的各个事件触发条件测试">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  epoll 的各个事件触发条件测试</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/"  title="缓冲区没有刷新">
+<a href="/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/"  title="这次把“=”写成了“==”">
  <strong>下一篇：</strong><br/> 
- <span>缓冲区没有刷新
+ <span>这次把“=”写成了“==”
 </span>
 </a>
 </div>
@@ -164,7 +162,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" data-title="这次把“=”写成了“==”" data-url="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/"></div>
+	<div class="ds-thread" data-thread-key="2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试" data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/"></div>
 </section>
 
 
