@@ -256,17 +256,16 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2009/04/30/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY" itemprop="url">
+    <a href="/2012/09/19/12-as3-readbytes/" title="注意 ByteArray.readBytes 函数的 length 参数" itemprop="url">
   
-    <h1 itemprop="name">EAGAIN 误会 TCP_NODELAY</h1>
+    <h1 itemprop="name">注意 ByteArray.readBytes 函数的 length 参数</h1>
     
      
-           <p itemprop="description" >尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
-一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
-很容易理解，TCP_NODELAY 只是不让底层拼包。而</p>
+           <p itemprop="description" >AS3 里 ByteArray.readBytes 函数的 length 参数为 0 时并非是读 0 个字节。
+官方文档注解如下123456789public function readBytes(bytes:ByteArray, offset:uint = 0, length:</p>
         
     
-    <time datetime="2009-04-30T03:30:00.000Z" itemprop="datePublished">2009-04-30</time>
+    <time datetime="2012-09-19T12:31:00.000Z" itemprop="datePublished">2012-09-19</time>
   </a>
 </section>
 
@@ -291,6 +290,10 @@
 <div class="categorieslist">
 	<p class="asidetitle">分类</p>
 		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
 		
 		  
 			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>4</sup></a></li>
