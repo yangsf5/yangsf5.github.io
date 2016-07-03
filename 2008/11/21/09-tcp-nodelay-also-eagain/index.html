@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>近期对 PHP 与 MySQL 相关的优化 | 三疯的技术博客</title>
+    <title>EAGAIN 误会 TCP_NODELAY | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
-有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
+    <meta name="description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
+一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
+很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="近期对 PHP 与 MySQL 相关的优化">
-<meta property="og:url" content="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/index.html">
+<meta property="og:title" content="EAGAIN 误会 TCP_NODELAY">
+<meta property="og:url" content="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
-有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
-<meta property="og:updated_time" content="2016-06-26T10:03:46.000Z">
+<meta property="og:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
+一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
+很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
+<meta property="og:updated_time" content="2016-07-03T05:45:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="近期对 PHP 与 MySQL 相关的优化">
-<meta name="twitter:description" content="BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。
-有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2">
+<meta name="twitter:title" content="EAGAIN 误会 TCP_NODELAY">
+<meta name="twitter:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
+一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
+很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对 PHP 与 MySQL 相关的优化" itemprop="url">近期对 PHP 与 MySQL 相关的优化</a>
+      <a href="/2008/11/21/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY" itemprop="url">EAGAIN 误会 TCP_NODELAY</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-13T15:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-13</time>
+    <time datetime="2008-11-21T01:31:00.000Z" itemprop="datePublished"> 发表于 2008-11-21</time>
     
   </p>
 </header>
@@ -94,9 +97,9 @@
 		
 		</div>
 		
-		<p>BI 的线上经常报 MySQL 连接数耗尽，查的结果是部分表经常被某个查询锁住，然后其他访问这个表的查询连接就一直阻塞着。原因是这些本来要支持一定并发规模的表竟然用的是 MyISAM 引擎，我把相关表的引擎换成 InnoDB 了。</p>
-<p>有些历史业务逻辑竟然用了 n * n 数量级条数的 MySQL 查询。这光花费在 IO 上的时间都是惊人的。优化后直接弄成一条 MySQL 查询，业务响应时间从 1、2 分钟降到秒开。 </p>
-<p>MySQL 的 <code>WHERE IN</code> 里不要写子查询，用连表方式会数量级上的快，这个原因具体看《高性能MySQL》吧。 </p>
+		<p>尽管 TCP 客户端设置 <code>TCP_NODELAY</code>，服务器仍须读到 <code>EAGAIN</code> 才算完成一个 <code>EPOLLIN</code> 事件。</p>
+<p>一开始以为客户端设置了 <code>TCP_NODELAY</code> 选项就表示每一次发包都会触发新事件，测试结果不是这样的。</p>
+<p>很容易理解，<code>TCP_NODELAY</code> 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -104,7 +107,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Web开发/">Web开发</a>
+  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
 </div>
 
 
@@ -114,7 +117,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对 PHP 与 MySQL 相关的优化 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -128,18 +131,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" title="公司内部图书馆试运行">
+ <a href="/2008/11/21/08-bian-chang-jie-gou-ti/" title="变长结构体的技巧">
   <strong>上一篇：</strong><br/>
   <span>
-  公司内部图书馆试运行</span>
+  变长结构体的技巧</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/10/13/zhan-li-bian-cheng-luan-tan/"  title="站立编程乱弹">
+<a href="/2008/10/23/xiao-yu-yao-wo-qu-ta-men-gong-si/"  title="小雨要我去他们公司">
  <strong>下一篇：</strong><br/> 
- <span>站立编程乱弹
+ <span>小雨要我去他们公司
 </span>
 </a>
 </div>
@@ -148,7 +151,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/13/jin-qi-php-mysql-you-hua/" data-title="近期对 PHP 与 MySQL 相关的优化" data-url="http://blog.clawz.me/2014/10/13/jin-qi-php-mysql-you-hua/"></div>
+	<div class="ds-thread" data-thread-key="2008/11/21/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY" data-url="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/"></div>
 </section>
 
 
