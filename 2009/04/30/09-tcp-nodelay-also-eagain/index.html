@@ -16,12 +16,12 @@
 很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EAGAIN 误会 TCP_NODELAY">
-<meta property="og:url" content="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/index.html">
+<meta property="og:url" content="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
 <meta property="og:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
 一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
 很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
-<meta property="og:updated_time" content="2016-07-03T05:45:02.000Z">
+<meta property="og:updated_time" content="2016-07-03T05:51:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EAGAIN 误会 TCP_NODELAY">
 <meta name="twitter:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
@@ -77,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2008/11/21/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY" itemprop="url">EAGAIN 误会 TCP_NODELAY</a>
+      <a href="/2009/04/30/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY" itemprop="url">EAGAIN 误会 TCP_NODELAY</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2008-11-21T01:31:00.000Z" itemprop="datePublished"> 发表于 2008-11-21</time>
+    <time datetime="2009-04-30T03:30:00.000Z" itemprop="datePublished"> 发表于 2009-04-30</time>
     
   </p>
 </header>
@@ -107,7 +107,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/网络编程/">网络编程</a>
 </div>
 
 
@@ -117,7 +117,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -131,18 +131,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2008/11/21/08-bian-chang-jie-gou-ti/" title="变长结构体的技巧">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  变长结构体的技巧</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2008/10/23/xiao-yu-yao-wo-qu-ta-men-gong-si/"  title="小雨要我去他们公司">
+<a href="/2009/03/12/09-epoll-event-test/"  title="epoll 的各个事件触发条件测试">
  <strong>下一篇：</strong><br/> 
- <span>小雨要我去他们公司
+ <span>epoll 的各个事件触发条件测试
 </span>
 </a>
 </div>
@@ -151,7 +151,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2008/11/21/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY" data-url="http://blog.clawz.me/2008/11/21/09-tcp-nodelay-also-eagain/"></div>
+	<div class="ds-thread" data-thread-key="2009/04/30/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY" data-url="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/"></div>
 </section>
 
 
@@ -175,11 +175,13 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>6</sup></a></li>
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>4</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/Web开发/" title="Web开发">Web开发<sup>1</sup></a></li>
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>1</sup></a></li>
+		  
+		
 		  
 		
 		  
@@ -200,6 +202,10 @@
 		
 		  
 			<li><a href="/categories/状态/" title="状态">状态<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>2</sup></a></li>
 		  
 		
 		  
