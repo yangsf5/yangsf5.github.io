@@ -4,35 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>epoll 的各个事件触发条件测试 | 三疯的技术博客</title>
+    <title>网络通信序列化协议的选择 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+    <meta name="description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
+AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
 <meta property="og:type" content="article">
-<meta property="og:title" content="epoll 的各个事件触发条件测试">
-<meta property="og:url" content="http://blog.clawz.me/2009/03/12/09-epoll-event-test/index.html">
+<meta property="og:title" content="网络通信序列化协议的选择">
+<meta property="og:url" content="http://blog.clawz.me/2012/09/21/12-chose-protobuf/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
-<meta property="og:updated_time" content="2016-07-03T05:52:14.000Z">
+<meta property="og:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
+AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
+<meta property="og:updated_time" content="2016-07-03T10:35:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="epoll 的各个事件触发条件测试">
-<meta name="twitter:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+<meta name="twitter:title" content="网络通信序列化协议的选择">
+<meta name="twitter:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
+AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -83,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2009/03/12/09-epoll-event-test/" title="epoll 的各个事件触发条件测试" itemprop="url">epoll 的各个事件触发条件测试</a>
+      <a href="/2012/09/21/12-chose-protobuf/" title="网络通信序列化协议的选择" itemprop="url">网络通信序列化协议的选择</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2009-03-12T09:17:00.000Z" itemprop="datePublished"> 发表于 2009-03-12</time>
+    <time datetime="2012-09-21T14:31:00.000Z" itemprop="datePublished"> 发表于 2012-09-21</time>
     
   </p>
 </header>
@@ -99,18 +90,25 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化协议选择的考虑"><span class="toc-number">2.</span> <span class="toc-text">序列化协议选择的考虑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终选择"><span class="toc-number">3.</span> <span class="toc-text">最终选择</span></a></li></ol>
 		
 		</div>
 		
-		<ul>
-<li>listen fd，有新连接请求，触发 <code>EPOLLIN</code>。</li>
-<li>对端发送普通数据，触发 <code>EPOLLIN</code>。</li>
-<li>带外数据，只触发 <code>EPOLLPRI</code>。</li>
-<li>对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 <code>EPOLLIN</code> 和 <code>EPOLLRDHUP</code>，但是不触发 <code>EPOLLERR</code> 和 <code>EPOLLHUP</code>。关于这点，以前一直以为会触发 <code>EPOLLERR</code> 或者 <code>EPOLLHUP</code>。</li>
-<li>再 <code>man epoll_ctl</code> 看下后两个事件的说明，这两个应该是 Server 端出错才触发的。</li>
-<li>对端异常断开连接（只测了拔网线），没触发任何事件。</li>
+		<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 </p>
+<p>AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪费了些流量。现在项目在扩展手机前端，对流量的要求更苛刻。为了新老问题的选择，我们就要换掉 JSON。 </p>
+<h2 id="序列化协议选择的考虑"><a href="#序列化协议选择的考虑" class="headerlink" title="序列化协议选择的考虑"></a>序列化协议选择的考虑</h2><p>手机前端使用 C++ 写的逻辑，我们协议的要求为跨语言、跨平台、体积小、序列化和反序列化快。 </p>
+<p>可供选择的协议有 Protobuf、Thrift、MessagePack 等。 </p>
+<p>Thrift 的学习成本貌似比 Protobuf 高些，另外先看的 Protobuf，感觉两种协议差不多，就懒的继续研究 Thrift 了。 </p>
+<p>Protobuf 和 MessagePack 两者皆是开源项目，对比： </p>
+<ul>
+<li>Protobuf 是 Google 主持的，已经被 Google 自己和业内大规模使用了，证明是可靠的；而 MessagePack 貌似出来的比较晚，还没被大规模使用。 </li>
+<li>语言支持，Protobuf 官方原生支持 C++、Java、Python，其他均为第三方扩展；MessagePack 官方支持 C++、Java、PHP，不支持 AS，但支持 JavaScript。 </li>
+<li>Protobuf 有个编译器可以自动生成各语言对应版本的协议类；MessagePack 在强类型如 Java 和 C++ 里就需要自己写各个语言版本的了。 </li>
+<li>体积方面，MessagePack 的体积应该比 Protobuf 稍大。 </li>
+<li>速度方面，MessagePack 官方说速度是 Protobuf 的 4 倍，但是看他的测试只是一种语言的序列化测试。 </li>
+<li>其他，MessagePack 也支持 key-value 方式的序列化，号称体积小的 JSON。这虽很容易移植以前的协议，为了快速出 Demo，我也都准备用 MessagePack 先期试改了，但是猛然发现每个语言还是得写各自的，而且现在涉及到两种不同前端，一端的修改还需及时通知另一前端做相应修改。这种太难控制了，没有 Protobuf 的 .proto 文件那种的一致性保证。</li>
 </ul>
+<h2 id="最终选择"><a href="#最终选择" class="headerlink" title="最终选择"></a>最终选择</h2><p>综合以上的比较，最后选择了 Protobuf 来作为我们项目新的网络通信序列化协议。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -118,7 +116,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/网络编程/">网络编程</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -128,7 +126,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2012/09/21/12-chose-protobuf/" data-title="网络通信序列化协议的选择 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,18 +140,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2009/04/30/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  EAGAIN 误会 TCP_NODELAY</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/"  title="这次把“=”写成了“==”">
+<a href="/2012/09/19/12-as3-readbytes/"  title="注意 ByteArray.readBytes 函数的 length 参数">
  <strong>下一篇：</strong><br/> 
- <span>这次把“=”写成了“==”
+ <span>注意 ByteArray.readBytes 函数的 length 参数
 </span>
 </a>
 </div>
@@ -162,7 +160,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试" data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/"></div>
+	<div class="ds-thread" data-thread-key="2012/09/21/12-chose-protobuf/" data-title="网络通信序列化协议的选择" data-url="http://blog.clawz.me/2012/09/21/12-chose-protobuf/"></div>
 </section>
 
 
@@ -172,7 +170,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化协议选择的考虑"><span class="toc-number">2.</span> <span class="toc-text">序列化协议选择的考虑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终选择"><span class="toc-number">3.</span> <span class="toc-text">最终选择</span></a></li></ol>
  
   </div>
 
