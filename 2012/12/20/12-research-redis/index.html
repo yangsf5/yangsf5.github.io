@@ -4,32 +4,44 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>微信订阅号里的未读文章越积越多怎么办？ | 三疯的技术博客</title>
+    <title>Redis 调研 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="我这个公众号开放以来，更新的频率挺低的。主要借口是忙于工作。次要借口是怕自己写的不好。 
-最近在追李笑来老师的公众号文章。结论是，写的内容可以朴素点，但是要赶紧坚持写。 
-前端时间的阅读主要集中在《重新定义公司：谷歌是如何运营的》、《设计心理学》、《腾讯方法》上，厚此薄彼，导致微信订阅列表的待读文章要吓死人了。 
-我的学习任务里，读书是为了系统的学一项事物，而高质量的微信公众号是为了拓展视野、单点">
+    <meta name="description" content="Redis 调研优势相对于其他k-v数据库的优势：
+
+包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
+内存中运行；可以持久化。 
+相关网站： 
+http://redis.io/
+http://www.slideshare.net/hitkidnil/memcached-vs-redis
+h">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信订阅号里的未读文章越积越多怎么办？">
-<meta property="og:url" content="http://blog.clawz.me/2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/index.html">
+<meta property="og:title" content="Redis 调研">
+<meta property="og:url" content="http://blog.clawz.me/2012/12/20/12-research-redis/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="我这个公众号开放以来，更新的频率挺低的。主要借口是忙于工作。次要借口是怕自己写的不好。 
-最近在追李笑来老师的公众号文章。结论是，写的内容可以朴素点，但是要赶紧坚持写。 
-前端时间的阅读主要集中在《重新定义公司：谷歌是如何运营的》、《设计心理学》、《腾讯方法》上，厚此薄彼，导致微信订阅列表的待读文章要吓死人了。 
-我的学习任务里，读书是为了系统的学一项事物，而高质量的微信公众号是为了拓展视野、单点">
-<meta property="og:updated_time" content="2016-06-26T10:27:07.000Z">
+<meta property="og:description" content="Redis 调研优势相对于其他k-v数据库的优势：
+
+包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
+内存中运行；可以持久化。 
+相关网站： 
+http://redis.io/
+http://www.slideshare.net/hitkidnil/memcached-vs-redis
+h">
+<meta property="og:updated_time" content="2016-07-06T05:21:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信订阅号里的未读文章越积越多怎么办？">
-<meta name="twitter:description" content="我这个公众号开放以来，更新的频率挺低的。主要借口是忙于工作。次要借口是怕自己写的不好。 
-最近在追李笑来老师的公众号文章。结论是，写的内容可以朴素点，但是要赶紧坚持写。 
-前端时间的阅读主要集中在《重新定义公司：谷歌是如何运营的》、《设计心理学》、《腾讯方法》上，厚此薄彼，导致微信订阅列表的待读文章要吓死人了。 
-我的学习任务里，读书是为了系统的学一项事物，而高质量的微信公众号是为了拓展视野、单点">
+<meta name="twitter:title" content="Redis 调研">
+<meta name="twitter:description" content="Redis 调研优势相对于其他k-v数据库的优势：
+
+包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
+内存中运行；可以持久化。 
+相关网站： 
+http://redis.io/
+http://www.slideshare.net/hitkidnil/memcached-vs-redis
+h">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -80,14 +92,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/" title="微信订阅号里的未读文章越积越多怎么办？" itemprop="url">微信订阅号里的未读文章越积越多怎么办？</a>
+      <a href="/2012/12/20/12-research-redis/" title="Redis 调研" itemprop="url">Redis 调研</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2015-12-29T17:15:00.000Z" itemprop="datePublished"> 发表于 2015-12-30</time>
+    <time datetime="2012-12-20T11:00:00.000Z" itemprop="datePublished"> 发表于 2012-12-20</time>
     
   </p>
 </header>
@@ -96,31 +108,44 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#旧方法"><span class="toc-number">1.</span> <span class="toc-text">旧方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新方法"><span class="toc-number">2.</span> <span class="toc-text">新方法</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-调研"><span class="toc-number">1.</span> <span class="toc-text">Redis 调研</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#优势"><span class="toc-number">1.1.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缺点"><span class="toc-number">1.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能"><span class="toc-number">1.3.</span> <span class="toc-text">性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用者及口碑"><span class="toc-number">1.4.</span> <span class="toc-text">使用者及口碑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结合我们项目使用"><span class="toc-number">1.5.</span> <span class="toc-text">结合我们项目使用</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<p>我这个公众号开放以来，更新的频率挺低的。主要借口是忙于工作。次要借口是怕自己写的不好。 </p>
-<p>最近在追李笑来老师的公众号文章。结论是，写的内容可以朴素点，但是要赶紧坚持写。 </p>
-<p>前端时间的阅读主要集中在《重新定义公司：谷歌是如何运营的》、《设计心理学》、《腾讯方法》上，厚此薄彼，导致微信订阅列表的待读文章要吓死人了。 </p>
-<p>我的学习任务里，读书是为了系统的学一项事物，而高质量的微信公众号是为了拓展视野、单点的学习一些事物。另外朋友圈、微博可以了解些关心的朋友的状态、大家关心的内容、一些事实，不至于内向的自己直接跟外界脱节。 </p>
-<p>所以要看的东西真的很多。现在慢慢演化的阅读节奏是：朋友圈、微博都是浏览式的，不重要的基本是手指滑过即可。微信和书的都是精度。 </p>
-<p>今天又给微博瘦了身，从以前关注的 120 多人减少关注到 60 多人。一下清爽了很多（即使是平均微博和水木都是一周才扫一次了）。 </p>
-<p>说了很多废话（请原谅，我的废话真的很多），开始说正题。 </p>
-<h2 id="旧方法"><a href="#旧方法" class="headerlink" title="旧方法"></a>旧方法</h2><p>数了下，关注的公众号现在达到 40 个左右了。有些公众号例如《InfoQ》、《EGONetworks》、《大象公会》等高质量的公众号已经都攒了几个月的未读文章了，另外冯老师的《小道消息》、池老师的《MacTalk》也都积累不少没看的。加上最近新关注的李笑来老师，要从第一篇挖掘起，简直是浩大的未读工程啊。 </p>
-<p>多账号的多篇未读，前些天的进度记录是在锤子便签里记下每个账号的进程： </p>
+		<h1 id="Redis-调研"><a href="#Redis-调研" class="headerlink" title="Redis 调研"></a>Redis 调研</h1><h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>相对于其他k-v数据库的优势：</p>
 <ul>
-<li>《InfoQ》的 11.2 日over</li>
-<li>《小道消息》11.18 日over</li>
-<li>李笑来的 2015.10.7 日over…… </li>
+<li>包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 </li>
+<li>内存中运行；可以持久化。 </li>
+<li>相关网站： </li>
+<li><a href="http://redis.io/" target="_blank" rel="external">http://redis.io/</a></li>
+<li><a href="http://www.slideshare.net/hitkidnil/memcached-vs-redis" target="_blank" rel="external">http://www.slideshare.net/hitkidnil/memcached-vs-redis</a></li>
+<li><a href="http://www.itlearner.com/article/4890" target="_blank" rel="external">http://www.itlearner.com/article/4890</a></li>
+<li><a href="http://timyang.net/data/redis-misunderstanding/" target="_blank" rel="external">http://timyang.net/data/redis-misunderstanding/</a></li>
+<li><a href="http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis" target="_blank" rel="external">http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis</a></li>
 </ul>
-<p>然后每天往上翻历史翻到手软，然后看个一两篇，记录下新进度（更新读到的日期），例如： </p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>官方不支持 Windows 版，有非官方的。这个不是太大问题。 </p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>内存数据库，性能非常高。 </li>
+<li>与 Memcache 的性能比较，Redis 作者给的回答，小数据的存储 Redis 占优，大于 100k 的 Memcache 占优，但总的来说，一般项目使用时都还不够格考虑这里的瓶颈。 </li>
+</ul>
+<h2 id="使用者及口碑"><a href="#使用者及口碑" class="headerlink" title="使用者及口碑"></a>使用者及口碑</h2><p>暴雪、Stack Overflow、GitHub、Flickr 等等在使用 Redis。业内口碑非常好：</p>
 <ul>
-<li>《InfoQ》的 11.6 日over</li>
-<li>《小道消息》11.23 日over…… </li>
+<li><a href="http://redis.io/topics/whos-using-redis" target="_blank" rel="external">http://redis.io/topics/whos-using-redis</a></li>
 </ul>
-<p>得空了再往上翻历史翻到手软，然后看个一两篇，记录下新进度……又不是数钱，这么手软的事情实在是糟心。 </p>
-<h2 id="新方法"><a href="#新方法" class="headerlink" title="新方法"></a>新方法</h2><p>然后突然昨天想到一个好办法（正题终于来了）： 进一个公众号对话框，就直接看最新一篇，看完了就删除这篇。这样每个公众号的对话框里就只剩下未读的了。再也不用费劲去记录日期了。 </p>
+<h2 id="结合我们项目使用"><a href="#结合我们项目使用" class="headerlink" title="结合我们项目使用"></a>结合我们项目使用</h2><p>由于历史原因，数据库我们先后使用了兄弟公司的 k-v 数据库，和之后的 MySQL。 </p>
+<p>换数据库，是由于之前的 k-v 数据库只支持 key-value 对的存储，value 里以 JSON 串来存储。这样的存储方式不支持单个字段的更新以及高效的频繁排序等功能算法需求。而游戏编程很需要这些，所以花大气力弥补以前决策的失误，DB 换成了 MySQL。 </p>
+<p>项目架构也在调整，PHP 通过 HandlerSocket与 MySQL 进行交互，之前的 Java 只做简单的同步，没有 DB 操作。现在为了性能考虑，在慢慢改成玩家频繁交互的功能和部分别的新功能写在 Java。这样 Java 就必须与 DB 交互。 </p>
+<p>之前为了快速迭代，Java 与 MySQL 的交互，是 Java 通过 HTTP 来 post 存储请求到 PHP，PHP 接到 request 就立即存储。PHP 这边有老 PHP 写的逻辑更新了 DB 字段时，再 post 一个 request 到 Java（Java做了个 HTTP Server），Java 更新自己的内存。 </p>
+<p>这样就有两个问题：</p>
+<ul>
+<li>所有与 DB 的操作，cache 的地方在 HandlerSocket。（据说有并发写入性能问题——待进一步考证） </li>
+<li>PHP 与 Java 都要更新 DB 数据时，两个独立的 HTTP 通道，很诡异，很低效。 </li>
+</ul>
+<p>现在有了 Redis，pub/sub 很方便做 cache 系统：</p>
+<ul>
+<li>一方面 PHP 与 Java 相互通知数据更新时，通过 Redis 即可。目前我们先应用急需的这块。当前项目 PHP 里使用 Memcache 做交互临时存储以及部分用于加锁的逻辑可以考虑用 Redis 慢慢取代。 </li>
+<li>另一方面，以后可以很方便的用 Redis 做我们应用程序与 MySQL 的 cache。 </li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -128,7 +153,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -138,7 +163,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/" data-title="微信订阅号里的未读文章越积越多怎么办？ | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2012/12/20/12-research-redis/" data-title="Redis 调研 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -152,18 +177,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/01/05/2015-zong-jie/" title="不按常理的 2015 年终总结">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  不按常理的 2015 年终总结</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/"  title="以死相催上下游部门的真相">
+<a href="/2012/12/02/12-everything-should-iterate/"  title="快速迭代无处不在">
  <strong>下一篇：</strong><br/> 
- <span>以死相催上下游部门的真相
+ <span>快速迭代无处不在
 </span>
 </a>
 </div>
@@ -172,7 +197,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/" data-title="微信订阅号里的未读文章越积越多怎么办？" data-url="http://blog.clawz.me/2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/"></div>
+	<div class="ds-thread" data-thread-key="2012/12/20/12-research-redis/" data-title="Redis 调研" data-url="http://blog.clawz.me/2012/12/20/12-research-redis/"></div>
 </section>
 
 
@@ -182,7 +207,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#旧方法"><span class="toc-number">1.</span> <span class="toc-text">旧方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新方法"><span class="toc-number">2.</span> <span class="toc-text">新方法</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-调研"><span class="toc-number">1.</span> <span class="toc-text">Redis 调研</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#优势"><span class="toc-number">1.1.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缺点"><span class="toc-number">1.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能"><span class="toc-number">1.3.</span> <span class="toc-text">性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用者及口碑"><span class="toc-number">1.4.</span> <span class="toc-text">使用者及口碑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结合我们项目使用"><span class="toc-number">1.5.</span> <span class="toc-text">结合我们项目使用</span></a></li></ol></li></ol>
  
   </div>
 
