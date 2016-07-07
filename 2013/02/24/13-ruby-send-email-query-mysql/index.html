@@ -4,29 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>以死相催上下游部门的真相 | 三疯的技术博客</title>
+    <title>Ruby Send Email &amp; Query MySQL | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="下边是两个月前新游戏接 SDK 时，我对一些跨部门沟通发生的一些事情的解释说明。后来想了想，下边这些想表达的事情，能担当一个部门级管理职责的人都懂，不需要我再去特意跟他们说明什么。所以最终没有拿出这个去跟相应兄弟部门的老大聊。现在又看到这篇文字，现在发出来，主要是想着可能会对职场新人有点参考价值。 
-
-我频繁的催 SDK 接入上下游的部门提供或者保证相关东西，兄弟部门可能第一反应是：我们 SDK">
+    <meta name="description" content="2013-07-12 更新Send Email 模块已经抽象提取到：1https://github.com/yangsf5/ruby-part/tree/master/product/send_email
+原博文新项目初期，没什么完善的后台系统，想每天定时看看玩家充值情况，年前开始学了点 Ruby，就随便捣鼓了个 Ruby 访问 MySQL 然后发邮件的脚本。好久没更新博客，先滥竽充数下，哈哈。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="以死相催上下游部门的真相">
-<meta property="og:url" content="http://blog.clawz.me/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/index.html">
+<meta property="og:title" content="Ruby Send Email & Query MySQL">
+<meta property="og:url" content="http://blog.clawz.me/2013/02/24/13-ruby-send-email-query-mysql/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="下边是两个月前新游戏接 SDK 时，我对一些跨部门沟通发生的一些事情的解释说明。后来想了想，下边这些想表达的事情，能担当一个部门级管理职责的人都懂，不需要我再去特意跟他们说明什么。所以最终没有拿出这个去跟相应兄弟部门的老大聊。现在又看到这篇文字，现在发出来，主要是想着可能会对职场新人有点参考价值。 
-
-我频繁的催 SDK 接入上下游的部门提供或者保证相关东西，兄弟部门可能第一反应是：我们 SDK">
-<meta property="og:updated_time" content="2016-06-26T10:44:17.000Z">
+<meta property="og:description" content="2013-07-12 更新Send Email 模块已经抽象提取到：1https://github.com/yangsf5/ruby-part/tree/master/product/send_email
+原博文新项目初期，没什么完善的后台系统，想每天定时看看玩家充值情况，年前开始学了点 Ruby，就随便捣鼓了个 Ruby 访问 MySQL 然后发邮件的脚本。好久没更新博客，先滥竽充数下，哈哈。">
+<meta property="og:updated_time" content="2016-07-07T04:35:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="以死相催上下游部门的真相">
-<meta name="twitter:description" content="下边是两个月前新游戏接 SDK 时，我对一些跨部门沟通发生的一些事情的解释说明。后来想了想，下边这些想表达的事情，能担当一个部门级管理职责的人都懂，不需要我再去特意跟他们说明什么。所以最终没有拿出这个去跟相应兄弟部门的老大聊。现在又看到这篇文字，现在发出来，主要是想着可能会对职场新人有点参考价值。 
-
-我频繁的催 SDK 接入上下游的部门提供或者保证相关东西，兄弟部门可能第一反应是：我们 SDK">
+<meta name="twitter:title" content="Ruby Send Email & Query MySQL">
+<meta name="twitter:description" content="2013-07-12 更新Send Email 模块已经抽象提取到：1https://github.com/yangsf5/ruby-part/tree/master/product/send_email
+原博文新项目初期，没什么完善的后台系统，想每天定时看看玩家充值情况，年前开始学了点 Ruby，就随便捣鼓了个 Ruby 访问 MySQL 然后发邮件的脚本。好久没更新博客，先滥竽充数下，哈哈。">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/" title="以死相催上下游部门的真相" itemprop="url">以死相催上下游部门的真相</a>
+      <a href="/2013/02/24/13-ruby-send-email-query-mysql/" title="Ruby Send Email &amp; Query MySQL" itemprop="url">Ruby Send Email &amp; Query MySQL</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2015-09-21T15:00:00.000Z" itemprop="datePublished"> 发表于 2015-09-21</time>
+    <time datetime="2013-02-24T12:00:00.000Z" itemprop="datePublished"> 发表于 2013-02-24</time>
     
   </p>
 </header>
@@ -93,19 +90,18 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2013-07-12-更新"><span class="toc-number">1.</span> <span class="toc-text">2013-07-12 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原博文"><span class="toc-number">2.</span> <span class="toc-text">原博文</span></a></li></ol>
 		
 		</div>
 		
-		<p>下边是两个月前新游戏接 SDK 时，我对一些跨部门沟通发生的一些事情的解释说明。后来想了想，下边这些想表达的事情，能担当一个部门级管理职责的人都懂，不需要我再去特意跟他们说明什么。所以最终没有拿出这个去跟相应兄弟部门的老大聊。现在又看到这篇文字，现在发出来，主要是想着可能会对职场新人有点参考价值。 </p>
-<hr>
-<p>我频繁的催 SDK 接入上下游的部门提供或者保证相关东西，兄弟部门可能第一反应是：我们 SDK 这是太紧张了，怕到时游戏上线延期，大家的目光就在 SDK 这边。 </p>
-<p>所以有兄弟部门对我们说，如果他们环节没有保证好，到时问责时他们会把责任抗下来。 </p>
-<p>其实这个真的只是我们频繁催的一个很小的原因。更主要的原因是，我们想让整个上线计划如期进行。因为如果最终延期，对于决策层（其实是所有在意这个上线计划的人群）来说，是不会在意你的任何借口的，也不会去在意是是具体是谁的问题，在意的是你们所有相关执行部门没有同心协力去把这个事情搞好，“要你们何用”。 </p>
-<p>简单的说，一个事情失败了。追责是其次，首要的是这个事情失败了！这对整体利益的损害是最直接的。 </p>
-<p>所以说问责时你们会抗起你们应负的责任，这不是我关心的主要目标。更何况，我虽是一个更喜欢埋头做事的人（其实到现在这个职位的人大部分都是这样），但是如果不是我们团队导致的问题，我肯定会奋起说明的，我不能让我手下苦逼干活的兄弟们受不明不白的冤屈。 </p>
-<p>我想表达的应该只是我的多虑，但是我个人经常忘记表达自己的观点（闷骚久了），我怕大家误解我。 </p>
-<p>顺便说下前段时间某合作发行商的 SDK 不稳定的事情，当时我为啥极力去指出他们的不足。当时并不是为了指责他们，分散大家注意力，减轻我们部门压力的。如果很多人这么想，那也是挺悲剧的。所以我要顺便解释下，当时极力指出他们的不足，是因为当时大家大部分只是觉得问题肯定在我们这边。出事的节骨眼上，大家怀疑的看着我们部门，这点承受能力还是有的。或者装逼的说，临时的被误解，这不重要。但是如果我不去强调真正的原因，不引导大家去关注解决问题的核心，那当时的事情就真的要悲剧了。一切只是为了让相关部门去督促发行商做好他们的部分，也就是整件事关键的部分保证顺利。 </p>
+		<h2 id="2013-07-12-更新"><a href="#2013-07-12-更新" class="headerlink" title="2013-07-12 更新"></a>2013-07-12 更新</h2><p>Send Email 模块已经抽象提取到：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/yangsf5/ruby-part/tree/master/product/send_email</span><br></pre></td></tr></table></figure></p>
+<h2 id="原博文"><a href="#原博文" class="headerlink" title="原博文"></a>原博文</h2><p>新项目初期，没什么完善的后台系统，想每天定时看看玩家充值情况，年前开始学了点 Ruby，就随便捣鼓了个 Ruby 访问 MySQL 然后发邮件的脚本。好久没更新博客，先滥竽充数下，哈哈。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/bin/ruby </span></span><br><span class="line">                  </span><br><span class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'net/smtp'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'mysql'</span></span><br><span class="line">                  </span><br><span class="line">total_money = <span class="number">0</span></span><br><span class="line">                  </span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  con = Mysql.new _host, _user, _pwd, _dbname  </span><br><span class="line">  (<span class="number">0</span>..<span class="number">9</span>).each <span class="keyword">do</span> <span class="params">|i|</span>  </span><br><span class="line">    rs = con.query <span class="string">"select sum(order_money) ordermoney from table_<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">    total_money += rs.fetch_row[<span class="number">0</span>].to_i </span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">                    </span><br><span class="line"><span class="keyword">rescue</span> Mysql::Error =&gt; e  </span><br><span class="line">  puts e.errno </span><br><span class="line">  puts e.error </span><br><span class="line">                    </span><br><span class="line"><span class="keyword">ensure</span></span><br><span class="line">  con.close <span class="keyword">if</span> con  </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">                  </span><br><span class="line">eval File.read(<span class="string">"smtp-tls.rb"</span>) </span><br><span class="line">                  </span><br><span class="line">msgstr = &lt;&lt;MESSAGE_END</span><br><span class="line"><span class="symbol">From:</span> monitor &lt;XX@126.com&gt; </span><br><span class="line"><span class="symbol">To:</span> sheppard &lt;XX@XX.com&gt; </span><br><span class="line"><span class="symbol">Subject:</span> money report </span><br><span class="line">                  </span><br><span class="line">XX Project, total <span class="symbol">money:</span> <span class="comment">#&#123;total_money&#125;  </span></span><br><span class="line">MESSAGE_END</span><br><span class="line">                  </span><br><span class="line">Net::SMTP.start(<span class="string">'smtp.126.com'</span>, <span class="number">25</span>, <span class="string">'126.com'</span>, _mail_user_name, _mail_password, <span class="symbol">:plain</span>) <span class="keyword">do</span> <span class="params">|smtp|</span>  </span><br><span class="line">  smtp.send_message msgstr, <span class="string">'XX@126.com'</span>, <span class="string">'XX@XX.com'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>参考的几个网址家里没翻墙就先不给了。有空补上，或者大家有 Google 或者 Stack Overflow 自己搜去吧。</p>
+<p>说明： </p>
+<ul>
+<li><code>Net::SMTP.start</code>的第二个参数是 Email 服务器的 SMTP 的端口，各邮件服务提供商的可能会不同，例如 Google 的就不是这个 25。 </li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -113,7 +109,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/效率-协作-管理/">效率&协作&管理</a>
+  <a class="article-category-link" href="/categories/Ruby/">Ruby</a>
 </div>
 
 
@@ -123,7 +119,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/" data-title="以死相催上下游部门的真相 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/02/24/13-ruby-send-email-query-mysql/" data-title="Ruby Send Email &amp; Query MySQL | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -137,18 +133,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/12/30/wei-xin-gong-zhong-hao-wei-du-yue-ji-yue-duo/" title="微信订阅号里的未读文章越积越多怎么办？">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  微信订阅号里的未读文章越积越多怎么办？</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/"  title="你是在修补错误的东西吗">
+<a href="/2013/01/18/13-php-java-bridge/"  title="PHP/Java Bridge 的使用">
  <strong>下一篇：</strong><br/> 
- <span>你是在修补错误的东西吗
+ <span>PHP/Java Bridge 的使用
 </span>
 </a>
 </div>
@@ -157,7 +153,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/" data-title="以死相催上下游部门的真相" data-url="http://blog.clawz.me/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/"></div>
+	<div class="ds-thread" data-thread-key="2013/02/24/13-ruby-send-email-query-mysql/" data-title="Ruby Send Email & Query MySQL" data-url="http://blog.clawz.me/2013/02/24/13-ruby-send-email-query-mysql/"></div>
 </section>
 
 
@@ -167,7 +163,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2013-07-12-更新"><span class="toc-number">1.</span> <span class="toc-text">2013-07-12 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原博文"><span class="toc-number">2.</span> <span class="toc-text">原博文</span></a></li></ol>
  
   </div>
 
