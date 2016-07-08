@@ -256,20 +256,17 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/04/25/13-x-cpp-server/" title="X 项目 C++ 服务器（1）- 总体构想" itemprop="url">
+    <a href="/2013/06/21/13-vc-debug-while/" title="调试 Server 初始化时卡在某个点" itemprop="url">
   
-    <h1 itemprop="name">X 项目 C++ 服务器（1）- 总体构想</h1>
+    <h1 itemprop="name">调试 Server 初始化时卡在某个点</h1>
     
      
-           <p itemprop="description" >简介这个项目刚起步，将来有可能会演变为公司的服务器框架。博客里暂且称呼为 X 项目。 
-语言为 C++，之后将此服务器的设计演变尽量记录下来，为一个系列，以“X 项目 C++ 服务器”为统一标题开头。 
-架构设计
-多进程通信方案：ZeroMQ 
-协议方案：Protobuf 
-存储</p>
+           <p itemprop="description" >VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
+一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
+慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下</p>
         
     
-    <time datetime="2013-04-25T06:52:00.000Z" itemprop="datePublished">2013-04-25</time>
+    <time datetime="2013-06-21T04:38:00.000Z" itemprop="datePublished">2013-06-21</time>
   </a>
 </section>
 
@@ -300,7 +297,7 @@
 		  
 		
 		  
-			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>5</sup></a></li>
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>6</sup></a></li>
 		  
 		
 		  

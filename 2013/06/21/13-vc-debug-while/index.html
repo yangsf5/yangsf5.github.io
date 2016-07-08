@@ -4,26 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>站立编程乱弹 | 三疯的技术博客</title>
+    <title>调试 Server 初始化时卡在某个点 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都 OK 了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工">
+    <meta name="description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
+一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
+慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
+问题原因：while 的退出变量没有自增，导致死循环了。  
+总">
 <meta property="og:type" content="article">
-<meta property="og:title" content="站立编程乱弹">
-<meta property="og:url" content="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/index.html">
+<meta property="og:title" content="调试 Server 初始化时卡在某个点">
+<meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-vc-debug-while/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都 OK 了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工">
-<meta property="og:updated_time" content="2016-06-26T10:29:37.000Z">
+<meta property="og:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
+一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
+慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
+问题原因：while 的退出变量没有自增，导致死循环了。  
+总">
+<meta property="og:updated_time" content="2016-07-08T10:10:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="站立编程乱弹">
-<meta name="twitter:description" content="国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都 OK 了，重新开始站立编程。
-来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工">
+<meta name="twitter:title" content="调试 Server 初始化时卡在某个点">
+<meta name="twitter:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
+一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
+慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
+问题原因：while 的退出变量没有自增，导致死循环了。  
+总">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/13/zhan-li-bian-cheng-luan-tan/" title="站立编程乱弹" itemprop="url">站立编程乱弹</a>
+      <a href="/2013/06/21/13-vc-debug-while/" title="调试 Server 初始化时卡在某个点" itemprop="url">调试 Server 初始化时卡在某个点</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-13T14:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-13</time>
+    <time datetime="2013-06-21T04:38:00.000Z" itemprop="datePublished"> 发表于 2013-06-21</time>
     
   </p>
 </header>
@@ -90,16 +99,16 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">1.</span> <span class="toc-text">总结：</span></a></li></ol>
 		
 		</div>
 		
-		<p>国庆回来后重新开始站立编程。站立编程的桌子是之前在触控时买的，到货后一直坚持站立编程到离职，大概两三个月吧。当前公司，之前我想慢慢适应这边的节奏，另外也是站立有点特立独行的感觉，先观察着，并找有利地形。现在天时地利人和都 OK 了，重新开始站立编程。</p>
-<p>来这里一个季度了，高强度了一个季度，胖了不少，正好也要开始考虑健康问题了。站立编程对健康的好处这里不赘述，说下不足的地方。站立编程，容易得所有站立工作太久职业的职业病。最严重的应该是静脉曲张。我现在的解决办法是，穿静脉曲张袜。平时思考的时候也多坐坐，同一个姿势保持太久都容易对身体造成一个损伤。 </p>
-<p>不过通常站立办公容易腿累，这个我个人倒是没怎么出现，只能说是个人体力肌肉什么的稍强点儿。 </p>
-<p>另外不是有了站立编程，程序员的健康问题就解决了，还需要加强其他的锻炼。现在每周大概在公司健身房跑个 2、3 次步。由于工作忙，一般只跑个 10 分钟左右， 11.1km/h 的速度，跑下 2km 左右。 </p>
-<p>以后还要捡起羽毛球、游泳、登山、骑行等。 </p>
-<p>良好的身心健康，还依赖家庭和谐。这个高强度的季度，周末都基本在家赶代码度过。只有其中两天是陪老婆出去玩的，最终导致老婆喷发。这个事情以后一定要注意。 </p>
+		<p>VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。</p>
+<p>一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。</p>
+<p>慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。</p>
+<p>问题原因：<code>while</code> 的退出变量没有自增，导致死循环了。  </p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>程序卡在哪儿，基本就是死循环或者死锁。死循环的发现，可以看 CPU 占用来佐证。问题定位，暂停调试。</p>
+<p>死锁的定位，可以看 stack，里边应该有 wait 之类的。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -107,7 +116,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
+  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
 </div>
 
 
@@ -117,7 +126,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/" data-title="站立编程乱弹 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -131,18 +140,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2014/10/13/jin-qi-php-mysql-you-hua/" title="近期对 PHP 与 MySQL 相关的优化">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  近期对 PHP 与 MySQL 相关的优化</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/08/23/cheng-xu-yuan-ren-cai-jiao-liu-gong-xiang/"  title="程序员人才交流共享">
+<a href="/2013/04/25/13-x-cpp-server/"  title="X 项目 C++ 服务器（1）- 总体构想">
  <strong>下一篇：</strong><br/> 
- <span>程序员人才交流共享
+ <span>X 项目 C++ 服务器（1）- 总体构想
 </span>
 </a>
 </div>
@@ -151,7 +160,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/13/zhan-li-bian-cheng-luan-tan/" data-title="站立编程乱弹" data-url="http://blog.clawz.me/2014/10/13/zhan-li-bian-cheng-luan-tan/"></div>
+	<div class="ds-thread" data-thread-key="2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点" data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/"></div>
 </section>
 
 
@@ -161,7 +170,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">1.</span> <span class="toc-text">总结：</span></a></li></ol>
  
   </div>
 
