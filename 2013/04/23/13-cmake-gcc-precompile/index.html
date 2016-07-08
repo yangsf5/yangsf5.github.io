@@ -4,29 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>快速迭代无处不在 | 三疯的技术博客</title>
+    <title>CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="敏捷和迭代不止常见于软件开发，生活中的事情也有挺多应用的。 
-例如，之前一直想找个云笔记，替代以前的本地 SVN 存自己文档的笔记存储方式。但是同时有好几个待选的产品。传统的方式是，等你慢慢全部体验完后，再加所有的感受放一起比较，然后痛苦的选择着，这样到你真正使用云笔记已经过去一个多月了。而同时你考虑到将会使用云笔记，本地文档需要更新时，你就以此为借口推迟了，或许重要的更新就那么忘了。 
-迭代的方">
+    <meta name="description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
+CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
+后来找到 cotire，目前使用良好。 
+cotire（compile time reducer）项目地址https:/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="快速迭代无处不在">
-<meta property="og:url" content="http://blog.clawz.me/2012/12/02/12-everything-should-iterate/index.html">
+<meta property="og:title" content="CMake 用 cotire 设置 GCC 的预编译头">
+<meta property="og:url" content="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="敏捷和迭代不止常见于软件开发，生活中的事情也有挺多应用的。 
-例如，之前一直想找个云笔记，替代以前的本地 SVN 存自己文档的笔记存储方式。但是同时有好几个待选的产品。传统的方式是，等你慢慢全部体验完后，再加所有的感受放一起比较，然后痛苦的选择着，这样到你真正使用云笔记已经过去一个多月了。而同时你考虑到将会使用云笔记，本地文档需要更新时，你就以此为借口推迟了，或许重要的更新就那么忘了。 
-迭代的方">
-<meta property="og:updated_time" content="2016-07-03T14:47:37.000Z">
+<meta property="og:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
+CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
+后来找到 cotire，目前使用良好。 
+cotire（compile time reducer）项目地址https:/">
+<meta property="og:updated_time" content="2016-07-08T09:45:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="快速迭代无处不在">
-<meta name="twitter:description" content="敏捷和迭代不止常见于软件开发，生活中的事情也有挺多应用的。 
-例如，之前一直想找个云笔记，替代以前的本地 SVN 存自己文档的笔记存储方式。但是同时有好几个待选的产品。传统的方式是，等你慢慢全部体验完后，再加所有的感受放一起比较，然后痛苦的选择着，这样到你真正使用云笔记已经过去一个多月了。而同时你考虑到将会使用云笔记，本地文档需要更新时，你就以此为借口推迟了，或许重要的更新就那么忘了。 
-迭代的方">
+<meta name="twitter:title" content="CMake 用 cotire 设置 GCC 的预编译头">
+<meta name="twitter:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
+CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
+后来找到 cotire，目前使用良好。 
+cotire（compile time reducer）项目地址https:/">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2012/12/02/12-everything-should-iterate/" title="快速迭代无处不在" itemprop="url">快速迭代无处不在</a>
+      <a href="/2013/04/23/13-cmake-gcc-precompile/" title="CMake 用 cotire 设置 GCC 的预编译头" itemprop="url">CMake 用 cotire 设置 GCC 的预编译头</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2012-12-02T14:00:00.000Z" itemprop="datePublished"> 发表于 2012-12-02</time>
+    <time datetime="2013-04-23T06:10:00.000Z" itemprop="datePublished"> 发表于 2013-04-23</time>
     
   </p>
 </header>
@@ -93,15 +96,28 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
 		
 		</div>
 		
-		<p>敏捷和迭代不止常见于软件开发，生活中的事情也有挺多应用的。 </p>
-<p>例如，之前一直想找个云笔记，替代以前的本地 SVN 存自己文档的笔记存储方式。但是同时有好几个待选的产品。传统的方式是，等你慢慢全部体验完后，再加所有的感受放一起比较，然后痛苦的选择着，这样到你真正使用云笔记已经过去一个多月了。而同时你考虑到将会使用云笔记，本地文档需要更新时，你就以此为借口推迟了，或许重要的更新就那么忘了。 </p>
-<p>迭代的方式就是先选一个，把以前本地 SVN 里的文档导入进去，先把这个用起来。边用边体验当前的云以及别的云。过段时间后你就完全知道自己该要什么了，而同时没有耽误你的文档更新。并且你对中意的云的操作已经很娴熟了。 </p>
-<p>再如，要重新整理笔记目录部分。一会整理一点，下次有空了再整理些。在这种迭代中，还能发现之前的想法的问题，可以重构。 </p>
-<p>Done is better than perfect.</p>
+		<h2 id="预编译头"><a href="#预编译头" class="headerlink" title="预编译头"></a>预编译头</h2><p>当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） </p>
+<h2 id="CMake-设置-GCC-的预编译头"><a href="#CMake-设置-GCC-的预编译头" class="headerlink" title="CMake 设置 GCC 的预编译头"></a>CMake 设置 GCC 的预编译头</h2><p>一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 </p>
+<p>后来找到 cotire，目前使用良好。 </p>
+<h2 id="cotire（compile-time-reducer）"><a href="#cotire（compile-time-reducer）" class="headerlink" title="cotire（compile time reducer）"></a>cotire（compile time reducer）</h2><p>项目地址<code>https://github.com/sakra/cotire</code>。具体使用方式 GitHub 里对应项目主页已经写的很清楚了（主页 man 看不明白的可以去看他的 src 里那个例子），这里只做下快捷备忘。 </p>
+<p>步骤： </p>
+<ul>
+<li>clone 这个 Git。 </li>
+<li>将 cotire 里的 CMake/cotire.cmake 文件拷到咱们自己工程的顶层 CMakeLists.txt 文件同级目录下。 </li>
+<li><p>往这个顶层 CMakeLists.txt 里设置一个变量并 include： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set (CMAKE_MODULE_PATH &quot;$&#123;CMAKE_SOURCE_DIR&#125;/CMake&quot;) </span><br><span class="line">include(cotire)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在具体的 CMakeLists.txt 的 <code>add_executable</code> 后边再 cotire 下，如： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add_executable(MyExecutable $&#123;MyExecutableSources&#125;)</span><br><span class="line">target_link_libraries(MyExecutable $&#123;MyExecutableLibraries&#125;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上边是自动寻找预编译头，也可以自己设置，例如我们从 VC 跨平台过来的项目，显示设置 stdafx.h，只用在 cotire 前边设置下即可： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set_target_properties(MyExecutable PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT &quot;stdafx.h&quot;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -109,7 +125,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/效率-协作-管理/">效率&协作&管理</a>
+  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
 </div>
 
 
@@ -119,7 +135,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2012/12/02/12-everything-should-iterate/" data-title="快速迭代无处不在 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -133,18 +149,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2012/12/20/12-research-redis/" title="Redis 调研">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  Redis 调研</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2012/11/19/12-blog-purpose/"  title="我的技术博客初衷">
+<a href="/2013/04/15/13-ssh-visit-github/"  title="SSH 免密码访问 Git 服务器 Bitbucket/GitHub">
  <strong>下一篇：</strong><br/> 
- <span>我的技术博客初衷
+ <span>SSH 免密码访问 Git 服务器 Bitbucket/GitHub
 </span>
 </a>
 </div>
@@ -153,7 +169,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2012/12/02/12-everything-should-iterate/" data-title="快速迭代无处不在" data-url="http://blog.clawz.me/2012/12/02/12-everything-should-iterate/"></div>
+	<div class="ds-thread" data-thread-key="2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头" data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/"></div>
 </section>
 
 
@@ -163,7 +179,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
  
   </div>
 
