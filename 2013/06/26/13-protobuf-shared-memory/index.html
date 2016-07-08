@@ -4,32 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>IncrediBuild 编译问题 | 三疯的技术博客</title>
+    <title>Protobuf 与 Shared Memory | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="自己工作机在 VC 点 IncrediBuild 编译时总是显示 fail to create process，周围同事却都没问题。这里记下解决的过程。 
-fail to create process这个错误提示，第一反应就是用户没权限，查看了用户之后，提示这个用户就是管理员。后来各种倒腾都无果。 
-权限的问题一时没解决，想别的办法…… 
-试出一个办法：点开任务栏右下角的 IncrediBuild">
+    <meta name="description" content="项目里 Shared Memory 存放的数据结构，现在需要将其同时用于 Server 与 Client 之间的相应数据交互。Server 与 Client 之前的协议格式为 Protobuf。 
+为了只维护一份代码，准备将之前用于 Shared Memory 的结构转化为 Protobuf，然后两处都用这个 Protobuf。 
+搞了一会儿，才想起 Shared Memory 里只适合存定长的非">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IncrediBuild 编译问题">
-<meta property="og:url" content="http://blog.clawz.me/2013/06/25/13-incredibuild-problem/index.html">
+<meta property="og:title" content="Protobuf 与 Shared Memory">
+<meta property="og:url" content="http://blog.clawz.me/2013/06/26/13-protobuf-shared-memory/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="自己工作机在 VC 点 IncrediBuild 编译时总是显示 fail to create process，周围同事却都没问题。这里记下解决的过程。 
-fail to create process这个错误提示，第一反应就是用户没权限，查看了用户之后，提示这个用户就是管理员。后来各种倒腾都无果。 
-权限的问题一时没解决，想别的办法…… 
-试出一个办法：点开任务栏右下角的 IncrediBuild">
-<meta property="og:updated_time" content="2016-07-08T10:29:57.000Z">
+<meta property="og:description" content="项目里 Shared Memory 存放的数据结构，现在需要将其同时用于 Server 与 Client 之间的相应数据交互。Server 与 Client 之前的协议格式为 Protobuf。 
+为了只维护一份代码，准备将之前用于 Shared Memory 的结构转化为 Protobuf，然后两处都用这个 Protobuf。 
+搞了一会儿，才想起 Shared Memory 里只适合存定长的非">
+<meta property="og:updated_time" content="2016-07-08T11:19:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IncrediBuild 编译问题">
-<meta name="twitter:description" content="自己工作机在 VC 点 IncrediBuild 编译时总是显示 fail to create process，周围同事却都没问题。这里记下解决的过程。 
-fail to create process这个错误提示，第一反应就是用户没权限，查看了用户之后，提示这个用户就是管理员。后来各种倒腾都无果。 
-权限的问题一时没解决，想别的办法…… 
-试出一个办法：点开任务栏右下角的 IncrediBuild">
+<meta name="twitter:title" content="Protobuf 与 Shared Memory">
+<meta name="twitter:description" content="项目里 Shared Memory 存放的数据结构，现在需要将其同时用于 Server 与 Client 之间的相应数据交互。Server 与 Client 之前的协议格式为 Protobuf。 
+为了只维护一份代码，准备将之前用于 Shared Memory 的结构转化为 Protobuf，然后两处都用这个 Protobuf。 
+搞了一会儿，才想起 Shared Memory 里只适合存定长的非">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -80,14 +77,14 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/06/25/13-incredibuild-problem/" title="IncrediBuild 编译问题" itemprop="url">IncrediBuild 编译问题</a>
+      <a href="/2013/06/26/13-protobuf-shared-memory/" title="Protobuf 与 Shared Memory" itemprop="url">Protobuf 与 Shared Memory</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-06-25T04:53:00.000Z" itemprop="datePublished"> 发表于 2013-06-25</time>
+    <time datetime="2013-06-25T16:03:00.000Z" itemprop="datePublished"> 发表于 2013-06-26</time>
     
   </p>
 </header>
@@ -96,24 +93,19 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fail-to-create-process"><span class="toc-number">1.</span> <span class="toc-text">fail to create process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他问题"><span class="toc-number">2.</span> <span class="toc-text">其他问题</span></a></li></ol>
+			
 		
 		</div>
 		
-		<p>自己工作机在 VC 点 IncrediBuild 编译时总是显示 <code>fail to create process</code>，周围同事却都没问题。这里记下解决的过程。 </p>
-<h2 id="fail-to-create-process"><a href="#fail-to-create-process" class="headerlink" title="fail to create process"></a>fail to create process</h2><p>这个错误提示，第一反应就是用户没权限，查看了用户之后，提示这个用户就是管理员。后来各种倒腾都无果。 </p>
-<p>权限的问题一时没解决，想别的办法…… </p>
-<p>试出一个办法：点开任务栏右下角的 IncrediBuild Agent，右键选择 Build->open 后打开的 <code>Batch Build</code> 里编译是完全没有问题的，没有那个创建进程失败的问题。 </p>
-<p>所以想，是不是因为 VC 的插件运行时的编译配置有问题，而在 Agent 独立进程里的 <code>Batch Build</code> 里的编译配置比较纯净（例如不用搞那个 CMake 之类的检查）。 </p>
-<p>于是找到 Agent 开启 <code>Batch Build</code> 时的进程为 BatchFile.exe，但是在自己写的bat 里单独启动 BatchFile，启动后弹出 <code>Batch Build</code>，选择编译后却也还是创建不了进程错误。 </p>
-<p>偶然在 VC 的工具栏的 IncrediBuild 选项里也发现了 <code>Batch Build</code> 选项，弹出的 <code>Batch Build</code> 也是不能创建线程。再次扫兴。 </p>
-<p>所以想，是不是因为做为 VC 的插件和 bat 里启动运行时没有创建进程的权限。而在 Agent 独立进程里运行时能拿到权限？ </p>
-<p>最后某此搜什么东西，憋见一个说法，“右键菜单Win7管理员身份运行”。如果就特么搞定了。  </p>
-<p>解决办法大概是：Win7 启动 VC 时以管理员身份运行，程序鼠标右键有那个选项。另外也可以看看快捷方式里设置。之后从 VC 里 load 你的项目。更方便的是将你的 VC 程序，打开属性的兼容性标签，特权等级里勾上以管理员身份运行此程序。（设置之后我在 TotalCommand 里不能直接双击启动 <code>**.sln</code>，只好右键选择 VC 来启动） </p>
-<p>随后想是不是 TotalCommand 里起的进程没管理员权限，后来试了试不是这样的…… </p>
-<p>总结，我的 Win7 用户不是真宗的管理员，虽然控制面板里提示了是！ </p>
-<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>有时编译完后不能自动 <code>stop build</code>，还得手动点。 </p>
-<p>这个看看进程管理器里好多僵死的 build 相关进程，全干掉。 </p>
+		<p>项目里 Shared Memory 存放的数据结构，现在需要将其同时用于 Server 与 Client 之间的相应数据交互。Server 与 Client 之前的协议格式为 Protobuf。 </p>
+<p>为了只维护一份代码，准备将之前用于 Shared Memory 的结构转化为 Protobuf，然后两处都用这个 Protobuf。 </p>
+<p>搞了一会儿，才想起 Shared Memory 里只适合存定长的非指针结构。 </p>
+<p>汗，这个几年前就经历过，那个时候是学生时代做五子棋世界的时候，貌似是想往 Shared Memory 里存放 <code>std::map</code>。 </p>
+<p>当时水平太低，报错了就放弃了 STL 的容器，写些了中规中矩的结构体。 </p>
+<p>这次就顺便搜下当年那个问题的解决方法。找到个说的挺好的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.cnblogs.com/fullsail/archive/2013/01/20/2868898.html</span><br></pre></td></tr></table></figure></p>
+<p>大意就是，STL 里容器会动态分配内存，而且 new 的东西在自己的进程空间里，别的进程访问时必然是个不对的指针。需要将 STL 的分配器定制为从共享内存里分配空间，或者其他几个链接里提到的方法。 </p>
+<p>回到我现在遇到的 Protobuf 这个问题，Protobuf 里有些如 repeated 或者 string 等会动态 new，这个如果做内存分配的定制，还得重改 Protobuf 的代码，复杂度比较高。 </p>
+<p>加上项目里的这单个协议格式制定的需求只是临时的，就更没必要了。最终放弃 Protobuf 结构直接映射到共享内存的企图。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -121,7 +113,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
+  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
 </div>
 
 
@@ -131,7 +123,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/06/25/13-incredibuild-problem/" data-title="IncrediBuild 编译问题 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/06/26/13-protobuf-shared-memory/" data-title="Protobuf 与 Shared Memory | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -145,18 +137,18 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/06/26/13-protobuf-shared-memory/" title="Protobuf 与 Shared Memory">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  Protobuf 与 Shared Memory</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/06/21/13-debug-server-hang/"  title="调试：客户端某个流程后 Server 卡住">
+<a href="/2013/06/25/13-incredibuild-problem/"  title="IncrediBuild 编译问题">
  <strong>下一篇：</strong><br/> 
- <span>调试：客户端某个流程后 Server 卡住
+ <span>IncrediBuild 编译问题
 </span>
 </a>
 </div>
@@ -165,7 +157,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/06/25/13-incredibuild-problem/" data-title="IncrediBuild 编译问题" data-url="http://blog.clawz.me/2013/06/25/13-incredibuild-problem/"></div>
+	<div class="ds-thread" data-thread-key="2013/06/26/13-protobuf-shared-memory/" data-title="Protobuf 与 Shared Memory" data-url="http://blog.clawz.me/2013/06/26/13-protobuf-shared-memory/"></div>
 </section>
 
 
@@ -175,7 +167,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fail-to-create-process"><span class="toc-number">1.</span> <span class="toc-text">fail to create process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他问题"><span class="toc-number">2.</span> <span class="toc-text">其他问题</span></a></li></ol>
+ 
  
   </div>
 
