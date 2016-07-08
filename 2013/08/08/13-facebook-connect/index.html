@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>想对运营的同学们说的 | 三疯的技术博客</title>
+    <title>Facebook 接入 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="在统计线上反馈群里喷的一些事情没有针对个人的意思。我们的出发点是提醒大家多自己分析是否问题，然后使出九牛二虎之力也无解（这样也能锻炼你们分心问题的能力），我们再出马，毕竟咱们开发资源有限，没有专门的客服支持。 
-大家应该还记得当初只有我的时候，BI的很多需求是排在很久之后才能解决的，立刻解决的只有特别急的（例如大壮急了派玉男“恐吓”我事件，还是历历在目啊）。现在我们人多了，但是公司给我们部门定的目">
+    <meta name="description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
+如果为前端接入，需要封装出 JS 的接口。 
+接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
 <meta property="og:type" content="article">
-<meta property="og:title" content="想对运营的同学们说的">
-<meta property="og:url" content="http://blog.clawz.me/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/index.html">
+<meta property="og:title" content="Facebook 接入">
+<meta property="og:url" content="http://blog.clawz.me/2013/08/08/13-facebook-connect/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="在统计线上反馈群里喷的一些事情没有针对个人的意思。我们的出发点是提醒大家多自己分析是否问题，然后使出九牛二虎之力也无解（这样也能锻炼你们分心问题的能力），我们再出马，毕竟咱们开发资源有限，没有专门的客服支持。 
-大家应该还记得当初只有我的时候，BI的很多需求是排在很久之后才能解决的，立刻解决的只有特别急的（例如大壮急了派玉男“恐吓”我事件，还是历历在目啊）。现在我们人多了，但是公司给我们部门定的目">
-<meta property="og:updated_time" content="2016-06-26T10:44:39.000Z">
+<meta property="og:description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
+如果为前端接入，需要封装出 JS 的接口。 
+接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
+<meta property="og:updated_time" content="2016-07-08T11:37:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="想对运营的同学们说的">
-<meta name="twitter:description" content="在统计线上反馈群里喷的一些事情没有针对个人的意思。我们的出发点是提醒大家多自己分析是否问题，然后使出九牛二虎之力也无解（这样也能锻炼你们分心问题的能力），我们再出马，毕竟咱们开发资源有限，没有专门的客服支持。 
-大家应该还记得当初只有我的时候，BI的很多需求是排在很久之后才能解决的，立刻解决的只有特别急的（例如大壮急了派玉男“恐吓”我事件，还是历历在目啊）。现在我们人多了，但是公司给我们部门定的目">
+<meta name="twitter:title" content="Facebook 接入">
+<meta name="twitter:description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
+如果为前端接入，需要封装出 JS 的接口。 
+接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/" title="想对运营的同学们说的" itemprop="url">想对运营的同学们说的</a>
+      <a href="/2013/08/08/13-facebook-connect/" title="Facebook 接入" itemprop="url">Facebook 接入</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-25T15:00:00.000Z" itemprop="datePublished"> 发表于 2015-06-25</time>
+    <time datetime="2013-08-08T04:53:00.000Z" itemprop="datePublished"> 发表于 2013-08-08</time>
     
   </p>
 </header>
@@ -90,18 +93,23 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接入方式"><span class="toc-number">2.</span> <span class="toc-text">接入方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#server-side-接入"><span class="toc-number">2.1.</span> <span class="toc-text">server-side 接入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#client-side-接入"><span class="toc-number">2.2.</span> <span class="toc-text">client-side 接入</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<p>在统计线上反馈群里喷的一些事情没有针对个人的意思。我们的出发点是提醒大家多自己分析是否问题，然后使出九牛二虎之力也无解（这样也能锻炼你们分心问题的能力），我们再出马，毕竟咱们开发资源有限，没有专门的客服支持。 </p>
-<p>大家应该还记得当初只有我的时候，BI的很多需求是排在很久之后才能解决的，立刻解决的只有特别急的（例如大壮急了派玉男“恐吓”我事件，还是历历在目啊）。现在我们人多了，但是公司给我们部门定的目标从来没有小过，我们不只是支持BI，还有很多系统需要我们去做。 </p>
-<p>大家把当时只有做BI的情景，想象到现在虽然人多了几个，但是我们的目标是要做跟多的系统服务大家。  </p>
-<p>然后我个人有个缺点，有时候开个玩笑缓解下气氛，但是玩笑不明显。这个我老婆也批评我了（跟她开玩笑她都不一定能识别）。目测改变的可能性很小。以前运营团队的人我基本都认识，开个玩笑大家能看出来，现在运营团队人多了，好些人我也不认识了。以后我会注意下（不过情商的锻炼是艰难的）。 </p>
-<p>每当你们来问题的时候，我们会总结，是否可以搞个页面让你们方便的搞定你们的问题。以后你们大家碰到问题之后也可以试试这个思路：这个问题，如果平台技术系统组那边提供什么工具，我自己就能确认问题。（当然我们会评估可行性，多讨论几个回合，大家也能知道我们能实现什么，不能实现什么了） </p>
-<p>然后这种需求过来了，不管大小，我们是很乐意的，即使会排期，最终只要有空我们就会实现。给用户提供便利是我们做产品的技术人的价值。 </p>
-<p>我对系统组的要求：平时实现不了的东西，尽量通俗的解释下。很锻炼表达能力，也能提高兄弟部门的技术感觉。 </p>
-<p>我们准备维护一个常见问题分析思路及示例的页面（例如今天的当日注册用户付费额与首充金额的区别）。我们先出内容，展示方面到时看大家的用的时候再完善。 </p>
+		<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 </p>
+<p>如果为前端接入，需要封装出 JS 的接口。 </p>
+<h2 id="接入方式"><a href="#接入方式" class="headerlink" title="接入方式"></a>接入方式</h2><p>需求里涉及到了玩家间的利益交互，如这里的可以向好友送礼。需要确认游戏里这些利益交互（现在的利益可能较弱，但需要考虑将来的利益交互规划）被外挂刷后是否对游戏有影响。 </p>
+<p>如果影响较大，例如刷了很多物品，让游戏失去平衡——RPG 里可能是装备特牛，休闲游戏可能是道具很多，更有利于冲击排行榜等。就需要将 Facebook 的接入方式定为 server-side 接入。如果影响较小，就无所谓，可以像单机游戏那样在前端做接入，Facebook 的好友信息等由前端传到我们服务器。 </p>
+<h3 id="server-side-接入"><a href="#server-side-接入" class="headerlink" title="server-side 接入"></a>server-side 接入</h3><p>官方的 <a href="https://developers.facebook.com/docs/sdks/" target="_blank" rel="external">https://developers.facebook.com/docs/sdks/</a> 里收录的第三方 Node.js 的 SDK 在 <a href="https://github.com/amachang/facebook-node-sdk。" target="_blank" rel="external">https://github.com/amachang/facebook-node-sdk。</a> </p>
+<p>这种是 Node.js 开的本地网站，然后本地网站可以开个网址做 Facebook 的接入验证，之后取玩家的 Facebook 信息，可以调封装好的 Facebook API。效果可以开代理看下 <a href="http://claw-fb-off.herokuapp.com。" target="_blank" rel="external">http://claw-fb-off.herokuapp.com。</a> </p>
+<p>但是不知我们服务器的 Node.js 和前端 App 的 JS 之间是否支持这种网页式的交互。咨询了 Node.js 框架组的同学，表示不行，我自己没做过这方面的东西，所以还是要请游戏组同学看看。 </p>
+<p>另外咨询了众多项目组，做过接入的都是前端接入，还没有做过 server-side 接入的。 </p>
+<h3 id="client-side-接入"><a href="#client-side-接入" class="headerlink" title="client-side 接入"></a>client-side 接入</h3><ul>
+<li>官方提供 Native iOS 和 Android API 的 SDK。 </li>
+<li>另外也提供 JavaScript SDK（<a href="https://developers.facebook.com/docs/reference/javascript/），貌似也是网页形式，不知我们前端是否支持？" target="_blank" rel="external">https://developers.facebook.com/docs/reference/javascript/），貌似也是网页形式，不知我们前端是否支持？</a> </li>
+<li>EziSocial-Plugin 为 C++ 编写，但是这个是收费的，游戏组确认要用吗？   </li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -109,7 +117,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/效率-协作-管理/">效率&协作&管理</a>
+  <a class="article-category-link" href="/categories/Node-js/">Node.js</a>
 </div>
 
 
@@ -119,7 +127,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/" data-title="想对运营的同学们说的 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/08/08/13-facebook-connect/" data-title="Facebook 接入 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -133,18 +141,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" title="你是在修补错误的东西吗">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  你是在修补错误的东西吗</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/06/18/zuo-shi-di-yi/"  title="喜闻乐见的队友素质——做事第一">
+<a href="/2013/07/17/13-lazy-cook/"  title="懒人厨房">
  <strong>下一篇：</strong><br/> 
- <span>喜闻乐见的队友素质——做事第一
+ <span>懒人厨房
 </span>
 </a>
 </div>
@@ -153,7 +161,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/" data-title="想对运营的同学们说的" data-url="http://blog.clawz.me/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/"></div>
+	<div class="ds-thread" data-thread-key="2013/08/08/13-facebook-connect/" data-title="Facebook 接入" data-url="http://blog.clawz.me/2013/08/08/13-facebook-connect/"></div>
 </section>
 
 
@@ -163,7 +171,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接入方式"><span class="toc-number">2.</span> <span class="toc-text">接入方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#server-side-接入"><span class="toc-number">2.1.</span> <span class="toc-text">server-side 接入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#client-side-接入"><span class="toc-number">2.2.</span> <span class="toc-text">client-side 接入</span></a></li></ol></li></ol>
  
   </div>
 
