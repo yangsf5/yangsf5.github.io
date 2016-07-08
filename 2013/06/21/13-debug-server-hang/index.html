@@ -4,29 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>EAGAIN 误会 TCP_NODELAY | 三疯的技术博客</title>
+    <title>调试：客户端某个流程后 Server 卡住 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
-一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
-很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
+    <meta name="description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
+VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EAGAIN 误会 TCP_NODELAY">
-<meta property="og:url" content="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/index.html">
+<meta property="og:title" content="调试：客户端某个流程后 Server 卡住">
+<meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-debug-server-hang/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
-一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
-很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
-<meta property="og:updated_time" content="2016-07-03T05:51:29.000Z">
+<meta property="og:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
+VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
+<meta property="og:updated_time" content="2016-07-08T10:19:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EAGAIN 误会 TCP_NODELAY">
-<meta name="twitter:description" content="尽管 TCP 客户端设置 TCP_NODELAY，服务器仍须读到 EAGAIN 才算完成一个 EPOLLIN 事件。
-一开始以为客户端设置了 TCP_NODELAY 选项就表示每一次发包都会触发新事件，测试结果不是这样的。
-很容易理解，TCP_NODELAY 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。">
+<meta name="twitter:title" content="调试：客户端某个流程后 Server 卡住">
+<meta name="twitter:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
+VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2009/04/30/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY" itemprop="url">EAGAIN 误会 TCP_NODELAY</a>
+      <a href="/2013/06/21/13-debug-server-hang/" title="调试：客户端某个流程后 Server 卡住" itemprop="url">调试：客户端某个流程后 Server 卡住</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2009-04-30T03:30:00.000Z" itemprop="datePublished"> 发表于 2009-04-30</time>
+    <time datetime="2013-06-21T04:40:00.000Z" itemprop="datePublished"> 发表于 2013-06-21</time>
     
   </p>
 </header>
@@ -97,9 +94,12 @@
 		
 		</div>
 		
-		<p>尽管 TCP 客户端设置 <code>TCP_NODELAY</code>，服务器仍须读到 <code>EAGAIN</code> 才算完成一个 <code>EPOLLIN</code> 事件。</p>
-<p>一开始以为客户端设置了 <code>TCP_NODELAY</code> 选项就表示每一次发包都会触发新事件，测试结果不是这样的。</p>
-<p>很容易理解，<code>TCP_NODELAY</code> 只是不让底层拼包。而服务器端的底层接收到数据仍然是来了就放入接收缓冲区，而 epoll 只管应用层。</p>
+		<p>单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。</p>
+<p>VS 自身带的 <code>/GS</code> 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，Linux 平台的编译还没时间解决，内存统一检查就作罢。</p>
+<p>开始看看能不能查 dump。dump 不是原生的 dmp 而是历史代码里重存为别的了。VC 调试不很熟练，就索性把重存 dump 那块儿的 catch 给干掉了。直接让编译器崩到代码块儿再看看能不能看出什么问题。</p>
+<p>崩停到具体代码行了，很惊喜，赶紧看看各变量内存状况，问题数组是一个指针数组，这次惊喜的发现之前单步的那个下标对应在数组元素指针跟别的不一样，为 <code>0xcdcdcdcd</code>，确认了下为 VC 下为未初始化的指针。</p>
+<p>这样就好查了，问题定位到了，后边的就不啰嗦了。</p>
+<p>最终问题是，同事给一个类新加了几个指针成员，但是这几个没有 new 出来初始化之。唉……只能感叹下敏捷开发那本书里说的，架构师要参加编码，我觉得要加点儿，就是架构师要参与编码还要参与测试调试自己的代码。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -107,7 +107,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/网络编程/">网络编程</a>
+  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
 </div>
 
 
@@ -117,7 +117,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -131,18 +131,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2012/09/19/12-as3-readbytes/" title="注意 ByteArray.readBytes 函数的 length 参数">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  注意 ByteArray.readBytes 函数的 length 参数</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2009/03/12/09-epoll-event-test/"  title="epoll 的各个事件触发条件测试">
+<a href="/2013/06/21/13-vc-debug-while/"  title="调试 Server 初始化时卡在某个点">
  <strong>下一篇：</strong><br/> 
- <span>epoll 的各个事件触发条件测试
+ <span>调试 Server 初始化时卡在某个点
 </span>
 </a>
 </div>
@@ -151,7 +151,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2009/04/30/09-tcp-nodelay-also-eagain/" data-title="EAGAIN 误会 TCP_NODELAY" data-url="http://blog.clawz.me/2009/04/30/09-tcp-nodelay-also-eagain/"></div>
+	<div class="ds-thread" data-thread-key="2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住" data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/"></div>
 </section>
 
 

@@ -256,17 +256,16 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/06/21/13-vc-debug-while/" title="调试 Server 初始化时卡在某个点" itemprop="url">
+    <a href="/2013/06/21/13-debug-server-hang/" title="调试：客户端某个流程后 Server 卡住" itemprop="url">
   
-    <h1 itemprop="name">调试 Server 初始化时卡在某个点</h1>
+    <h1 itemprop="name">调试：客户端某个流程后 Server 卡住</h1>
     
      
-           <p itemprop="description" >VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下</p>
+           <p itemprop="description" >单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
+VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用</p>
         
     
-    <time datetime="2013-06-21T04:38:00.000Z" itemprop="datePublished">2013-06-21</time>
+    <time datetime="2013-06-21T04:40:00.000Z" itemprop="datePublished">2013-06-21</time>
   </a>
 </section>
 
@@ -297,7 +296,7 @@
 		  
 		
 		  
-			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>6</sup></a></li>
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>7</sup></a></li>
 		  
 		
 		  
