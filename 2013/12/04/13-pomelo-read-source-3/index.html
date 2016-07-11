@@ -4,32 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客</title>
+    <title>Pomelo 源码分析（3）-pomelo-sync | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
+    <meta name="description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
+Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CMake 用 cotire 设置 GCC 的预编译头">
-<meta property="og:url" content="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/index.html">
+<meta property="og:title" content="Pomelo 源码分析（3）-pomelo-sync">
+<meta property="og:url" content="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
-<meta property="og:updated_time" content="2016-07-08T09:45:28.000Z">
+<meta property="og:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
+Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
+<meta property="og:updated_time" content="2016-07-11T12:10:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CMake 用 cotire 设置 GCC 的预编译头">
-<meta name="twitter:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
+<meta name="twitter:title" content="Pomelo 源码分析（3）-pomelo-sync">
+<meta name="twitter:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
+Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -80,14 +74,14 @@ cotire（compile time reducer）项目地址https:/">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/04/23/13-cmake-gcc-precompile/" title="CMake 用 cotire 设置 GCC 的预编译头" itemprop="url">CMake 用 cotire 设置 GCC 的预编译头</a>
+      <a href="/2013/12/04/13-pomelo-read-source-3/" title="Pomelo 源码分析（3）-pomelo-sync" itemprop="url">Pomelo 源码分析（3）-pomelo-sync</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-04-23T06:10:00.000Z" itemprop="datePublished"> 发表于 2013-04-23</time>
+    <time datetime="2013-12-04T06:28:00.000Z" itemprop="datePublished"> 发表于 2013-12-04</time>
     
   </p>
 </header>
@@ -96,28 +90,18 @@ cotire（compile time reducer）项目地址https:/">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pomelo-程序如何使用-pomelo-sync"><span class="toc-number">1.</span> <span class="toc-text">Pomelo 程序如何使用 pomelo-sync</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pomelo-sync"><span class="toc-number">2.</span> <span class="toc-text">pomelo-sync</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-exec"><span class="toc-number">2.1.</span> <span class="toc-text">pomelo-sync.exec</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-flush"><span class="toc-number">2.2.</span> <span class="toc-text">pomelo-sync.flush</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-sync"><span class="toc-number">2.3.</span> <span class="toc-text">pomelo-sync.sync</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<h2 id="预编译头"><a href="#预编译头" class="headerlink" title="预编译头"></a>预编译头</h2><p>当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） </p>
-<h2 id="CMake-设置-GCC-的预编译头"><a href="#CMake-设置-GCC-的预编译头" class="headerlink" title="CMake 设置 GCC 的预编译头"></a>CMake 设置 GCC 的预编译头</h2><p>一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 </p>
-<p>后来找到 cotire，目前使用良好。 </p>
-<h2 id="cotire（compile-time-reducer）"><a href="#cotire（compile-time-reducer）" class="headerlink" title="cotire（compile time reducer）"></a>cotire（compile time reducer）</h2><p>项目地址<code>https://github.com/sakra/cotire</code>。具体使用方式 GitHub 里对应项目主页已经写的很清楚了（主页 man 看不明白的可以去看他的 src 里那个例子），这里只做下快捷备忘。 </p>
-<p>步骤： </p>
-<ul>
-<li>clone 这个 Git。 </li>
-<li>将 cotire 里的 CMake/cotire.cmake 文件拷到咱们自己工程的顶层 CMakeLists.txt 文件同级目录下。 </li>
-<li><p>往这个顶层 CMakeLists.txt 里设置一个变量并 include： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set (CMAKE_MODULE_PATH &quot;$&#123;CMAKE_SOURCE_DIR&#125;/CMake&quot;) </span><br><span class="line">include(cotire)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在具体的 CMakeLists.txt 的 <code>add_executable</code> 后边再 cotire 下，如： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add_executable(MyExecutable $&#123;MyExecutableSources&#125;)</span><br><span class="line">target_link_libraries(MyExecutable $&#123;MyExecutableLibraries&#125;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>上边是自动寻找预编译头，也可以自己设置，例如我们从 VC 跨平台过来的项目，显示设置 stdafx.h，只用在 cotire 前边设置下即可： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set_target_properties(MyExecutable PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT &quot;stdafx.h&quot;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+		<p>现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 </p>
+<h2 id="Pomelo-程序如何使用-pomelo-sync"><a href="#Pomelo-程序如何使用-pomelo-sync" class="headerlink" title="Pomelo 程序如何使用 pomelo-sync"></a>Pomelo 程序如何使用 pomelo-sync</h2><p>新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 <code>app.use(plugin, opts)</code> 就可以了，具体请看 Pomelo 的 application.js 里的 <code>use</code> 函数。需要这个 plugin 里有 components 成员。<code>use</code> 函数里，Pomelo 将 plugin 的 componets 所指的组件 load 起来，并将 opts 传给这个 plugin 的 components。 </p>
+<p>pomelo-sync 自身只负责实现 DB 数据与内存数据间的定时同步，所以另一个项目pomelo-sync-plugin 就将 pomelo-sync 封装成了一个 componet。<code>app.use(require(&#39;pomelo-sync-plugin&#39;, opts)</code> 就完成了数据同步插件的装载。 </p>
+<h2 id="pomelo-sync"><a href="#pomelo-sync" class="headerlink" title="pomelo-sync"></a>pomelo-sync</h2><p>pomelo-sync 在构造的时候，将参数里的 client（与持久化层的链接）、mapping（如各种操作的 SQL 语句的映射表）等赋值给自己的相应成员。最后开启定时刷内存数据到持久化层的计时器 SyncTimer。 </p>
+<p>对外接口不只在 dbsync.js 里，还分布在 lib/commands 下的几个文件里。其中 <code>exec/flush/sync</code> 等在 commands/server.js 里。 </p>
+<h3 id="pomelo-sync-exec"><a href="#pomelo-sync-exec" class="headerlink" title="pomelo-sync.exec"></a>pomelo-sync.exec</h3><p>pomelo-sync.exec 函数，被用户程序调用。将用户的数据放入 <code>pomelo-sync.flushQueue</code> 或者 <code>pomelo-sync.mergerMap</code>。 </p>
+<h3 id="pomelo-sync-flush"><a href="#pomelo-sync-flush" class="headerlink" title="pomelo-sync.flush"></a>pomelo-sync.flush</h3><p><code>pomelo-sync.flush</code> 函数，将单挑数据立即持久化。 </p>
+<h3 id="pomelo-sync-sync"><a href="#pomelo-sync-sync" class="headerlink" title="pomelo-sync.sync"></a>pomelo-sync.sync</h3><p><code>pomelo-sync.sync</code> 函数，被 SyncTimer 调用，也可以被用户程序调用，立即将全部内存数据持久化。<code>sync</code> 函数里调用的是 rewriter.js 里的 <code>sync</code>。<code>rewriter.sync</code> 里将 <code>pomelo-sync.flushQueue</code> 和 <code>pomelo-sync.mergerMap</code> 里的数据通过 <code>rewrite.tick</code> 刷进持久层。<code>rewriter.tick</code> 里是通过 <code>pomelo-sync.mapping</code> 里的映射调对应的 SQL 语句来实现的。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -125,7 +109,7 @@ cotire（compile time reducer）项目地址https:/">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/源码分析/">源码分析</a>
 </div>
 
 
@@ -135,7 +119,7 @@ cotire（compile time reducer）项目地址https:/">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/" data-title="Pomelo 源码分析（3）-pomelo-sync | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -149,18 +133,18 @@ cotire（compile time reducer）项目地址https:/">
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/04/25/13-x-cpp-server/" title="X 项目 C++ 服务器（1）- 总体构想">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  X 项目 C++ 服务器（1）- 总体构想</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/04/15/13-ssh-visit-github/"  title="SSH 免密码访问 Git 服务器 Bitbucket/GitHub">
+<a href="/2013/11/26/13-few-tool-debug/"  title="软硬件工具诡异事件集锦">
  <strong>下一篇：</strong><br/> 
- <span>SSH 免密码访问 Git 服务器 Bitbucket/GitHub
+ <span>软硬件工具诡异事件集锦
 </span>
 </a>
 </div>
@@ -169,7 +153,7 @@ cotire（compile time reducer）项目地址https:/">
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头" data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/"></div>
+	<div class="ds-thread" data-thread-key="2013/12/04/13-pomelo-read-source-3/" data-title="Pomelo 源码分析（3）-pomelo-sync" data-url="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/"></div>
 </section>
 
 
@@ -179,7 +163,7 @@ cotire（compile time reducer）项目地址https:/">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pomelo-程序如何使用-pomelo-sync"><span class="toc-number">1.</span> <span class="toc-text">Pomelo 程序如何使用 pomelo-sync</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pomelo-sync"><span class="toc-number">2.</span> <span class="toc-text">pomelo-sync</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-exec"><span class="toc-number">2.1.</span> <span class="toc-text">pomelo-sync.exec</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-flush"><span class="toc-number">2.2.</span> <span class="toc-text">pomelo-sync.flush</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pomelo-sync-sync"><span class="toc-number">2.3.</span> <span class="toc-text">pomelo-sync.sync</span></a></li></ol></li></ol>
  
   </div>
 
