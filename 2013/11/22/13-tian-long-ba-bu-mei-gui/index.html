@@ -4,26 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>调试：客户端某个流程后 Server 卡住 | 三疯的技术博客</title>
+    <title>天龙商店玫瑰与经济稳定 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
+    <meta name="description" content="几年前在天龙时，让我很感叹的策划案是，商城的玫瑰道具，玩家可以花元宝买，然后再把玫瑰扔商店得金币，这样维护游戏内的经济稳定。今天又跟现在公司的同事提到这个，为了思路清晰点，再以博客的形式来边仔细想想。 
+如果游戏内没有元宝兑换金币的官方途径，玩家最便捷的获取金币的方式，是充值获得元宝，然后拿元宝去找别的玩家交易换取金币。金币的供应量会影响元宝与金币兑换比例。假设元宝与金币兑换比例的正常平均值为 1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调试：客户端某个流程后 Server 卡住">
-<meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-debug-server-hang/index.html">
+<meta property="og:title" content="天龙商店玫瑰与经济稳定">
+<meta property="og:url" content="http://blog.clawz.me/2013/11/22/13-tian-long-ba-bu-mei-gui/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
-<meta property="og:updated_time" content="2016-07-08T10:19:49.000Z">
+<meta property="og:description" content="几年前在天龙时，让我很感叹的策划案是，商城的玫瑰道具，玩家可以花元宝买，然后再把玫瑰扔商店得金币，这样维护游戏内的经济稳定。今天又跟现在公司的同事提到这个，为了思路清晰点，再以博客的形式来边仔细想想。 
+如果游戏内没有元宝兑换金币的官方途径，玩家最便捷的获取金币的方式，是充值获得元宝，然后拿元宝去找别的玩家交易换取金币。金币的供应量会影响元宝与金币兑换比例。假设元宝与金币兑换比例的正常平均值为 1">
+<meta property="og:updated_time" content="2016-07-11T11:51:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调试：客户端某个流程后 Server 卡住">
-<meta name="twitter:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
+<meta name="twitter:title" content="天龙商店玫瑰与经济稳定">
+<meta name="twitter:description" content="几年前在天龙时，让我很感叹的策划案是，商城的玫瑰道具，玩家可以花元宝买，然后再把玫瑰扔商店得金币，这样维护游戏内的经济稳定。今天又跟现在公司的同事提到这个，为了思路清晰点，再以博客的形式来边仔细想想。 
+如果游戏内没有元宝兑换金币的官方途径，玩家最便捷的获取金币的方式，是充值获得元宝，然后拿元宝去找别的玩家交易换取金币。金币的供应量会影响元宝与金币兑换比例。假设元宝与金币兑换比例的正常平均值为 1">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +74,14 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/06/21/13-debug-server-hang/" title="调试：客户端某个流程后 Server 卡住" itemprop="url">调试：客户端某个流程后 Server 卡住</a>
+      <a href="/2013/11/22/13-tian-long-ba-bu-mei-gui/" title="天龙商店玫瑰与经济稳定" itemprop="url">天龙商店玫瑰与经济稳定</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-06-21T04:40:00.000Z" itemprop="datePublished"> 发表于 2013-06-21</time>
+    <time datetime="2013-11-22T07:08:00.000Z" itemprop="datePublished"> 发表于 2013-11-22</time>
     
   </p>
 </header>
@@ -94,12 +94,14 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 		
 		</div>
 		
-		<p>单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。</p>
-<p>VS 自身带的 <code>/GS</code> 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，Linux 平台的编译还没时间解决，内存统一检查就作罢。</p>
-<p>开始看看能不能查 dump。dump 不是原生的 dmp 而是历史代码里重存为别的了。VC 调试不很熟练，就索性把重存 dump 那块儿的 catch 给干掉了。直接让编译器崩到代码块儿再看看能不能看出什么问题。</p>
-<p>崩停到具体代码行了，很惊喜，赶紧看看各变量内存状况，问题数组是一个指针数组，这次惊喜的发现之前单步的那个下标对应在数组元素指针跟别的不一样，为 <code>0xcdcdcdcd</code>，确认了下为 VC 下为未初始化的指针。</p>
-<p>这样就好查了，问题定位到了，后边的就不啰嗦了。</p>
-<p>最终问题是，同事给一个类新加了几个指针成员，但是这几个没有 new 出来初始化之。唉……只能感叹下敏捷开发那本书里说的，架构师要参加编码，我觉得要加点儿，就是架构师要参与编码还要参与测试调试自己的代码。</p>
+		<p>几年前在天龙时，让我很感叹的策划案是，商城的玫瑰道具，玩家可以花元宝买，然后再把玫瑰扔商店得金币，这样维护游戏内的经济稳定。今天又跟现在公司的同事提到这个，为了思路清晰点，再以博客的形式来边仔细想想。 </p>
+<p>如果游戏内没有元宝兑换金币的官方途径，玩家最便捷的获取金币的方式，是充值获得元宝，然后拿元宝去找别的玩家交易换取金币。金币的供应量会影响元宝与金币兑换比例。假设元宝与金币兑换比例的正常平均值为 100:50，当服务器内金币流动量很小时，例如新服时，兑换比例为 100:30；而突然涌入很多刷金工作室，金币供应量变很大，兑换比例变为 100:100，这时金币贬值。 </p>
+<p>玩家简单分为两种，RMB 玩家和非 RMB 玩家。RMB 玩家的需求是，自己的 RMB 换的元宝买的金币能实现自己的一些装备之类的大提升，就是购买力要强。非 RMB 玩家（这里指不用外挂，不利用游戏漏洞，正常打金币的玩家）的需求是，自己辛苦赚的金币能多换些元宝。 </p>
+<p>当刷金工作室进入游戏后，金币的产生变大了。如果工作室的金币都供应流动起来，金币就贬值了。非 RMB 玩家利益严重受损，产生挫败感。如果工作室垄断金币市场，金币甚至升值，RMB 玩家利益受损。 </p>
+<p>这里讨论在打击外挂和打击工作室之外的手段来稳定经济系统。金币流动量突然变大，系统方面可能考虑的是金币的掉落和任务奖励的调低等。反之变少时，提高掉落和任务奖励。或者另一个途径调整道具的价格。这都挺麻烦的。 </p>
+<p>现在可以通过玫瑰道具的买卖，来间接进行元宝与金币互兑的后。游戏内玩家间交易的金币升值，要兑换金币的玩家就选择去元宝商店兑换金币。使交易的汇率比商店的稍低。这保证了金币的价格不会高过设定值，从而保证了 RMB 玩家的利益。 </p>
+<p>如果交易的金币贬值了呢？也可以说元宝升值了呢？非 RMB 玩家需要花更多的钱买同样的元宝。貌似玫瑰花这个道具对这种情况没有什么抑制作用。那到这里的结论是，玫瑰道具只是抑制了金币升值/元宝贬值这个单方面的经济失衡问题。 </p>
+<p>暂时只想这么多，以后有空再补充。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -107,7 +109,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/产品设计/">产品设计</a>
 </div>
 
 
@@ -117,7 +119,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/11/22/13-tian-long-ba-bu-mei-gui/" data-title="天龙商店玫瑰与经济稳定 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -131,18 +133,18 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/06/25/13-incredibuild-problem/" title="IncrediBuild 编译问题">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  IncrediBuild 编译问题</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/06/21/13-vc-debug-while/"  title="调试 Server 初始化时卡在某个点">
+<a href="/2013/11/07/13-top-source/"  title="top 里显示的 CPU 百分比计算方式">
  <strong>下一篇：</strong><br/> 
- <span>调试 Server 初始化时卡在某个点
+ <span>top 里显示的 CPU 百分比计算方式
 </span>
 </a>
 </div>
@@ -151,7 +153,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住" data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/"></div>
+	<div class="ds-thread" data-thread-key="2013/11/22/13-tian-long-ba-bu-mei-gui/" data-title="天龙商店玫瑰与经济稳定" data-url="http://blog.clawz.me/2013/11/22/13-tian-long-ba-bu-mei-gui/"></div>
 </section>
 
 
