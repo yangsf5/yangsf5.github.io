@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>调试：客户端某个流程后 Server 卡住 | 三疯的技术博客</title>
+    <title>HTTP 与 Socket 验证的区别 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
+    <meta name="description" content="这是很基础的概念，之前没怎么弄过 HTTP。对于自己，算是做个笔记吧。 
+Socket 安全验证Socket 链接是握手之后就一直连着，所以这条链接在第一包验证之后，之后这条链接不需要再验证。“第一个包”可能描述不准确，因为有时候第一包不一定就验证，可能是做路由之类。这里就不管这种情况了，只管第一个包直接验证的情况。  
+可以理解为 Server 接受到 Client 的链接，并且验证通过（如用户">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调试：客户端某个流程后 Server 卡住">
-<meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-debug-server-hang/index.html">
+<meta property="og:title" content="HTTP 与 Socket 验证的区别">
+<meta property="og:url" content="http://blog.clawz.me/2014/01/10/14-http-socket-auth-diff/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
-<meta property="og:updated_time" content="2016-07-08T10:19:49.000Z">
+<meta property="og:description" content="这是很基础的概念，之前没怎么弄过 HTTP。对于自己，算是做个笔记吧。 
+Socket 安全验证Socket 链接是握手之后就一直连着，所以这条链接在第一包验证之后，之后这条链接不需要再验证。“第一个包”可能描述不准确，因为有时候第一包不一定就验证，可能是做路由之类。这里就不管这种情况了，只管第一个包直接验证的情况。  
+可以理解为 Server 接受到 Client 的链接，并且验证通过（如用户">
+<meta property="og:updated_time" content="2016-07-11T12:48:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调试：客户端某个流程后 Server 卡住">
-<meta name="twitter:description" content="单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。
-VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，L">
+<meta name="twitter:title" content="HTTP 与 Socket 验证的区别">
+<meta name="twitter:description" content="这是很基础的概念，之前没怎么弄过 HTTP。对于自己，算是做个笔记吧。 
+Socket 安全验证Socket 链接是握手之后就一直连着，所以这条链接在第一包验证之后，之后这条链接不需要再验证。“第一个包”可能描述不准确，因为有时候第一包不一定就验证，可能是做路由之类。这里就不管这种情况了，只管第一个包直接验证的情况。  
+可以理解为 Server 接受到 Client 的链接，并且验证通过（如用户">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/06/21/13-debug-server-hang/" title="调试：客户端某个流程后 Server 卡住" itemprop="url">调试：客户端某个流程后 Server 卡住</a>
+      <a href="/2014/01/10/14-http-socket-auth-diff/" title="HTTP 与 Socket 验证的区别" itemprop="url">HTTP 与 Socket 验证的区别</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-06-21T04:40:00.000Z" itemprop="datePublished"> 发表于 2013-06-21</time>
+    <time datetime="2014-01-10T05:53:00.000Z" itemprop="datePublished"> 发表于 2014-01-10</time>
     
   </p>
 </header>
@@ -90,16 +93,19 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket-安全验证"><span class="toc-number">1.</span> <span class="toc-text">Socket 安全验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-的安全验证"><span class="toc-number">2.</span> <span class="toc-text">HTTP 的安全验证</span></a></li></ol>
 		
 		</div>
 		
-		<p>单步到崩溃地点，有数组取数据和拷贝操作，猜测数组越界导致的栈溢出。就开始找越界检查工具。</p>
-<p>VS 自身带的 <code>/GS</code> 只是在栈溢出时蹦个异常，不会给你定位崩在哪。所以找了会儿别的工具，BoundSchecker 还没找到下的地方，IBM 的 Purify 跨平台但是收费，另外免费好用的就是 Linux 下的 Valgrind 了。这几种内存检查工具都可以检查内存泄露和越界之类的。只是项目现在赶进度，Linux 平台的编译还没时间解决，内存统一检查就作罢。</p>
-<p>开始看看能不能查 dump。dump 不是原生的 dmp 而是历史代码里重存为别的了。VC 调试不很熟练，就索性把重存 dump 那块儿的 catch 给干掉了。直接让编译器崩到代码块儿再看看能不能看出什么问题。</p>
-<p>崩停到具体代码行了，很惊喜，赶紧看看各变量内存状况，问题数组是一个指针数组，这次惊喜的发现之前单步的那个下标对应在数组元素指针跟别的不一样，为 <code>0xcdcdcdcd</code>，确认了下为 VC 下为未初始化的指针。</p>
-<p>这样就好查了，问题定位到了，后边的就不啰嗦了。</p>
-<p>最终问题是，同事给一个类新加了几个指针成员，但是这几个没有 new 出来初始化之。唉……只能感叹下敏捷开发那本书里说的，架构师要参加编码，我觉得要加点儿，就是架构师要参与编码还要参与测试调试自己的代码。</p>
+		<p>这是很基础的概念，之前没怎么弄过 HTTP。对于自己，算是做个笔记吧。 </p>
+<h2 id="Socket-安全验证"><a href="#Socket-安全验证" class="headerlink" title="Socket 安全验证"></a>Socket 安全验证</h2><p>Socket 链接是握手之后就一直连着，所以这条链接在第一包验证之后，之后这条链接不需要再验证。“第一个包”可能描述不准确，因为有时候第一包不一定就验证，可能是做路由之类。这里就不管这种情况了，只管第一个包直接验证的情况。  </p>
+<p>可以理解为 Server 接受到 Client 的链接，并且验证通过（如用户及密码对了）这个 Client 链接后。以后这个 Client 发过来的包，Server 都直接做逻辑处理而不再需要做验证链接合法性。这个信任是直到链接断开的。  </p>
+<p>如果非法客户端来模拟登陆，至少需要得到有效的 ID 及密码，这已经是密码自身安全的事情，不涉及这里谈的链接安全性。  </p>
+<p>如果非法客户端用正确的 ID 及密码登陆后，发些非法包，这里的包验证应该是服务器上包处理时的包检查及逻辑检查的事，就是通常的游戏说的防刷（包频率、包里数据的合法范围等）。 </p>
+<h2 id="HTTP-的安全验证"><a href="#HTTP-的安全验证" class="headerlink" title="HTTP 的安全验证"></a>HTTP 的安全验证</h2><p>这里只关心 HTTP 的短连接。  </p>
+<p>短连接就是每次建立链接-发包-断开。同一 Client 的前后两次发到 Server 的包，也相当于独立的两次，同一 Client 的验证就需要每个 HTTP 请求都要验证下。于是有了 Session 和 Cookie。Cookie 是将 Client 的标识放在 Client 端，常用于 Server 没有账户密码验证的方式。这里不讨论 Cookie。  </p>
+<p>Server 在第一个 HTTP 请求验证 Client 后，给他分配一个 Session。这个 Session 简单的可以理解为 Server 和 Client 约定的一个 Client 凭证（有有效期）。之后 Client 在每个请求里加上这个 Session 里规定的值，例如一个合适长度的随机字符串。  </p>
+<p>这里的 Session 不能有让恶意用户很容易破解的规律，例如用户的 ID 之类的。所以上边提到随机字符串之类的。     </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -107,7 +113,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/网络编程/">网络编程</a>
 </div>
 
 
@@ -117,7 +123,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/01/10/14-http-socket-auth-diff/" data-title="HTTP 与 Socket 验证的区别 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -131,18 +137,18 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/06/25/13-incredibuild-problem/" title="IncrediBuild 编译问题">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  IncrediBuild 编译问题</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/06/21/13-vc-debug-while/"  title="调试 Server 初始化时卡在某个点">
+<a href="/2013/12/16/13-game-cluster-design-detail-5/"  title="集群实现细节（5）-登陆流程修改">
  <strong>下一篇：</strong><br/> 
- <span>调试 Server 初始化时卡在某个点
+ <span>集群实现细节（5）-登陆流程修改
 </span>
 </a>
 </div>
@@ -151,7 +157,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/06/21/13-debug-server-hang/" data-title="调试：客户端某个流程后 Server 卡住" data-url="http://blog.clawz.me/2013/06/21/13-debug-server-hang/"></div>
+	<div class="ds-thread" data-thread-key="2014/01/10/14-http-socket-auth-diff/" data-title="HTTP 与 Socket 验证的区别" data-url="http://blog.clawz.me/2014/01/10/14-http-socket-auth-diff/"></div>
 </section>
 
 
@@ -161,7 +167,7 @@ VS 自身带的 /GS 只是在栈溢出时蹦个异常，不会给你定位崩在
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket-安全验证"><span class="toc-number">1.</span> <span class="toc-text">Socket 安全验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-的安全验证"><span class="toc-number">2.</span> <span class="toc-text">HTTP 的安全验证</span></a></li></ol>
  
   </div>
 

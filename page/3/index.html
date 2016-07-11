@@ -69,6 +69,26 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
+    <a href="/2013/12/16/13-game-cluster-design-detail-5/" title="集群实现细节（5）-登陆流程修改" itemprop="url">
+  
+    <h1 itemprop="name">集群实现细节（5）-登陆流程修改</h1>
+    
+     
+           <p itemprop="description" >回顾之前的登陆流程在这篇里。之前的登陆流程简述：（1）先检查是否同服已登陆，是则两个链接都踢掉，否则进入下步；（2）判断是否异服已登陆，是则告诉异服踢老链接，随后踢自己这的新链接。否则进入下步；（3）当前服务器登陆相关流程走完后，向玩家在线列表汇报（写入这个玩家登陆的服务器 ID</p>
+        
+    
+    <time datetime="2013-12-16T02:44:00.000Z" itemprop="datePublished">2013-12-16</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
     <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">
   
     <h1 itemprop="name">集群实现细节（4）-冷热数据划分及同步</h1>
@@ -256,27 +276,6 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 
 
 
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2013/10/19/13-game-cluster-design-detail-2/" title="集群实现细节（2）-玩家在线状态续" itemprop="url">
-  
-    <h1 itemprop="name">集群实现细节（2）-玩家在线状态续</h1>
-    
-     
-           <p itemprop="description" >玩家离线由于离线的状况多，常见的玩家自己拿自己的账号的离线，也有自己的账号在多个设备来挤掉线，还有就是被非法的人使用时的挤掉线。这里应该将玩家理解为一个账号，下边尽量用账号来表述。 
-网络断开或者主动离开游戏这时玩家所在的服务器在玩家 net.close 时加入向通信 Redis</p>
-        
-    
-    <time datetime="2013-10-19T01:41:00.000Z" itemprop="datePublished">2013-10-19</time>
-  </a>
-</section>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix unexpand">
     <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
@@ -357,7 +356,7 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 		  
 		
 		  
-			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>2</sup></a></li>
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
 		  
 		
 		  
