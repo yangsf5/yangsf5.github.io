@@ -4,26 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>公司内部图书馆试运行 | 三疯的技术博客</title>
+    <title>开始学习 Common Lisp | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
+    <meta name="description" content="为何想学 Lisp最初了解 Lisp 是从《黑客与画家》里，里边的黑客强烈推荐程序员用 Lisp，并有部分讲《为什么 Lisp 语言如此先进？》，书是阮一峰翻译的，这节在他的博客也有节选： http://www.ruanyifeng.com/blog/2010/10/why_lisp_is_superior.html
+总结一下： 
+
+越近代的语言越像 Lisp；而当前最新潮的语言也只是实现了 Li">
 <meta property="og:type" content="article">
-<meta property="og:title" content="公司内部图书馆试运行">
-<meta property="og:url" content="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/index.html">
+<meta property="og:title" content="开始学习 Common Lisp">
+<meta property="og:url" content="http://blog.clawz.me/2013/09/15/13-common-lisp/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
-<meta property="og:updated_time" content="2016-06-26T10:43:58.000Z">
+<meta property="og:description" content="为何想学 Lisp最初了解 Lisp 是从《黑客与画家》里，里边的黑客强烈推荐程序员用 Lisp，并有部分讲《为什么 Lisp 语言如此先进？》，书是阮一峰翻译的，这节在他的博客也有节选： http://www.ruanyifeng.com/blog/2010/10/why_lisp_is_superior.html
+总结一下： 
+
+越近代的语言越像 Lisp；而当前最新潮的语言也只是实现了 Li">
+<meta property="og:updated_time" content="2016-07-11T07:36:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="公司内部图书馆试运行">
-<meta name="twitter:description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
+<meta name="twitter:title" content="开始学习 Common Lisp">
+<meta name="twitter:description" content="为何想学 Lisp最初了解 Lisp 是从《黑客与画家》里，里边的黑客强烈推荐程序员用 Lisp，并有部分讲《为什么 Lisp 语言如此先进？》，书是阮一峰翻译的，这节在他的博客也有节选： http://www.ruanyifeng.com/blog/2010/10/why_lisp_is_superior.html
+总结一下： 
+
+越近代的语言越像 Lisp；而当前最新潮的语言也只是实现了 Li">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" title="公司内部图书馆试运行" itemprop="url">公司内部图书馆试运行</a>
+      <a href="/2013/09/15/13-common-lisp/" title="开始学习 Common Lisp" itemprop="url">开始学习 Common Lisp</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-29T14:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-29</time>
+    <time datetime="2013-09-15T03:25:00.000Z" itemprop="datePublished"> 发表于 2013-09-15</time>
     
   </p>
 </header>
@@ -90,17 +96,43 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何想学-Lisp"><span class="toc-number">1.</span> <span class="toc-text">为何想学 Lisp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学习过程中"><span class="toc-number">2.</span> <span class="toc-text">学习过程中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我了解-Common-Lisp-一些资料"><span class="toc-number">3.</span> <span class="toc-text">我了解 Common Lisp 一些资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附上这段时间了解的函数式语言个人简介"><span class="toc-number">4.</span> <span class="toc-text">附上这段时间了解的函数式语言个人简介</span></a></li></ol>
 		
 		</div>
 		
-		<p>之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 </p>
-<p>初步想法是，前期优先是计算机方面的，以后再考虑其他方面的。每个月有个经费额度，具体额度需要 VP 拍板。经费额度要适中，目的在控制书的质量，要买经典书，不买垃圾，如很多国内垃圾入门书。经典书的判定，由各技术部门的核心骨干组成的技术经典书籍鉴定小组来做审核。 </p>
-<p>书的购买，由技术经典书籍鉴定小组审核通过后，指定的购买负责人来推动采购流程。 </p>
-<p>书的管理，实物管理可以由指定的行政部门同事来保管，借入借出的登记由平台技术部系统组提供 OA 系统支持，方便公司同事随时查看图书馆已积累了哪些书、各种书的状态等。 </p>
-<p>借书周期，可以先定一个月，太厚的可以定久一点。之后到期要归还，然后重新排队。 </p>
-<p>目前已经购入图书馆的处女书《代码大全 2》，我自己先看着，哈哈。刚看了 50 多页，这书太经典了，努力推动图书馆建设的心也更坚定了。 </p>
-<p>VP 担心图书馆会流于形式这个问题，据观察，可能是公司处于快速发展期，大家工作非常忙，没什么时间看书。但是这个应该没什么问题，有追求的人，再忙也会花时间去学习的。退一万步讲，都没追求的话，我至少要逼着我部门的同事看看《代码大全 2》这种经典书，写阅读心得。：） </p>
+		<h2 id="为何想学-Lisp"><a href="#为何想学-Lisp" class="headerlink" title="为何想学 Lisp"></a>为何想学 Lisp</h2><p>最初了解 Lisp 是从《黑客与画家》里，里边的黑客强烈推荐程序员用 Lisp，并有部分讲《为什么 Lisp 语言如此先进？》，书是阮一峰翻译的，这节在他的博客也有节选： <code>http://www.ruanyifeng.com/blog/2010/10/why_lisp_is_superior.html</code></p>
+<p>总结一下： </p>
+<ul>
+<li>越近代的语言越像 Lisp；而当前最新潮的语言也只是实现了 Lisp 作者在 1958 年的设想，因为 Lisp 设计目的是数学理论演算而不是语言这种本质上的一种技术。技术会过时而数学不。今天最高级的主流语言，也只是刚刚接近 Lisp 的水平。虽然已经接近，但还是没有 Lisp 那么强大。 </li>
+<li>等等，其他不一一摘抄。 </li>
+<li>其中一点提到，“一行 Lisp 代码相当于 20 行 C 代码”。Lisp会缩短开发周期，而且还是 C 能做 Lisp 所有事情的前提下。文中举例说，如果你用其他语言跟别人 Lisp 语言的公司竞争，同样的功能你就比别人慢很久才能开发完，竞争就出于劣势。 </li>
+</ul>
+<p>其他在网络上看到的 Lisp 相关言论： </p>
+<ul>
+<li>起名为“格林斯潘第十定律”（Greenspun’s Tenth Rule）：“任何 C 或 Fortran 程序复杂到一定程度之后，都会包含一个临时开发的、只有一半功能的、不完全符合规格的、到处都是 Bug 的、运行速度很慢的 Common Lisp 实现。” </li>
+</ul>
+<h2 id="学习过程中"><a href="#学习过程中" class="headerlink" title="学习过程中"></a>学习过程中</h2><p>另外还有个原因，最近想了解函数式编程，想了解下支持分布式原语的 Erlang，先学哪个还是纠结了下的。 后来考虑到新到的项目中想设计成分布式扩展方便的服务器架构，就优先学下 Erlang。先花几天把《Erlang 程序设计》给看完了，看的很激动，但是考虑到项目人员现状及将来的维护，项目没用 Erlang，用了 Node.js。 </p>
+<p>之后又花几天把许式伟他们写的《Go 语言编程》看完了。Go 语言确实不错，以后可以考虑用这个写个游戏服务器引擎什么的。本想立即就开动，但是项目属于开始搭架子阶段，需要思考的时间挺多，回家可以利用的时间不多，专心写开源项目不现实。 </p>
+<p>于是回家的时间先学 Common Lisp（以下简称 CL），现在正在看田春翻译的《实用 Common Lisp 编程》，看到 <code>12.6 映射</code>。 </p>
+<p>CL 很多东西跟类 C 的语言差别就比较大了，看的进度还是挺慢的。看着看着，一边惊叹他强大的表现力，一边有点害怕太庞大，以后实用起来不顺利。 </p>
+<p>如果找份 CL 的工作，国内大小公司估计都不大好找。除非能在一个高手云集的团队里，大家又都喜欢 CL，而且我们有话语权…… </p>
+<p>所以将来 CL 在为了更好的思考编程之外，很可能只是用来写些脚本或者自己的玩具什么的。近期的应用可能是生成 JavaScript 代码。 </p>
+<p>等 CL 学的不错了，可以做些个人项目的快速开发…… </p>
+<h2 id="我了解-Common-Lisp-一些资料"><a href="#我了解-Common-Lisp-一些资料" class="headerlink" title="我了解 Common Lisp 一些资料"></a>我了解 Common Lisp 一些资料</h2><p>建议一下书籍，按阅读顺序（在知乎看到的，别的地方推荐也大同小异）：</p>
+<ul>
+<li>《Structure and Interpretation of Computer Programs》（SICP）可以启发思想，尤其是函数式编程入门；</li>
+<li>《Practical Common Lisp》和《Land of Lisp》也适合初学者；</li>
+<li>《On Lisp》主要讨论 macro 的使用；</li>
+<li><p>《Let over Lambda》在《On Lisp》基础上更深入讨论宏。 </p>
+<p>《On Lisp》和《Practical Common Lisp》（中译为《实用 Common Lisp 编程》） 由田春翻译完成。我个人先买了 SICP，但是里边是讲 Scheme，看了几节怕到时学 Lisp 会混乱，就转先实用 Lisp 这本了。 </p>
+</li>
+</ul>
+<p>另外我用的实现是 Steel Bank Common Lisp。 </p>
+<h2 id="附上这段时间了解的函数式语言个人简介"><a href="#附上这段时间了解的函数式语言个人简介" class="headerlink" title="附上这段时间了解的函数式语言个人简介"></a>附上这段时间了解的函数式语言个人简介</h2><p>这条自己的理解，纯粹为了自己做个笔记。 </p>
+<p>Haskell 貌似比较新，应用不多，别说是分布式，就是普通应用也不多。Haskell 是纯函数式。而 Lisp 不是纯的，还可以以别的方式来编程。 </p>
+<p>Erlang 倒是主打分布式。Erlang 内置了多台机器之间的通讯原语，程序员只用关心业务逻辑就可以了。 </p>
+<p>Lisp 主要是一种全新的看待软件开发的视角。 </p>
+<p>Go也支持闭包。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -108,7 +140,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/效率-协作-管理/">效率&协作&管理</a>
+  <a class="article-category-link" href="/categories/Lisp/">Lisp</a>
 </div>
 
 
@@ -118,7 +150,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" data-title="公司内部图书馆试运行 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/09/15/13-common-lisp/" data-title="开始学习 Common Lisp | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -132,18 +164,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2014/11/15/macbook-qian-yi-shu-ju-da-zhe-teng/" title="MacBook 换新之迁移数据大折腾">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  MacBook 换新之迁移数据大折腾</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/10/13/jin-qi-php-mysql-you-hua/"  title="近期对 PHP 与 MySQL 相关的优化">
+<a href="/2013/09/05/13-pomelo-read-source-2/"  title="Pomelo 0.5.5 源码分析（2）-通信">
  <strong>下一篇：</strong><br/> 
- <span>近期对 PHP 与 MySQL 相关的优化
+ <span>Pomelo 0.5.5 源码分析（2）-通信
 </span>
 </a>
 </div>
@@ -152,7 +184,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" data-title="公司内部图书馆试运行" data-url="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/"></div>
+	<div class="ds-thread" data-thread-key="2013/09/15/13-common-lisp/" data-title="开始学习 Common Lisp" data-url="http://blog.clawz.me/2013/09/15/13-common-lisp/"></div>
 </section>
 
 
@@ -162,7 +194,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何想学-Lisp"><span class="toc-number">1.</span> <span class="toc-text">为何想学 Lisp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学习过程中"><span class="toc-number">2.</span> <span class="toc-text">学习过程中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我了解-Common-Lisp-一些资料"><span class="toc-number">3.</span> <span class="toc-text">我了解 Common Lisp 一些资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附上这段时间了解的函数式语言个人简介"><span class="toc-number">4.</span> <span class="toc-text">附上这段时间了解的函数式语言个人简介</span></a></li></ol>
  
   </div>
 
