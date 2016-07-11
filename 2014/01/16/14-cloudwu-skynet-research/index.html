@@ -1,0 +1,498 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>了解云风的 skynet | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="开始应用《暗时间》里提到的理论，将 skynet 用自己的话来总结并写下来，这样能充分思考并转述为自己的记忆线索。
+skynet 设计的理解单个 skynet 节点（1）愿景充分利用多核。最初想法是多进程。像咱们 Node.js 里多核就只能是多进程了，因为每个 Node.js 进程是单线程的。  
+多进程是遵循 UNIX 设计哲学，工具链形式，分拆进程的形式来分拆模块，减少复杂度和耦合性，方便编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="了解云风的 skynet">
+<meta property="og:url" content="http://blog.clawz.me/2014/01/16/14-cloudwu-skynet-research/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="开始应用《暗时间》里提到的理论，将 skynet 用自己的话来总结并写下来，这样能充分思考并转述为自己的记忆线索。
+skynet 设计的理解单个 skynet 节点（1）愿景充分利用多核。最初想法是多进程。像咱们 Node.js 里多核就只能是多进程了，因为每个 Node.js 进程是单线程的。  
+多进程是遵循 UNIX 设计哲学，工具链形式，分拆进程的形式来分拆模块，减少复杂度和耦合性，方便编">
+<meta property="og:updated_time" content="2016-07-11T13:02:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="了解云风的 skynet">
+<meta name="twitter:description" content="开始应用《暗时间》里提到的理论，将 skynet 用自己的话来总结并写下来，这样能充分思考并转述为自己的记忆线索。
+skynet 设计的理解单个 skynet 节点（1）愿景充分利用多核。最初想法是多进程。像咱们 Node.js 里多核就只能是多进程了，因为每个 Node.js 进程是单线程的。  
+多进程是遵循 UNIX 设计哲学，工具链形式，分拆进程的形式来分拆模块，减少复杂度和耦合性，方便编">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/01/16/14-cloudwu-skynet-research/" title="了解云风的 skynet" itemprop="url">了解云风的 skynet</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2014-01-16T03:25:00.000Z" itemprop="datePublished"> 发表于 2014-01-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#skynet-设计的理解"><span class="toc-number">1.</span> <span class="toc-text">skynet 设计的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单个-skynet-节点"><span class="toc-number">1.1.</span> <span class="toc-text">单个 skynet 节点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）愿景"><span class="toc-number">1.1.1.</span> <span class="toc-text">（1）愿景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）核心功能（门房？）"><span class="toc-number">1.1.2.</span> <span class="toc-text">（2）核心功能（门房？）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）核心不解决什么问题"><span class="toc-number">1.1.3.</span> <span class="toc-text">（3）核心不解决什么问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）skynet-运行时逻辑流"><span class="toc-number">1.1.4.</span> <span class="toc-text">（4）skynet 运行时逻辑流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（5）消息调度"><span class="toc-number">1.1.5.</span> <span class="toc-text">（5）消息调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（6）gate-和-connection"><span class="toc-number">1.1.6.</span> <span class="toc-text">（6）gate 和 connection</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#skynet集群"><span class="toc-number">1.2.</span> <span class="toc-text">skynet集群</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）集群间通信"><span class="toc-number">1.2.1.</span> <span class="toc-text">（1）集群间通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）组播"><span class="toc-number">1.2.2.</span> <span class="toc-text">（2）组播</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<p>开始应用《暗时间》里提到的理论，将 skynet 用自己的话来总结并写下来，这样能充分思考并转述为自己的记忆线索。</p>
+<h2 id="skynet-设计的理解"><a href="#skynet-设计的理解" class="headerlink" title="skynet 设计的理解"></a>skynet 设计的理解</h2><h3 id="单个-skynet-节点"><a href="#单个-skynet-节点" class="headerlink" title="单个 skynet 节点"></a>单个 skynet 节点</h3><h4 id="（1）愿景"><a href="#（1）愿景" class="headerlink" title="（1）愿景"></a>（1）愿景</h4><p>充分利用多核。最初想法是多进程。像咱们 Node.js 里多核就只能是多进程了，因为每个 Node.js 进程是单线程的。  </p>
+<p>多进程是遵循 UNIX 设计哲学，工具链形式，分拆进程的形式来分拆模块，减少复杂度和耦合性，方便编程及维护。  </p>
+<p>后来云风他们发现 Lua 做为嵌入式脚本，写逻辑时很好用的，反正如何都要用 Lua，而且 Lua 提供了沙盒，这样多进程可以变为单进程多个沙盒，这样综合了多进程和单进程多线程的优势。多线程里共享资源，在同一进程地址空间，访问更高效。  </p>
+<h4 id="（2）核心功能（门房？）"><a href="#（2）核心功能（门房？）" class="headerlink" title="（2）核心功能（门房？）"></a>（2）核心功能（门房？）</h4><p>很精简，仅解决一个问题。 </p>
+<p>skynet 里不实现具体游戏逻辑，后者些放到一个一个动态库里（.so 文件）。skynet 将这些 .so 注册到自己里边，每个 .so 一个永不重复的 ID，类似于数据库的 <code>AUTO_INCREMENT</code>。看描述这个 ID 是 skynet 自己运行时当次维护的，而不是模块配置好终身的 ID。模块的永久有效唯一标示为名字，skynet 提供了名字服务，可以给每个模块取一个易读的名字。  </p>
+<h4 id="（3）核心不解决什么问题"><a href="#（3）核心不解决什么问题" class="headerlink" title="（3）核心不解决什么问题"></a>（3）核心不解决什么问题</h4><p>skynet 主张所有服务在同一 OS 进程协作完成。核心里就没管跨机通讯，单个服务的崩溃和重启也没管，云风表示这些应该由上层处理，他有责任暴露错误，而不是隐藏。  </p>
+<p>这个设计的原因，游戏和操作系统不一样，操作系统默认不信任任何进程，各进程崩溃什么的不应影响其他进程，所以某个进程挂了，他就安葬它，而其他进程美好的生活。单游戏是为玩家服务的，某个环节出错都有可能造成玩家利益混乱，所以那里错了就整个流程（服务器）挂掉吧。没有必要让出错模块被隔离开，而其他模块却继续提供服务导出未预知行为。  </p>
+<p>上边说的东西应该上层考虑，使用 Lua 的沙盒就能做策略隔离。  </p>
+<h4 id="（4）skynet-运行时逻辑流"><a href="#（4）skynet-运行时逻辑流" class="headerlink" title="（4）skynet 运行时逻辑流"></a>（4）skynet 运行时逻辑流</h4><p>skynet 负责且只负责将一个数据包从一个服务发送到同一进程的另一个服务里。发送服务直接调发送 API，skynet 收到数据包后，调用接受者服务的注册的 Callback，即发给了接受者服务。  </p>
+<p>skynet 保证在各模块初始化时、每个独立的 Callback 调用时，都是相互线程安全的。这样编写服务的人就不需要考虑多线程的任何问题了，只需专心处理给他的一个个数据包。 </p>
+<p>天龙八部的场景 Lua 有点像这里的单个服务。不知天龙的跨线程切场景情况在这里也可以给简化为单线程？（回头看源码再研究这个问题）  </p>
+<h4 id="（5）消息调度"><a href="#（5）消息调度" class="headerlink" title="（5）消息调度"></a>（5）消息调度</h4><p>TODO   </p>
+<h4 id="（6）gate-和-connection"><a href="#（6）gate-和-connection" class="headerlink" title="（6）gate 和 connection"></a>（6）gate 和 connection</h4><p>TODO   </p>
+<h3 id="skynet集群"><a href="#skynet集群" class="headerlink" title="skynet集群"></a>skynet集群</h3><p>集群里最多支持 255 个 skynet 节点，每个 skynet 节点有一个 ID，成为 harbor ID。这个 ID 是集群层面指定，可以人为分配，也可以由一个中央服务器协调分配。 </p>
+<h4 id="（1）集群间通信"><a href="#（1）集群间通信" class="headerlink" title="（1）集群间通信"></a>（1）集群间通信</h4><p>skynet 核心层纸负责在往外发消息时在 source 字段上加上自己的 harbor ID。而集群间的通信，是由单独的 harbor 服务来做的。skynet 将是往集群其他节点发的消息，就转发到 harbor 内。harbor 会跟集群内跟自己结识的 skynet 的 harbor 简历 TCP 链接。harbor 把消息发给目标 harbor。  </p>
+<p>harbor 间的通信为单向的 TCP 管道。  </p>
+<p>master 服务来同步全局的名字服务。每个 skynet 都会知道其他节点上装配了哪些服务，好路由过去。  </p>
+<h4 id="（2）组播"><a href="#（2）组播" class="headerlink" title="（2）组播"></a>（2）组播</h4><p>TODO </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2014/01/16/14-cloudwu-skynet-research/" data-title="了解云风的 skynet | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
+  <strong>上一篇：</strong><br/>
+  <span>
+  新博客和新工作</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/01/10/14-http-socket-auth-diff/"  title="HTTP 与 Socket 验证的区别">
+ <strong>下一篇：</strong><br/> 
+ <span>HTTP 与 Socket 验证的区别
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2014/01/16/14-cloudwu-skynet-research/" data-title="了解云风的 skynet" data-url="http://blog.clawz.me/2014/01/16/14-cloudwu-skynet-research/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#skynet-设计的理解"><span class="toc-number">1.</span> <span class="toc-text">skynet 设计的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单个-skynet-节点"><span class="toc-number">1.1.</span> <span class="toc-text">单个 skynet 节点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）愿景"><span class="toc-number">1.1.1.</span> <span class="toc-text">（1）愿景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）核心功能（门房？）"><span class="toc-number">1.1.2.</span> <span class="toc-text">（2）核心功能（门房？）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）核心不解决什么问题"><span class="toc-number">1.1.3.</span> <span class="toc-text">（3）核心不解决什么问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）skynet-运行时逻辑流"><span class="toc-number">1.1.4.</span> <span class="toc-text">（4）skynet 运行时逻辑流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（5）消息调度"><span class="toc-number">1.1.5.</span> <span class="toc-text">（5）消息调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（6）gate-和-connection"><span class="toc-number">1.1.6.</span> <span class="toc-text">（6）gate 和 connection</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#skynet集群"><span class="toc-number">1.2.</span> <span class="toc-text">skynet集群</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）集群间通信"><span class="toc-number">1.2.1.</span> <span class="toc-text">（1）集群间通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）组播"><span class="toc-number">1.2.2.</span> <span class="toc-text">（2）组播</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lisp/" title="Lisp">Lisp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/产品设计/" title="产品设计">产品设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
