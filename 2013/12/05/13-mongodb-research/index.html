@@ -4,38 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>这次把“=”写成了“==” | 三疯的技术博客</title>
+    <title>了解 MongoDB | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
+    <meta name="description" content="MongoDB 为 k-v 数据库，他们存储方式为 BSON，操作接口基本都是 JSON，查询，搜索都很方便。 
+例如 MySQL 里一个表，id 和 data，data 为这条记录的数据，数据为了扩展，例如不同的记录的 data 可能包含很多字段，且字段不一定相同，以后也会有不少类型的字段。这时我把这些不确定的字段 encode 成一个 XML 或者 JSON 或者 Protobuf 之类的数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这次把“=”写成了“==”">
-<meta property="og:url" content="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/index.html">
+<meta property="og:title" content="了解 MongoDB">
+<meta property="og:url" content="http://blog.clawz.me/2013/12/05/13-mongodb-research/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
-<meta property="og:updated_time" content="2016-06-30T16:23:11.000Z">
+<meta property="og:description" content="MongoDB 为 k-v 数据库，他们存储方式为 BSON，操作接口基本都是 JSON，查询，搜索都很方便。 
+例如 MySQL 里一个表，id 和 data，data 为这条记录的数据，数据为了扩展，例如不同的记录的 data 可能包含很多字段，且字段不一定相同，以后也会有不少类型的字段。这时我把这些不确定的字段 encode 成一个 XML 或者 JSON 或者 Protobuf 之类的数据">
+<meta property="og:updated_time" content="2016-07-11T12:16:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这次把“=”写成了“==”">
-<meta name="twitter:description" content="123int op_nu;string tmp_string;op_nu == atoi(tmp_string.c_str());
-无语。
-曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把1if(a == b)
-写成了1if(a = b)
-当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把1op_nu = atoi(tmp_string.c_str());
-写成了1o">
+<meta name="twitter:title" content="了解 MongoDB">
+<meta name="twitter:description" content="MongoDB 为 k-v 数据库，他们存储方式为 BSON，操作接口基本都是 JSON，查询，搜索都很方便。 
+例如 MySQL 里一个表，id 和 data，data 为这条记录的数据，数据为了扩展，例如不同的记录的 data 可能包含很多字段，且字段不一定相同，以后也会有不少类型的字段。这时我把这些不确定的字段 encode 成一个 XML 或者 JSON 或者 Protobuf 之类的数据">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -86,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" title="这次把“=”写成了“==”" itemprop="url">这次把“=”写成了“==”</a>
+      <a href="/2013/12/05/13-mongodb-research/" title="了解 MongoDB" itemprop="url">了解 MongoDB</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2009-01-10T02:47:00.000Z" itemprop="datePublished"> 发表于 2009-01-10</time>
+    <time datetime="2013-12-05T11:07:00.000Z" itemprop="datePublished"> 发表于 2013-12-05</time>
     
   </p>
 </header>
@@ -106,13 +94,12 @@
 		
 		</div>
 		
-		<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> op_nu;</span><br><span class="line"><span class="built_in">string</span> tmp_string;</span><br><span class="line">op_nu == atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure>
-<p>无语。</p>
-<p>曾经大二时帮 cullet 同学找错，找了两个小时，最后猛然发现是他把<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a == b)</span><br></pre></td></tr></table></figure></p>
-<p>写成了<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a = b)</span><br></pre></td></tr></table></figure></p>
-<p>当时是深恶痛疾啊，没想到刚刚自己出现了个相反的常见错误，把<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op_nu = atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure></p>
-<p>写成了<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op_nu == atoi(tmp_string.c_str());</span><br></pre></td></tr></table></figure></p>
-<p>浪费了一两分钟调试。</p>
+		<p>MongoDB 为 k-v 数据库，他们存储方式为 BSON，操作接口基本都是 JSON，查询，搜索都很方便。 </p>
+<p>例如 MySQL 里一个表，id 和 data，data 为这条记录的数据，数据为了扩展，例如不同的记录的 data 可能包含很多字段，且字段不一定相同，以后也会有不少类型的字段。这时我把这些不确定的字段 encode 成一个 XML 或者 JSON 或者 Protobuf 之类的数据流存到 data 里。 </p>
+<p>这么做记录的具体数据关联的详细数据扩展很灵活了。但是想搜索 data 里的各字段时，在 MySQL 数据库里就不那么方便了，基本要遍历。 </p>
+<p>这个时候将这个 data 备份一份到 MongoDB 里，就很方便了。MongoDB 里的每条记录为一个 key-value，value 即存储我们上边的 data。这时我们取 data 里的字段做条件查询是 MongoDB 直接支持的。 </p>
+<p>另外 MongoDB 支持自动切热备，自动分片等高级功能…… </p>
+<p>但是另一方面，这个东西出来的不久，现在还不敢将他作为持久化的 DB。上边的例子是 MySQL 里有份数据为生产环境的依赖数据，备份到 MongoDB 的数据只是为了查询。MongoDB 里数据出问题是没关系的。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -120,7 +107,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -130,7 +117,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" data-title="这次把“=”写成了“==” | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/05/13-mongodb-research/" data-title="了解 MongoDB | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -144,18 +131,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2009/03/12/09-epoll-event-test/" title="epoll 的各个事件触发条件测试">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  epoll 的各个事件触发条件测试</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/"  title="缓冲区没有刷新">
+<a href="/2013/12/04/13-pomelo-read-source-3/"  title="Pomelo 源码分析（3）-pomelo-sync">
  <strong>下一篇：</strong><br/> 
- <span>缓冲区没有刷新
+ <span>Pomelo 源码分析（3）-pomelo-sync
 </span>
 </a>
 </div>
@@ -164,7 +151,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2009/01/10/09-fu-zhi-xie-cheng-deng-yu/" data-title="这次把“=”写成了“==”" data-url="http://blog.clawz.me/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/"></div>
+	<div class="ds-thread" data-thread-key="2013/12/05/13-mongodb-research/" data-title="了解 MongoDB" data-url="http://blog.clawz.me/2013/12/05/13-mongodb-research/"></div>
 </section>
 
 
