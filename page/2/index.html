@@ -256,15 +256,15 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">
+    <a href="/2013/12/16/13-game-cluster-design-detail-5/" title="集群实现细节（5）-登陆流程修改" itemprop="url">
   
-    <h1 itemprop="name">集群实现细节（4）-冷热数据划分及同步</h1>
+    <h1 itemprop="name">集群实现细节（5）-登陆流程修改</h1>
     
      
-           <p itemprop="description" >玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 </p>
+           <p itemprop="description" >回顾之前的登陆流程在这篇里。之前的登陆流程简述：（1）先检查是否同服已登陆，是则两个链接都踢掉，否则进入下步；（2）判断是否异服已登陆，是则告诉异服踢老链接，随后踢自己这的新链接。否则进入下步；（3）当前服务器登陆相关流程走完后，向玩家在线列表汇报（写入这个玩家登陆的服务器 ID</p>
         
     
-    <time datetime="2013-12-13T07:58:00.000Z" itemprop="datePublished">2013-12-13</time>
+    <time datetime="2013-12-16T02:44:00.000Z" itemprop="datePublished">2013-12-16</time>
   </a>
 </section>
 
@@ -275,7 +275,7 @@
 
 
   <nav id="page-nav" class="clearfix unexpand">
-    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
   </nav>
 
 </div>
@@ -341,7 +341,7 @@
 		  
 		
 		  
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>12</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>13</sup></a></li>
 		  
 		
 		  
