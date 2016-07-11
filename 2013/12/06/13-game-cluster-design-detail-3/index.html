@@ -4,32 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客</title>
+    <title>集群实现细节（3）-DB 集群 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
+    <meta name="description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
+如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
+如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CMake 用 cotire 设置 GCC 的预编译头">
-<meta property="og:url" content="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/index.html">
+<meta property="og:title" content="集群实现细节（3）-DB 集群">
+<meta property="og:url" content="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
-<meta property="og:updated_time" content="2016-07-08T09:45:28.000Z">
+<meta property="og:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
+如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
+如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
+<meta property="og:updated_time" content="2016-07-11T12:25:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CMake 用 cotire 设置 GCC 的预编译头">
-<meta name="twitter:description" content="预编译头当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） 
-CMake 设置 GCC 的预编译头一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 
-后来找到 cotire，目前使用良好。 
-cotire（compile time reducer）项目地址https:/">
+<meta name="twitter:title" content="集群实现细节（3）-DB 集群">
+<meta name="twitter:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
+如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
+如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -80,14 +77,14 @@ cotire（compile time reducer）项目地址https:/">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/04/23/13-cmake-gcc-precompile/" title="CMake 用 cotire 设置 GCC 的预编译头" itemprop="url">CMake 用 cotire 设置 GCC 的预编译头</a>
+      <a href="/2013/12/06/13-game-cluster-design-detail-3/" title="集群实现细节（3）-DB 集群" itemprop="url">集群实现细节（3）-DB 集群</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-04-23T06:10:00.000Z" itemprop="datePublished"> 发表于 2013-04-23</time>
+    <time datetime="2013-12-06T08:53:00.000Z" itemprop="datePublished"> 发表于 2013-12-06</time>
     
   </p>
 </header>
@@ -96,27 +93,28 @@ cotire（compile time reducer）项目地址https:/">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#纯-Redis-集群"><span class="toc-number">1.</span> <span class="toc-text">纯 Redis 集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-做持久化，Redis-做-Cache"><span class="toc-number">2.</span> <span class="toc-text">MySQL 做持久化，Redis 做 Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#与纯redis集群相比的劣势"><span class="toc-number">2.1.</span> <span class="toc-text">与纯redis集群相比的劣势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优势"><span class="toc-number">2.2.</span> <span class="toc-text">优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-做-Cache-热数据持久化，MySQL-做冷数据持久化"><span class="toc-number">3.</span> <span class="toc-text">Redis 做 Cache + 热数据持久化，MySQL 做冷数据持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="预编译头"><a href="#预编译头" class="headerlink" title="预编译头"></a>预编译头</h2><p>当工程大了，单机编译速度会很慢。预编译头会提高很大的速度。相关原理这里不赘述，网上很多。（或者老夫有空的时候再补充） </p>
-<h2 id="CMake-设置-GCC-的预编译头"><a href="#CMake-设置-GCC-的预编译头" class="headerlink" title="CMake 设置 GCC 的预编译头"></a>CMake 设置 GCC 的预编译头</h2><p>一开始 Google 到一个国内同行写的 CMake 宏，用了下，貌似不是很好用。另外作者也表示还是有 Bug。 </p>
-<p>后来找到 cotire，目前使用良好。 </p>
-<h2 id="cotire（compile-time-reducer）"><a href="#cotire（compile-time-reducer）" class="headerlink" title="cotire（compile time reducer）"></a>cotire（compile time reducer）</h2><p>项目地址<code>https://github.com/sakra/cotire</code>。具体使用方式 GitHub 里对应项目主页已经写的很清楚了（主页 man 看不明白的可以去看他的 src 里那个例子），这里只做下快捷备忘。 </p>
-<p>步骤： </p>
-<ul>
-<li>clone 这个 Git。 </li>
-<li>将 cotire 里的 CMake/cotire.cmake 文件拷到咱们自己工程的顶层 CMakeLists.txt 文件同级目录下。 </li>
-<li><p>往这个顶层 CMakeLists.txt 里设置一个变量并 include： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set (CMAKE_MODULE_PATH &quot;$&#123;CMAKE_SOURCE_DIR&#125;/CMake&quot;) </span><br><span class="line">include(cotire)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在具体的 CMakeLists.txt 的 <code>add_executable</code> 后边再 cotire 下，如： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add_executable(MyExecutable $&#123;MyExecutableSources&#125;)</span><br><span class="line">target_link_libraries(MyExecutable $&#123;MyExecutableLibraries&#125;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>上边是自动寻找预编译头，也可以自己设置，例如我们从 VC 跨平台过来的项目，显示设置 stdafx.h，只用在 cotire 前边设置下即可： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set_target_properties(MyExecutable PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT &quot;stdafx.h&quot;)</span><br><span class="line">cotire(MyExecutable)</span><br></pre></td></tr></table></figure>
-</li>
+		<h2 id="纯-Redis-集群"><a href="#纯-Redis-集群" class="headerlink" title="纯 Redis 集群"></a>纯 Redis 集群</h2><p>如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 </p>
+<p>如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 </p>
+<p>如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每台机器存储 77w 人。 </p>
+<p>如果每个玩家 1k 数据总约 9.5G，不算热备，需要 1 台机器。每台机器存储 1000w 人。 </p>
+<p>注册玩家会越来越多的…… </p>
+<h2 id="MySQL-做持久化，Redis-做-Cache"><a href="#MySQL-做持久化，Redis-做-Cache" class="headerlink" title="MySQL 做持久化，Redis 做 Cache"></a>MySQL 做持久化，Redis 做 Cache</h2><p>只说存储，一个 MySQL 支持几 T 数据没什么问题。例如上边 1000w 注册玩家，每个玩家 1M 数据，总数据近 9.5T，存一个 MySQL 足够。但是如果高峰在线玩家并发到 100w，需要将大部分操作规划到 Redis 这个 Cache上。否则 MySQL 仍然因磁盘 IO 太多吃不消。 </p>
+<h3 id="与纯redis集群相比的劣势"><a href="#与纯redis集群相比的劣势" class="headerlink" title="与纯redis集群相比的劣势"></a>与纯redis集群相比的劣势</h3><ul>
+<li>好友需要看离线玩家的信息，而离线玩家在 MySQL 里，如果频繁？ 把离线玩家可能被别人查看的信息不存 MySQL 了，改用 Redis 做持久化。 </li>
+<li>GM 工具改玩家消息，需要改 MySQL 和 Redis 的 Cache 里。会不会容易出问题？ </li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>Redis 只做 Cache 集群了，用 Twemproxy 管理就行了。如果 Redis 做持久化，还是需要自己来分片，且早期就要规划好。 </li>
+<li>单个玩家的数据涨到 1M 的时候，总用户涨到 2000w~3000w，再加两个 MySQL。 </li>
+</ul>
+<h2 id="Redis-做-Cache-热数据持久化，MySQL-做冷数据持久化"><a href="#Redis-做-Cache-热数据持久化，MySQL-做冷数据持久化" class="headerlink" title="Redis 做 Cache + 热数据持久化，MySQL 做冷数据持久化"></a>Redis 做 Cache + 热数据持久化，MySQL 做冷数据持久化</h2><p>这里其实就是将二里边的每个玩家的部分很热的数据从 MySQL 移到 Redis 里做持久化。但是玩家在线时，他的数据基本都算是热的。所以这个方案不是很好设计。 </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>Redis 官方关于分片的文章：<code>http://redis.io/topics/partitioning</code></li>
+<li>Twemproxy文章：<code>http://antirez.com/news/44</code></li>
 </ul>
   
 	</div>
@@ -125,7 +123,7 @@ cotire（compile time reducer）项目地址https:/">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -135,7 +133,7 @@ cotire（compile time reducer）项目地址https:/">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/" data-title="集群实现细节（3）-DB 集群 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -149,18 +147,18 @@ cotire（compile time reducer）项目地址https:/">
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/04/25/13-x-cpp-server/" title="X 项目 C++ 服务器（1）- 总体构想">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  X 项目 C++ 服务器（1）- 总体构想</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/04/15/13-ssh-visit-github/"  title="SSH 免密码访问 Git 服务器 Bitbucket/GitHub">
+<a href="/2013/12/05/13-mongodb-research/"  title="了解 MongoDB">
  <strong>下一篇：</strong><br/> 
- <span>SSH 免密码访问 Git 服务器 Bitbucket/GitHub
+ <span>了解 MongoDB
 </span>
 </a>
 </div>
@@ -169,7 +167,7 @@ cotire（compile time reducer）项目地址https:/">
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/04/23/13-cmake-gcc-precompile/" data-title="CMake 用 cotire 设置 GCC 的预编译头" data-url="http://blog.clawz.me/2013/04/23/13-cmake-gcc-precompile/"></div>
+	<div class="ds-thread" data-thread-key="2013/12/06/13-game-cluster-design-detail-3/" data-title="集群实现细节（3）-DB 集群" data-url="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/"></div>
 </section>
 
 
@@ -179,7 +177,7 @@ cotire（compile time reducer）项目地址https:/">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预编译头"><span class="toc-number">1.</span> <span class="toc-text">预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMake-设置-GCC-的预编译头"><span class="toc-number">2.</span> <span class="toc-text">CMake 设置 GCC 的预编译头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cotire（compile-time-reducer）"><span class="toc-number">3.</span> <span class="toc-text">cotire（compile time reducer）</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#纯-Redis-集群"><span class="toc-number">1.</span> <span class="toc-text">纯 Redis 集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-做持久化，Redis-做-Cache"><span class="toc-number">2.</span> <span class="toc-text">MySQL 做持久化，Redis 做 Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#与纯redis集群相比的劣势"><span class="toc-number">2.1.</span> <span class="toc-text">与纯redis集群相比的劣势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优势"><span class="toc-number">2.2.</span> <span class="toc-text">优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-做-Cache-热数据持久化，MySQL-做冷数据持久化"><span class="toc-number">3.</span> <span class="toc-text">Redis 做 Cache + 热数据持久化，MySQL 做冷数据持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 

@@ -256,16 +256,16 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/12/05/13-mongodb-research/" title="了解 MongoDB" itemprop="url">
+    <a href="/2013/12/06/13-game-cluster-design-detail-3/" title="集群实现细节（3）-DB 集群" itemprop="url">
   
-    <h1 itemprop="name">了解 MongoDB</h1>
+    <h1 itemprop="name">集群实现细节（3）-DB 集群</h1>
     
      
-           <p itemprop="description" >MongoDB 为 k-v 数据库，他们存储方式为 BSON，操作接口基本都是 JSON，查询，搜索都很方便。 
-例如 MySQL 里一个表，id 和 data，data 为这条记录的数据，数据为了扩展，例如不同的记录的 data 可能包含很多字段，且字段不一定相同，以后也会有不</p>
+           <p itemprop="description" >纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
+如果每个玩家 1M 数据，总约 9765G，不算热备，需要 81</p>
         
     
-    <time datetime="2013-12-05T11:07:00.000Z" itemprop="datePublished">2013-12-05</time>
+    <time datetime="2013-12-06T08:53:00.000Z" itemprop="datePublished">2013-12-06</time>
   </a>
 </section>
 
@@ -342,7 +342,7 @@
 		  
 		
 		  
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>10</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>11</sup></a></li>
 		  
 		
 		  
