@@ -4,53 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>X 项目 C++ 服务器（1）- 总体构想 | 三疯的技术博客</title>
+    <title>Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="简介这个项目刚起步，将来有可能会演变为公司的服务器框架。博客里暂且称呼为 X 项目。 
-语言为 C++，之后将此服务器的设计演变尽量记录下来，为一个系列，以“X 项目 C++ 服务器”为统一标题开头。 
-架构设计
-多进程通信方案：ZeroMQ 
-协议方案：Protobuf 
-存储：Redis 
-脚本：LuaPlus 
-日志：glog 
-
-自动构建部署自动构建等为敏捷开发提供保障。 
-之前经历的那些">
+    <meta name="description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
+chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
+createApp 时会调 Application.init 来做初始化。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="X 项目 C++ 服务器（1）- 总体构想">
-<meta property="og:url" content="http://blog.clawz.me/2013/04/25/13-x-cpp-server/index.html">
+<meta property="og:title" content="Pomelo 0.5.5 源码分析（1）-组件">
+<meta property="og:url" content="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="简介这个项目刚起步，将来有可能会演变为公司的服务器框架。博客里暂且称呼为 X 项目。 
-语言为 C++，之后将此服务器的设计演变尽量记录下来，为一个系列，以“X 项目 C++ 服务器”为统一标题开头。 
-架构设计
-多进程通信方案：ZeroMQ 
-协议方案：Protobuf 
-存储：Redis 
-脚本：LuaPlus 
-日志：glog 
-
-自动构建部署自动构建等为敏捷开发提供保障。 
-之前经历的那些">
-<meta property="og:updated_time" content="2016-07-08T10:00:23.000Z">
+<meta property="og:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
+chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
+createApp 时会调 Application.init 来做初始化。">
+<meta property="og:updated_time" content="2016-07-11T07:00:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="X 项目 C++ 服务器（1）- 总体构想">
-<meta name="twitter:description" content="简介这个项目刚起步，将来有可能会演变为公司的服务器框架。博客里暂且称呼为 X 项目。 
-语言为 C++，之后将此服务器的设计演变尽量记录下来，为一个系列，以“X 项目 C++ 服务器”为统一标题开头。 
-架构设计
-多进程通信方案：ZeroMQ 
-协议方案：Protobuf 
-存储：Redis 
-脚本：LuaPlus 
-日志：glog 
-
-自动构建部署自动构建等为敏捷开发提供保障。 
-之前经历的那些">
+<meta name="twitter:title" content="Pomelo 0.5.5 源码分析（1）-组件">
+<meta name="twitter:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
+chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
+createApp 时会调 Application.init 来做初始化。">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -101,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/04/25/13-x-cpp-server/" title="X 项目 C++ 服务器（1）- 总体构想" itemprop="url">X 项目 C++ 服务器（1）- 总体构想</a>
+      <a href="/2013/08/15/13-pomelo-read-source-1/" title="Pomelo 0.5.5 源码分析（1）-组件" itemprop="url">Pomelo 0.5.5 源码分析（1）-组件</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-04-25T06:52:00.000Z" itemprop="datePublished"> 发表于 2013-04-25</time>
+    <time datetime="2013-08-15T12:31:00.000Z" itemprop="datePublished"> 发表于 2013-08-15</time>
     
   </p>
 </header>
@@ -117,22 +93,35 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#架构设计"><span class="toc-number">2.</span> <span class="toc-text">架构设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动构建部署"><span class="toc-number">3.</span> <span class="toc-text">自动构建部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单测"><span class="toc-number">3.1.</span> <span class="toc-text">单测</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#chatofpomelo-的开启流程"><span class="toc-number">1.</span> <span class="toc-text">chatofpomelo 的开启流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件的挂载"><span class="toc-number">2.</span> <span class="toc-text">组件的挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">3.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附官方组件-Wiki"><span class="toc-number">3.1.</span> <span class="toc-text">附官方组件 Wiki</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这个项目刚起步，将来有可能会演变为公司的服务器框架。博客里暂且称呼为 X 项目。 </p>
-<p>语言为 C++，之后将此服务器的设计演变尽量记录下来，为一个系列，以“X 项目 C++ 服务器”为统一标题开头。 </p>
-<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><ul>
-<li>多进程通信方案：ZeroMQ </li>
-<li>协议方案：Protobuf </li>
-<li>存储：Redis </li>
-<li>脚本：LuaPlus </li>
-<li>日志：glog </li>
+		<p>由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 </p>
+<h2 id="chatofpomelo-的开启流程"><a href="#chatofpomelo-的开启流程" class="headerlink" title="chatofpomelo 的开启流程"></a>chatofpomelo 的开启流程</h2><p><code>Pomelo.createApp</code> 出来 Application，然后 <code>Application.start</code> 就开启了。 </p>
+<p><code>createApp</code> 时会调 <code>Application.init</code> 来做初始化。 </p>
+<p><code>init</code> 里调 <code>AppUtil.defaultConfiguration</code> 来读入默认配置。例如从 master.json 里读入 master 配置（Application.master），从 servers.json 里读入服务器集群各进程的 type、host 和 port 配置（可以通过 <code>Application.get(&quot;__serverMap__&quot;)</code> 获取）。 </p>
+<h2 id="组件的挂载"><a href="#组件的挂载" class="headerlink" title="组件的挂载"></a>组件的挂载</h2><p>组件放在 components 目录下。各组件可以通过 <code>Pomelo.components</code> 或者直接通过 Pomelo 来按名取。也可以通过 <code>Application.components</code> 来按名取（每个组件的名字在自己的 name 属性里，通常为 JS 文件名加前后双下划线，例如 connector.js 的组件名为 <code>__connector__</code>）。 </p>
+<p>下面看下组件的挂载和运行。</p>
+<p>Pomelo 里会遍历 componets 目录里的各个 JS 文件，然后 require 到 Pomelo 里和 <code>Pomelo.components</code> 里。 </p>
+<p><code>Application.start</code> 里先调用 <code>AppUtil.loadDefaultComponents</code>，<code>loadDefaultComponents</code> 里会根据 <code>Application.serverType</code> 来 <code>Application.load</code> 需要的 components。 </p>
+<p><code>Application.load</code> 里会将 Pomelo 里的 components 放到自己的 components 里。 </p>
+<p><code>Application.start/stop/afterStart</code> 等方法会统一执行各 components 里的对应 <code>start/stop/afterStart</code>等方法。 </p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这篇发表后，在 Google 里搜了下（我的一点恶趣味：经常发表随笔后会看看搜索引擎收录了没）<code>Pomelo 源码分析 组件</code>，发现了 Pomelo 官方 Wiki 里关于组件的说明，奇怪之前准备看组件时没搜到。分析源码之前也浏览了下官方 Wiki，应该是偏向于了解大概了，各细节没了太大印象。 </p>
+<p>不过官方已经有了也没关系，随笔给人参考的价值变小后，就当自己的笔记吧。 </p>
+<p>另外网上也有些 Pomelo 的源码分析了，但是看了眼，跟我想要的不太一样。 </p>
+<h3 id="附官方组件-Wiki"><a href="#附官方组件-Wiki" class="headerlink" title="附官方组件 Wiki"></a>附官方组件 Wiki</h3><ul>
+<li><p>Pomelo-Framework 里的组件部分：</p>
+<blockquote>
+<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-Framework" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-Framework</a>   </p>
+</blockquote>
+</li>
+<li><p>Pomelo-组件：</p>
+<blockquote>
+<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6</a>   </p>
+</blockquote>
+</li>
 </ul>
-<h2 id="自动构建部署"><a href="#自动构建部署" class="headerlink" title="自动构建部署"></a>自动构建部署</h2><p>自动构建等为敏捷开发提供保障。 </p>
-<p>之前经历的那些项目（其中包括业内比较有名的两个大型项目）在自动构建部署方面基本为 0，开发效率不高，这次新项目准备从一开始就做这方面的准备。 </p>
-<h3 id="单测"><a href="#单测" class="headerlink" title="单测"></a>单测</h3><p>单测框架考虑 Google 的 gtest。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -140,7 +129,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
+  <a class="article-category-link" href="/categories/源码分析/">源码分析</a>
 </div>
 
 
@@ -150,7 +139,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/04/25/13-x-cpp-server/" data-title="X 项目 C++ 服务器（1）- 总体构想 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -164,18 +153,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/06/21/13-vc-debug-while/" title="调试 Server 初始化时卡在某个点">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  调试 Server 初始化时卡在某个点</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/04/23/13-cmake-gcc-precompile/"  title="CMake 用 cotire 设置 GCC 的预编译头">
+<a href="/2013/08/12/13-nodejs-mobile-game-server-research/"  title="Node.js 手游服务器调研">
  <strong>下一篇：</strong><br/> 
- <span>CMake 用 cotire 设置 GCC 的预编译头
+ <span>Node.js 手游服务器调研
 </span>
 </a>
 </div>
@@ -184,7 +173,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/04/25/13-x-cpp-server/" data-title="X 项目 C++ 服务器（1）- 总体构想" data-url="http://blog.clawz.me/2013/04/25/13-x-cpp-server/"></div>
+	<div class="ds-thread" data-thread-key="2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件" data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/"></div>
 </section>
 
 
@@ -194,7 +183,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#架构设计"><span class="toc-number">2.</span> <span class="toc-text">架构设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动构建部署"><span class="toc-number">3.</span> <span class="toc-text">自动构建部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单测"><span class="toc-number">3.1.</span> <span class="toc-text">单测</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#chatofpomelo-的开启流程"><span class="toc-number">1.</span> <span class="toc-text">chatofpomelo 的开启流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件的挂载"><span class="toc-number">2.</span> <span class="toc-text">组件的挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">3.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附官方组件-Wiki"><span class="toc-number">3.1.</span> <span class="toc-text">附官方组件 Wiki</span></a></li></ol></li></ol>
  
   </div>
 
