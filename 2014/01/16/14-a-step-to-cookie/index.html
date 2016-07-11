@@ -4,35 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>调试 Server 初始化时卡在某个点 | 三疯的技术博客</title>
+    <title>Cookie 一小步 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
+    <meta name="description" content="怎么纠结上的近期在准备借鉴云风的 skynet 来完善我们的架构。这个 Cookie 研究是个插曲。 
+我这有个 HTTP Server 只做与数据库的代理接口用，同事那边有个 HTTP 的 Web Server，他的 Server 需要以 HTTP Client 身份来访问我的 Server 取数据。 
+我的 Server 用的 Node.js 写的 Express，访问流程为先去一个 path">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调试 Server 初始化时卡在某个点">
-<meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-vc-debug-while/index.html">
+<meta property="og:title" content="Cookie 一小步">
+<meta property="og:url" content="http://blog.clawz.me/2014/01/16/14-a-step-to-cookie/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
-<meta property="og:updated_time" content="2016-07-08T10:10:45.000Z">
+<meta property="og:description" content="怎么纠结上的近期在准备借鉴云风的 skynet 来完善我们的架构。这个 Cookie 研究是个插曲。 
+我这有个 HTTP Server 只做与数据库的代理接口用，同事那边有个 HTTP 的 Web Server，他的 Server 需要以 HTTP Client 身份来访问我的 Server 取数据。 
+我的 Server 用的 Node.js 写的 Express，访问流程为先去一个 path">
+<meta property="og:updated_time" content="2016-07-11T15:32:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调试 Server 初始化时卡在某个点">
-<meta name="twitter:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
+<meta name="twitter:title" content="Cookie 一小步">
+<meta name="twitter:description" content="怎么纠结上的近期在准备借鉴云风的 skynet 来完善我们的架构。这个 Cookie 研究是个插曲。 
+我这有个 HTTP Server 只做与数据库的代理接口用，同事那边有个 HTTP 的 Web Server，他的 Server 需要以 HTTP Client 身份来访问我的 Server 取数据。 
+我的 Server 用的 Node.js 写的 Express，访问流程为先去一个 path">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -83,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/06/21/13-vc-debug-while/" title="调试 Server 初始化时卡在某个点" itemprop="url">调试 Server 初始化时卡在某个点</a>
+      <a href="/2014/01/16/14-a-step-to-cookie/" title="Cookie 一小步" itemprop="url">Cookie 一小步</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-06-21T04:38:00.000Z" itemprop="datePublished"> 发表于 2013-06-21</time>
+    <time datetime="2014-01-16T03:54:00.000Z" itemprop="datePublished"> 发表于 2014-01-16</time>
     
   </p>
 </header>
@@ -99,16 +93,22 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">1.</span> <span class="toc-text">总结：</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么纠结上的"><span class="toc-number">1.</span> <span class="toc-text">怎么纠结上的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对-Cookie-的认识加深了些"><span class="toc-number">2.</span> <span class="toc-text">对 Cookie 的认识加深了些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PS"><span class="toc-number">3.</span> <span class="toc-text">PS</span></a></li></ol>
 		
 		</div>
 		
-		<p>VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。</p>
-<p>一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。</p>
-<p>慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。</p>
-<p>问题原因：<code>while</code> 的退出变量没有自增，导致死循环了。  </p>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>程序卡在哪儿，基本就是死循环或者死锁。死循环的发现，可以看 CPU 占用来佐证。问题定位，暂停调试。</p>
-<p>死锁的定位，可以看 stack，里边应该有 wait 之类的。</p>
+		<h2 id="怎么纠结上的"><a href="#怎么纠结上的" class="headerlink" title="怎么纠结上的"></a>怎么纠结上的</h2><p>近期在准备借鉴云风的 skynet 来完善我们的架构。这个 Cookie 研究是个插曲。 </p>
+<p>我这有个 HTTP Server 只做与数据库的代理接口用，同事那边有个 HTTP 的 Web Server，他的 Server 需要以 HTTP Client 身份来访问我的 Server 取数据。 </p>
+<p>我的 Server 用的 Node.js 写的 Express，访问流程为先去一个 path 验证，验证完，这个 HTTP Client 就可以访问其他 path 了。验证的时候会标记 Client 对应的 Session 为已验证，之后的每次访问会检查这个标记。 </p>
+<h2 id="对-Cookie-的认识加深了些"><a href="#对-Cookie-的认识加深了些" class="headerlink" title="对 Cookie 的认识加深了些"></a>对 Cookie 的认识加深了些</h2><p>这里的 Cookie 流程是这样的，验证之后，Server 会在 response 的 headers 里设置上“set-cookie”的值，接下来的 request 需要带上这个 Cookie，否则 Server 认为这个 Client 没有被验证。 </p>
+<p>第二次 request 的 response 里可能会给设置新的 Cookie，第三次 request 需要带上第二次 respones 设置的 Cookie…… </p>
+<p>这样就是每次访问带上上次返回的 Cookie，Server 才会认为你这次的访问启用的 Client 已经被验证过。 </p>
+<p>Node.js 里的 <code>http.request</code> 默认是不会捎上 Cookie 的，所以得自己封装下。 </p>
+<h2 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h2><p>Cookie 的 Wikipedia：<code>http://en.wikipedia.org/wiki/HTTP_cookie#Implementation</code></p>
+<p>Cookie 以前做模拟登陆时有想研究过，那时对 HTTP 完全不了解，加上其他的事情，给放弃了。这次总算稍微留个感性认识了。 </p>
+<p>这里写的乱七八糟的，回头有空再完善这篇吧。 </p>
+<p>同一个站点的 Cookie 不一定只是登陆够给的那个，而且 Cookie 也不局限于用于登陆标记。例如登陆后浏览好久，开始启用某个功能需要做标记，Cookie 字段就动态增加了。为此在给 Node.js 的 <code>http.request</code> 封装的维护 Cookie 的 Agent 后来修改了。 </p>
+<p>这些内容在《Http权威指南》里将很清楚，经典书才是硬道理。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -116,7 +116,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/Web-开发/">Web 开发</a>
 </div>
 
 
@@ -126,7 +126,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/01/16/14-a-step-to-cookie/" data-title="Cookie 一小步 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -140,18 +140,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/06/21/13-debug-server-hang/" title="调试：客户端某个流程后 Server 卡住">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  调试：客户端某个流程后 Server 卡住</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/04/25/13-x-cpp-server/"  title="X 项目 C++ 服务器（1）- 总体构想">
+<a href="/2014/01/16/14-cloudwu-skynet-research/"  title="了解云风的 skynet">
  <strong>下一篇：</strong><br/> 
- <span>X 项目 C++ 服务器（1）- 总体构想
+ <span>了解云风的 skynet
 </span>
 </a>
 </div>
@@ -160,7 +160,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点" data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/"></div>
+	<div class="ds-thread" data-thread-key="2014/01/16/14-a-step-to-cookie/" data-title="Cookie 一小步" data-url="http://blog.clawz.me/2014/01/16/14-a-step-to-cookie/"></div>
 </section>
 
 
@@ -170,7 +170,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">1.</span> <span class="toc-text">总结：</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么纠结上的"><span class="toc-number">1.</span> <span class="toc-text">怎么纠结上的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对-Cookie-的认识加深了些"><span class="toc-number">2.</span> <span class="toc-text">对 Cookie 的认识加深了些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PS"><span class="toc-number">3.</span> <span class="toc-text">PS</span></a></li></ol>
  
   </div>
 
