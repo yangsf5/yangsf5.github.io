@@ -4,29 +4,41 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>你是在修补错误的东西吗 | 三疯的技术博客</title>
+    <title>休闲手游服务器集群扩展思考 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="在错误的设计上做修补，一错再错。 
-一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
-A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
+    <meta name="description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
+数据存储的 DB 集群数据存储类型有多种。 
+非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
+交互性数据如好友关系等。 
+
+如果好友关系可以为单向，那么可以将关系存到个人数据里。 
+如果好友关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你是在修补错误的东西吗">
-<meta property="og:url" content="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/index.html">
+<meta property="og:title" content="休闲手游服务器集群扩展思考">
+<meta property="og:url" content="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="在错误的设计上做修补，一错再错。 
-一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
-A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
-<meta property="og:updated_time" content="2016-06-26T10:11:51.000Z">
+<meta property="og:description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
+数据存储的 DB 集群数据存储类型有多种。 
+非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
+交互性数据如好友关系等。 
+
+如果好友关系可以为单向，那么可以将关系存到个人数据里。 
+如果好友关">
+<meta property="og:updated_time" content="2016-07-11T07:48:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="你是在修补错误的东西吗">
-<meta name="twitter:description" content="在错误的设计上做修补，一错再错。 
-一个程序设计的例子今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 
-A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：123(keyA, item1) =&amp;gt; count1(keyA, i">
+<meta name="twitter:title" content="休闲手游服务器集群扩展思考">
+<meta name="twitter:description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
+数据存储的 DB 集群数据存储类型有多种。 
+非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
+交互性数据如好友关系等。 
+
+如果好友关系可以为单向，那么可以将关系存到个人数据里。 
+如果好友关">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +89,14 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" title="你是在修补错误的东西吗" itemprop="url">你是在修补错误的东西吗</a>
+      <a href="/2013/09/30/13-mobile-game-cluster-design/" title="休闲手游服务器集群扩展思考" itemprop="url">休闲手游服务器集群扩展思考</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-07T15:00:00.000Z" itemprop="datePublished"> 发表于 2015-07-07</time>
+    <time datetime="2013-09-30T02:46:00.000Z" itemprop="datePublished"> 发表于 2013-09-30</time>
     
   </p>
 </header>
@@ -93,28 +105,29 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个程序设计的例子"><span class="toc-number">1.</span> <span class="toc-text">一个程序设计的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个优化办公环境的例子"><span class="toc-number">2.</span> <span class="toc-text">一个优化办公环境的例子</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储的-DB-集群"><span class="toc-number">2.</span> <span class="toc-text">数据存储的 DB 集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非交互性的个人数据"><span class="toc-number">2.1.</span> <span class="toc-text">非交互性的个人数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互性数据"><span class="toc-number">2.2.</span> <span class="toc-text">交互性数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局数据"><span class="toc-number">2.3.</span> <span class="toc-text">全局数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群对-DB-集群的访问"><span class="toc-number">3.</span> <span class="toc-text">逻辑服务器集群对 DB 集群的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群"><span class="toc-number">4.</span> <span class="toc-text">逻辑服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各逻辑服务器上玩家分配"><span class="toc-number">4.1.</span> <span class="toc-text">各逻辑服务器上玩家分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑服务器间的通信"><span class="toc-number">4.2.</span> <span class="toc-text">逻辑服务器间的通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">5.</span> <span class="toc-text">补充</span></a></li></ol>
 		
 		</div>
 		
-		<p>在错误的设计上做修补，一错再错。 </p>
-<h2 id="一个程序设计的例子"><a href="#一个程序设计的例子" class="headerlink" title="一个程序设计的例子"></a>一个程序设计的例子</h2><p>今天一个设计实例。A 程序提供一个内容管理服务，对外 API 是 get 和 set。B 程序跟 A 程序联调时，B 发现 A 的 set 接口不能解决所有问题。 </p>
-<p>A 的内容大概是每个 key 里有多项内容，之前的设置是每项内容为一条记录。如 keyA 里 3 条记录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(keyA, item1) =&gt; count1</span><br><span class="line">(keyA, item2) =&gt; count2</span><br><span class="line">(keyA, item3) =&gt; count3</span><br></pre></td></tr></table></figure></p>
-<p>之前的 get 接口返回为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyA =&gt; (item1, count1;  item2, count2; item3, count3)</span><br></pre></td></tr></table></figure></p>
-<p>之前的 set 接口一次只能设置一个 key 的一个 item ，上边的 keyA 的内容需要调用 3 次 set 接口才能设置好。 这时 B 程序发现 set 接口只能满足给某个 key 添加一个 item 或者修改一个 item ，但是要是删除一个 item 就没法实现了。 </p>
-<p>今天同学们的设计思路或者是第一反应，一个是增加修改 item 名的接口，一个是增加删除接口。这些思路最终都能实现需求，但是实现的会不优雅。如果对整个需求及之前的设计有个整体把握，就能发现 set 的接口其实可以参照 get 接口。每次 B 程序提供某 key 的全量数据，A 程序直接覆盖全量数据。并且存储里也按这个思路来改。整个的实现及维护成本大大降低。 </p>
-<p>当然这里有个前提，就是这里的每个 key 的 item 数量是可以预估到不大的，并且总的 key 的数量都不多，存储上和网络通信上都是小意思。 </p>
-<p>在一个不够好的设计里去修补，与直接重构不够好的设计（并且重构成本不大，即使大，也可以采取小步多次的重构）的对比。前者更像在为一个错误的东西继续错误下去，且导致错误的繁殖成指数趋势。其实这里也是在引申嗅到代码的坏味道及时重构的原因与意义。 </p>
-<p>走得太远不要忘记为啥出发。 </p>
-<h2 id="一个优化办公环境的例子"><a href="#一个优化办公环境的例子" class="headerlink" title="一个优化办公环境的例子"></a>一个优化办公环境的例子</h2><p>另外最近有个其他事情也是类似这种修补错误的东西，就是公司的会议室外墙玻璃上帖了不能拿下的贴纸。公司的会议室是稀缺资源，抢的挺多。加了贴纸之后，外边排队抢会议室的人老看不见里边会议室有没有人或者是否之前的那波人开完会走了，排队的人就一直络绎不绝的去推开办公室的门一探究竟。排队的人有急会就会好几个门都去推下看看，或者都被占着，就多推几轮。已经使用会议室的人就老被人推门打扰。双方都浪费了精力和注意力。 </p>
-<p>然后给出了一个方案，在会议室门旁边挂个牌子，牌子两面分别写“推门请进”、“会议中”。让进入会议室的人自觉去翻牌子，且让排队的人自觉看牌子。当时讨论这个方案的时候我就感觉不合适，装逼的话就是用户体验不好，等于让大家多维护个概念及事项，并且保证大家都有心情去遵守。可惜还是开始执行了。 </p>
-<p>果不其然，基本执行不起来。好几周了，大家开会还是不停的推与被推之中。首先排队的人，因为比较急，有时直接没注意到牌子，或者抱着侥幸心理，“可能是别人出来忘了重置牌子呢”，就推门一看。排到的人进去了，因为都等了好久了，谁还想这去翻牌子为“会议中”。即使没等很久，也基本想不到去弄那个，大家做产品的知道多一个按钮转化率低的事情吧。 </p>
-<p>我最高记录是一次开了1个小时左右的会被推了不下 20 次的门。不要问我为毛开那么久，因为在开设计评审会。还有个奇妙现象是，中途某位同学误推门之后把牌子修正了，结果后续的其他人照推不误。 </p>
-<p>这个事情其实就是在修补错误的东西，而没有找根本原因。 </p>
-<p>透明玻璃上加贴纸，直接按这个透明玻璃失去了意义，变成了砖墙一样。把会议室的默认属性变成了围墙里的秘密。但是真的需要那么多秘密会议室吗，不见得吧。我们不是特务机关啊，没有那么多见不得人的；我们不是大公司啊，没那么多偷懒扯皮会议啊；我们也不是苹果公司啊，没那么多商业机密啊…… </p>
-<p>目前我能想到的我们公司需要相对私密空间的会议就是面试、谈 Offer、发奖金什么的、接待合作伙伴之类的。可以看到这些需求其实不大的，我们一方面可以定几个小会议室做成这样，或者每个会议室都弄成加窗帘的方式，平时默认透明玻璃，方便大家查看，也寓意开放。等什么会议必须私密空间，再把窗帘放下来。 </p>
-<p>另外有人可能会说窗帘这个东西的升降也需要操作，估计大家降下来都懒的升上下。但这个毕竟是少数，每天找行政晚上去搞一遍或者旁边同学轮班巡查下就行了。另外如果有财力支持，可以弄成那种电动遥控的，这种我在《24 小时》里看到过小强杰克用过。 </p>
-<p>这些东西说不定能给大家个启发，我的一定不是最好的办法。 </p>
+		<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 </p>
+<h2 id="数据存储的-DB-集群"><a href="#数据存储的-DB-集群" class="headerlink" title="数据存储的 DB 集群"></a>数据存储的 DB 集群</h2><p>数据存储类型有多种。 </p>
+<h3 id="非交互性的个人数据"><a href="#非交互性的个人数据" class="headerlink" title="非交互性的个人数据"></a>非交互性的个人数据</h3><p>可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 </p>
+<h3 id="交互性数据"><a href="#交互性数据" class="headerlink" title="交互性数据"></a>交互性数据</h3><p>如好友关系等。 </p>
+<ul>
+<li>如果好友关系可以为单向，那么可以将关系存到个人数据里。 </li>
+<li>如果好友关系不能为单向，那么需要保证每条关系保持在要么没有，要么两人都认同，记数据上一直，互相有关系。那么需要保证相关的关系操作的一致性。这样可能只保存一份每两个人之间的关系，K-V 存储时需要反向查找，不知是否能实现。 </li>
+</ul>
+<h3 id="全局数据"><a href="#全局数据" class="headerlink" title="全局数据"></a>全局数据</h3><p>如全局排行榜之类的。这种放在单独的库里里，专门做全局数据的存储。当到一定规模时，按全局数据的类型再分库。 </p>
+<p>家族、帮会等，也放单独的库里。如果需要扩展，再按家族 ID、帮会 ID 来分库。 </p>
+<h2 id="逻辑服务器集群对-DB-集群的访问"><a href="#逻辑服务器集群对-DB-集群的访问" class="headerlink" title="逻辑服务器集群对 DB 集群的访问"></a>逻辑服务器集群对 DB 集群的访问</h2><p>DB 集群的路由规则配置到逻辑服务器的 config 里。当需要热扩展 DB 时，启动新 DB 后，给各 logic 服务器发送 GM 指定，reload 路由规则的 config。 </p>
+<p>DB集群路由规则的 config，可以放在一个公共地方，各 logic 服务器接到 GM 指令后，去公共地方拉取新的 config 然会 reload。 </p>
+<h2 id="逻辑服务器集群"><a href="#逻辑服务器集群" class="headerlink" title="逻辑服务器集群"></a>逻辑服务器集群</h2><p>为了架构的简单，可以每个逻辑服务器进程上都有所有逻辑，扩展时，以扩展逻辑服务器进程数量来达到。 </p>
+<h3 id="各逻辑服务器上玩家分配"><a href="#各逻辑服务器上玩家分配" class="headerlink" title="各逻辑服务器上玩家分配"></a>各逻辑服务器上玩家分配</h3><p>逻辑服务器集群之间的交互。如果逻辑服务器的使用，也像个人数据存储的 DB 那样 ID 分段——只让 1~10000 的玩家登陆 logic1，10001~20000 的玩家登陆 logic2 时，这很简单，但各 ID 段的玩家活跃度不定的，做不到负载均衡啊。 </p>
+<p>所以是根据当时的负载情况，来推荐玩家登陆闲的逻辑服务器的。这样需要有个全局映射，知道哪个玩家登陆在哪个服务器上。可以将玩家当前所在的服务器 ID 记录在该玩家的个人数据所在的 DB 里。 </p>
+<h3 id="逻辑服务器间的通信"><a href="#逻辑服务器间的通信" class="headerlink" title="逻辑服务器间的通信"></a>逻辑服务器间的通信</h3><p>目前项目持久化使用 Redis，最快出东西，就先考虑 Redis 的优势。 </p>
+<p>逻辑服务器间的通信，通过全局数据存储的 Redis 来做 Pub/Sub 转发吧。 </p>
+<p>Redis 的 Pub 和 Sub 的实时性不够时，将有实时性需求的玩家都转到一个专门做强实时性的特殊逻辑服务器。 </p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>公司的项目是 Node.js + Redis，业余时间打算用 Go 写个服务器引擎。<br>这篇考虑发到精华区，可以得到很多的批评建议。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -132,7 +145,7 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" data-title="你是在修补错误的东西吗 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/" data-title="休闲手游服务器集群扩展思考 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -146,18 +159,18 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/09/21/si-cui-xiong-di-bu-men-de-zhen-xiang/" title="以死相催上下游部门的真相">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  以死相催上下游部门的真相</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/06/25/xiang-dui-yun-ying-tong-xue-men-shuo-de/"  title="想对运营的同学们说的">
+<a href="/2013/09/15/13-common-lisp/"  title="开始学习 Common Lisp">
  <strong>下一篇：</strong><br/> 
- <span>想对运营的同学们说的
+ <span>开始学习 Common Lisp
 </span>
 </a>
 </div>
@@ -166,7 +179,7 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/" data-title="你是在修补错误的东西吗" data-url="http://blog.clawz.me/2015/07/07/ni-shi-zai-xiu-bu-cuo-wu-de-dong-xi/"></div>
+	<div class="ds-thread" data-thread-key="2013/09/30/13-mobile-game-cluster-design/" data-title="休闲手游服务器集群扩展思考" data-url="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/"></div>
 </section>
 
 
@@ -176,7 +189,7 @@ A 的内容大概是每个 key 里有多项内容，之前的设置是每项内�
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个程序设计的例子"><span class="toc-number">1.</span> <span class="toc-text">一个程序设计的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个优化办公环境的例子"><span class="toc-number">2.</span> <span class="toc-text">一个优化办公环境的例子</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储的-DB-集群"><span class="toc-number">2.</span> <span class="toc-text">数据存储的 DB 集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非交互性的个人数据"><span class="toc-number">2.1.</span> <span class="toc-text">非交互性的个人数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互性数据"><span class="toc-number">2.2.</span> <span class="toc-text">交互性数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局数据"><span class="toc-number">2.3.</span> <span class="toc-text">全局数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群对-DB-集群的访问"><span class="toc-number">3.</span> <span class="toc-text">逻辑服务器集群对 DB 集群的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群"><span class="toc-number">4.</span> <span class="toc-text">逻辑服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各逻辑服务器上玩家分配"><span class="toc-number">4.1.</span> <span class="toc-text">各逻辑服务器上玩家分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑服务器间的通信"><span class="toc-number">4.2.</span> <span class="toc-text">逻辑服务器间的通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">5.</span> <span class="toc-text">补充</span></a></li></ol>
  
   </div>
 
