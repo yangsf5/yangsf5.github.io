@@ -4,41 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>休闲手游服务器集群扩展思考 | 三疯的技术博客</title>
+    <title>集群实现细节（1）-异服通信和压测 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
-数据存储的 DB 集群数据存储类型有多种。 
-非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
-交互性数据如好友关系等。 
-
-如果好友关系可以为单向，那么可以将关系存到个人数据里。 
-如果好友关">
+    <meta name="description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
+接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
+实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="休闲手游服务器集群扩展思考">
-<meta property="og:url" content="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/index.html">
+<meta property="og:title" content="集群实现细节（1）-异服通信和压测">
+<meta property="og:url" content="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
-数据存储的 DB 集群数据存储类型有多种。 
-非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
-交互性数据如好友关系等。 
-
-如果好友关系可以为单向，那么可以将关系存到个人数据里。 
-如果好友关">
-<meta property="og:updated_time" content="2016-07-11T07:48:14.000Z">
+<meta property="og:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
+接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
+实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
+<meta property="og:updated_time" content="2016-07-11T10:35:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="休闲手游服务器集群扩展思考">
-<meta name="twitter:description" content="目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
-数据存储的 DB 集群数据存储类型有多种。 
-非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 
-交互性数据如好友关系等。 
-
-如果好友关系可以为单向，那么可以将关系存到个人数据里。 
-如果好友关">
+<meta name="twitter:title" content="集群实现细节（1）-异服通信和压测">
+<meta name="twitter:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
+接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
+实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -89,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/09/30/13-mobile-game-cluster-design/" title="休闲手游服务器集群扩展思考" itemprop="url">休闲手游服务器集群扩展思考</a>
+      <a href="/2013/10/17/13-game-cluster-design-detail-1/" title="集群实现细节（1）-异服通信和压测" itemprop="url">集群实现细节（1）-异服通信和压测</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-09-30T02:46:00.000Z" itemprop="datePublished"> 发表于 2013-09-30</time>
+    <time datetime="2013-10-17T06:45:00.000Z" itemprop="datePublished"> 发表于 2013-10-17</time>
     
   </p>
 </header>
@@ -105,29 +93,30 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储的-DB-集群"><span class="toc-number">2.</span> <span class="toc-text">数据存储的 DB 集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非交互性的个人数据"><span class="toc-number">2.1.</span> <span class="toc-text">非交互性的个人数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互性数据"><span class="toc-number">2.2.</span> <span class="toc-text">交互性数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局数据"><span class="toc-number">2.3.</span> <span class="toc-text">全局数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群对-DB-集群的访问"><span class="toc-number">3.</span> <span class="toc-text">逻辑服务器集群对 DB 集群的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群"><span class="toc-number">4.</span> <span class="toc-text">逻辑服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各逻辑服务器上玩家分配"><span class="toc-number">4.1.</span> <span class="toc-text">各逻辑服务器上玩家分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑服务器间的通信"><span class="toc-number">4.2.</span> <span class="toc-text">逻辑服务器间的通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">5.</span> <span class="toc-text">补充</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#全服玩家在线状态"><span class="toc-number">2.</span> <span class="toc-text">全服玩家在线状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#登陆和注册"><span class="toc-number">2.1.</span> <span class="toc-text">登陆和注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异服通信"><span class="toc-number">2.2.</span> <span class="toc-text">异服通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压测工具"><span class="toc-number">3.</span> <span class="toc-text">压测工具</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 </p>
-<h2 id="数据存储的-DB-集群"><a href="#数据存储的-DB-集群" class="headerlink" title="数据存储的 DB 集群"></a>数据存储的 DB 集群</h2><p>数据存储类型有多种。 </p>
-<h3 id="非交互性的个人数据"><a href="#非交互性的个人数据" class="headerlink" title="非交互性的个人数据"></a>非交互性的个人数据</h3><p>可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 DB2，以此类推。 </p>
-<h3 id="交互性数据"><a href="#交互性数据" class="headerlink" title="交互性数据"></a>交互性数据</h3><p>如好友关系等。 </p>
+		<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 </p>
+<p>接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 </p>
+<p>实现的过程中碰到的一些需要仔细设计的细节，原则上还是 K.I.S.S。 </p>
+<h2 id="全服玩家在线状态"><a href="#全服玩家在线状态" class="headerlink" title="全服玩家在线状态"></a>全服玩家在线状态</h2><p>逻辑服务器集群的负载均衡算法还没实现。先只扩展玩家间的同服通信为异服通信（通过 Redis 的 pub/sub，以下将这个用于通信转发的 Redis 简称为通信 Redis）。 </p>
+<p>问题链：（“–>>”引出的下个问题被当前问题所依赖） </p>
 <ul>
-<li>如果好友关系可以为单向，那么可以将关系存到个人数据里。 </li>
-<li>如果好友关系不能为单向，那么需要保证每条关系保持在要么没有，要么两人都认同，记数据上一直，互相有关系。那么需要保证相关的关系操作的一致性。这样可能只保存一份每两个人之间的关系，K-V 存储时需要反向查找，不知是否能实现。 </li>
+<li>通信发起方需要知道目标方在逻辑集群里的哪个服务器上 –>> </li>
+<li>玩家登陆和退出时往通信redis报告 –>> </li>
+<li>登陆时检查账号是否注册到我们的游戏，否就注册 –>> </li>
 </ul>
-<h3 id="全局数据"><a href="#全局数据" class="headerlink" title="全局数据"></a>全局数据</h3><p>如全局排行榜之类的。这种放在单独的库里里，专门做全局数据的存储。当到一定规模时，按全局数据的类型再分库。 </p>
-<p>家族、帮会等，也放单独的库里。如果需要扩展，再按家族 ID、帮会 ID 来分库。 </p>
-<h2 id="逻辑服务器集群对-DB-集群的访问"><a href="#逻辑服务器集群对-DB-集群的访问" class="headerlink" title="逻辑服务器集群对 DB 集群的访问"></a>逻辑服务器集群对 DB 集群的访问</h2><p>DB 集群的路由规则配置到逻辑服务器的 config 里。当需要热扩展 DB 时，启动新 DB 后，给各 logic 服务器发送 GM 指定，reload 路由规则的 config。 </p>
-<p>DB集群路由规则的 config，可以放在一个公共地方，各 logic 服务器接到 GM 指令后，去公共地方拉取新的 config 然会 reload。 </p>
-<h2 id="逻辑服务器集群"><a href="#逻辑服务器集群" class="headerlink" title="逻辑服务器集群"></a>逻辑服务器集群</h2><p>为了架构的简单，可以每个逻辑服务器进程上都有所有逻辑，扩展时，以扩展逻辑服务器进程数量来达到。 </p>
-<h3 id="各逻辑服务器上玩家分配"><a href="#各逻辑服务器上玩家分配" class="headerlink" title="各逻辑服务器上玩家分配"></a>各逻辑服务器上玩家分配</h3><p>逻辑服务器集群之间的交互。如果逻辑服务器的使用，也像个人数据存储的 DB 那样 ID 分段——只让 1~10000 的玩家登陆 logic1，10001~20000 的玩家登陆 logic2 时，这很简单，但各 ID 段的玩家活跃度不定的，做不到负载均衡啊。 </p>
-<p>所以是根据当时的负载情况，来推荐玩家登陆闲的逻辑服务器的。这样需要有个全局映射，知道哪个玩家登陆在哪个服务器上。可以将玩家当前所在的服务器 ID 记录在该玩家的个人数据所在的 DB 里。 </p>
-<h3 id="逻辑服务器间的通信"><a href="#逻辑服务器间的通信" class="headerlink" title="逻辑服务器间的通信"></a>逻辑服务器间的通信</h3><p>目前项目持久化使用 Redis，最快出东西，就先考虑 Redis 的优势。 </p>
-<p>逻辑服务器间的通信，通过全局数据存储的 Redis 来做 Pub/Sub 转发吧。 </p>
-<p>Redis 的 Pub 和 Sub 的实时性不够时，将有实时性需求的玩家都转到一个专门做强实时性的特殊逻辑服务器。 </p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>公司的项目是 Node.js + Redis，业余时间打算用 Go 写个服务器引擎。<br>这篇考虑发到精华区，可以得到很多的批评建议。 </p>
+<h3 id="登陆和注册"><a href="#登陆和注册" class="headerlink" title="登陆和注册"></a>登陆和注册</h3><p>玩家拿到用户系统的账号来登陆我们游戏服务器。游戏服务器拿 Client 给的这个 code 再去用户系统服务器做验证，通过后继续。 </p>
+<p>检查账号是否在我们游戏注册，如果没有则注册上，映射出游戏服务器上的一个 local uid。这里需要检查玩家是否在游戏注册了，所以需要一个 platform uid 与 local uid 的映射表。这个映射之前单进程服务器时与其他角色数据放在相同 Redis 上的，现在移到全局类的 Redis 上（以下简称全局 Redis，暂时是将通信 Redis 和全局 Redis 放一起的，等以后看压测和线上反馈再做演变）。另外用来本地注册生成 local uid 的自增长 ID 也移到了全局 Redis 上。 </p>
+<p>检查完注册，得到 local uid，先看是否在本服务器登陆了，否则再向通信 Redis 查看是否登陆在其他服务器。如果已登陆，则踢掉之前的登陆。之前单进程只有同服重复登陆踢人，现在多个异服重复登陆的踢人操作。 </p>
+<p>登陆成功向通信 Redis 报告 local uid 和所在的这个 logic 服务器的 Server ID。另外退出时也向通信 Redis 报告，注销掉这条记录。 </p>
+<h3 id="异服通信"><a href="#异服通信" class="headerlink" title="异服通信"></a>异服通信</h3><p>每个逻辑服务器都与通信 Redis 建立用于 pub/sub 的链接，各逻辑服务器有自己的频道。 </p>
+<p>异服上的玩家通信时，从通信 Redis 拿到目标玩家所在 Server ID，让后向目标 Server所对应的专有频道 pub 数据即可。 </p>
+<h2 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h2><p>加了这个集群扩展后，底层测试只是单元测试是不够的。反正要压力测试工具迟早要写，就先写了简单版的压测工具，来做异服通信的自动化测试。 </p>
+<p>压测工具开始的想法挺多的，后来抛弃了一些短期不好实现的想法。现在就简单的，一个 Client 一个 <code>Client struct</code>，这个处理 Client 的通信发送接收。做相同动作的 Client 为一个 <code>Group struct</code>。每个动作为一个 <code>Rule struct</code>，里边组合好收到什么包后做什么事情，或者直接发些什么包。 </p>
+<p>C++ 端游压测的每个 Rule 动作一般用 Lua 来写的，比较方便，我们这个压测工具用 Go 写，Rule 暂时也用 Go 写，也不麻烦。 </p>
+<p>感慨下，这种并行的应用场景，Go 的编程思维与具体写法比 Node.js 更适合 C/C++ 出身的程序员。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -145,7 +134,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/" data-title="休闲手游服务器集群扩展思考 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/" data-title="集群实现细节（1）-异服通信和压测 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -159,18 +148,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/10/17/13-game-cluster-design-detail-1/" title="集群实现细节（1）-异服通信和压测">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  集群实现细节（1）-异服通信和压测</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/09/15/13-common-lisp/"  title="开始学习 Common Lisp">
+<a href="/2013/09/30/13-mobile-game-cluster-design/"  title="休闲手游服务器集群扩展思考">
  <strong>下一篇：</strong><br/> 
- <span>开始学习 Common Lisp
+ <span>休闲手游服务器集群扩展思考
 </span>
 </a>
 </div>
@@ -179,7 +168,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/09/30/13-mobile-game-cluster-design/" data-title="休闲手游服务器集群扩展思考" data-url="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/"></div>
+	<div class="ds-thread" data-thread-key="2013/10/17/13-game-cluster-design-detail-1/" data-title="集群实现细节（1）-异服通信和压测" data-url="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/"></div>
 </section>
 
 
@@ -189,7 +178,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储的-DB-集群"><span class="toc-number">2.</span> <span class="toc-text">数据存储的 DB 集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非交互性的个人数据"><span class="toc-number">2.1.</span> <span class="toc-text">非交互性的个人数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互性数据"><span class="toc-number">2.2.</span> <span class="toc-text">交互性数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局数据"><span class="toc-number">2.3.</span> <span class="toc-text">全局数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群对-DB-集群的访问"><span class="toc-number">3.</span> <span class="toc-text">逻辑服务器集群对 DB 集群的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑服务器集群"><span class="toc-number">4.</span> <span class="toc-text">逻辑服务器集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各逻辑服务器上玩家分配"><span class="toc-number">4.1.</span> <span class="toc-text">各逻辑服务器上玩家分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑服务器间的通信"><span class="toc-number">4.2.</span> <span class="toc-text">逻辑服务器间的通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">5.</span> <span class="toc-text">补充</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#全服玩家在线状态"><span class="toc-number">2.</span> <span class="toc-text">全服玩家在线状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#登陆和注册"><span class="toc-number">2.1.</span> <span class="toc-text">登陆和注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异服通信"><span class="toc-number">2.2.</span> <span class="toc-text">异服通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压测工具"><span class="toc-number">3.</span> <span class="toc-text">压测工具</span></a></li></ol>
  
   </div>
 

@@ -256,17 +256,16 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/09/30/13-mobile-game-cluster-design/" title="休闲手游服务器集群扩展思考" itemprop="url">
+    <a href="/2013/10/17/13-game-cluster-design-detail-1/" title="集群实现细节（1）-异服通信和压测" itemprop="url">
   
-    <h1 itemprop="name">休闲手游服务器集群扩展思考</h1>
+    <h1 itemprop="name">集群实现细节（1）-异服通信和压测</h1>
     
      
-           <p itemprop="description" >目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
-数据存储的 DB 集群数据存储类型有多种。 
-非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 </p>
+           <p itemprop="description" >背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
+接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单</p>
         
     
-    <time datetime="2013-09-30T02:46:00.000Z" itemprop="datePublished">2013-09-30</time>
+    <time datetime="2013-10-17T06:45:00.000Z" itemprop="datePublished">2013-10-17</time>
   </a>
 </section>
 
@@ -339,7 +338,7 @@
 		  
 		
 		  
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>6</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>7</sup></a></li>
 		  
 		
 		  
