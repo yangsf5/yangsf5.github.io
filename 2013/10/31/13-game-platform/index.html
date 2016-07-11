@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>公司内部图书馆试运行 | 三疯的技术博客</title>
+    <title>休闲游戏平台架构 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
+    <meta name="description" content="背景和目标当年大三的时候写了个五子棋世界，就是 QQ Game 那种大厅-房间-桌子（我只有简单逻辑的五子棋）。毕业后一直想找个时间来重构它，后来有次下决心看了下代码，有点儿不知所措，你懂的，：D，还不如重写。 
+现在对 Go 很感兴趣，准备用 Go 来实现以前的开源梦。就先已以前的五子棋世界那种休闲游戏平台来开始练手吧。 
+目标暂时不定的太大，基本实现大厅-房间-桌子-游戏就行了，慢慢重构慢慢完">
 <meta property="og:type" content="article">
-<meta property="og:title" content="公司内部图书馆试运行">
-<meta property="og:url" content="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/index.html">
+<meta property="og:title" content="休闲游戏平台架构">
+<meta property="og:url" content="http://blog.clawz.me/2013/10/31/13-game-platform/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
-<meta property="og:updated_time" content="2016-06-26T10:43:58.000Z">
+<meta property="og:description" content="背景和目标当年大三的时候写了个五子棋世界，就是 QQ Game 那种大厅-房间-桌子（我只有简单逻辑的五子棋）。毕业后一直想找个时间来重构它，后来有次下决心看了下代码，有点儿不知所措，你懂的，：D，还不如重写。 
+现在对 Go 很感兴趣，准备用 Go 来实现以前的开源梦。就先已以前的五子棋世界那种休闲游戏平台来开始练手吧。 
+目标暂时不定的太大，基本实现大厅-房间-桌子-游戏就行了，慢慢重构慢慢完">
+<meta property="og:updated_time" content="2016-07-11T10:51:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="公司内部图书馆试运行">
-<meta name="twitter:description" content="之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 
-初步想法是，前期优先是计算机方面">
+<meta name="twitter:title" content="休闲游戏平台架构">
+<meta name="twitter:description" content="背景和目标当年大三的时候写了个五子棋世界，就是 QQ Game 那种大厅-房间-桌子（我只有简单逻辑的五子棋）。毕业后一直想找个时间来重构它，后来有次下决心看了下代码，有点儿不知所措，你懂的，：D，还不如重写。 
+现在对 Go 很感兴趣，准备用 Go 来实现以前的开源梦。就先已以前的五子棋世界那种休闲游戏平台来开始练手吧。 
+目标暂时不定的太大，基本实现大厅-房间-桌子-游戏就行了，慢慢重构慢慢完">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" title="公司内部图书馆试运行" itemprop="url">公司内部图书馆试运行</a>
+      <a href="/2013/10/31/13-game-platform/" title="休闲游戏平台架构" itemprop="url">休闲游戏平台架构</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-29T14:00:00.000Z" itemprop="datePublished"> 发表于 2014-10-29</time>
+    <time datetime="2013-10-31T15:15:00.000Z" itemprop="datePublished"> 发表于 2013-10-31</time>
     
   </p>
 </header>
@@ -90,17 +93,19 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景和目标"><span class="toc-number">1.</span> <span class="toc-text">背景和目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器架构"><span class="toc-number">2.</span> <span class="toc-text">服务器架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#账户系统"><span class="toc-number">2.1.</span> <span class="toc-text">账户系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#大厅"><span class="toc-number">2.2.</span> <span class="toc-text">大厅</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端"><span class="toc-number">3.</span> <span class="toc-text">客户端</span></a></li></ol>
 		
 		</div>
 		
-		<p>之前在畅游和触控都有内部图书馆，另外 PY 哥在百度的时候也是每个月都有个人买书经费的。然后结合下我们公司的情况和我个人的经历。公司没那么财大气粗，所以招人方面有所限制。需要让大家锻炼技术，技术书又很贵，个人买太多书搬家又不方便。最终，我建议 VP 搞公司内部图书馆，VP 担心之后会流于形式。现在实施办法是先买几本，看大家借书看书的活跃度，气氛好的话，再搞大点。 </p>
-<p>初步想法是，前期优先是计算机方面的，以后再考虑其他方面的。每个月有个经费额度，具体额度需要 VP 拍板。经费额度要适中，目的在控制书的质量，要买经典书，不买垃圾，如很多国内垃圾入门书。经典书的判定，由各技术部门的核心骨干组成的技术经典书籍鉴定小组来做审核。 </p>
-<p>书的购买，由技术经典书籍鉴定小组审核通过后，指定的购买负责人来推动采购流程。 </p>
-<p>书的管理，实物管理可以由指定的行政部门同事来保管，借入借出的登记由平台技术部系统组提供 OA 系统支持，方便公司同事随时查看图书馆已积累了哪些书、各种书的状态等。 </p>
-<p>借书周期，可以先定一个月，太厚的可以定久一点。之后到期要归还，然后重新排队。 </p>
-<p>目前已经购入图书馆的处女书《代码大全 2》，我自己先看着，哈哈。刚看了 50 多页，这书太经典了，努力推动图书馆建设的心也更坚定了。 </p>
-<p>VP 担心图书馆会流于形式这个问题，据观察，可能是公司处于快速发展期，大家工作非常忙，没什么时间看书。但是这个应该没什么问题，有追求的人，再忙也会花时间去学习的。退一万步讲，都没追求的话，我至少要逼着我部门的同事看看《代码大全 2》这种经典书，写阅读心得。：） </p>
+		<h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>当年大三的时候写了个五子棋世界，就是 QQ Game 那种大厅-房间-桌子（我只有简单逻辑的五子棋）。毕业后一直想找个时间来重构它，后来有次下决心看了下代码，有点儿不知所措，你懂的，：D，还不如重写。 </p>
+<p>现在对 Go 很感兴趣，准备用 Go 来实现以前的开源梦。就先已以前的五子棋世界那种休闲游戏平台来开始练手吧。 </p>
+<p>目标暂时不定的太大，基本实现大厅-房间-桌子-游戏就行了，慢慢重构慢慢完善。 </p>
+<h2 id="服务器架构"><a href="#服务器架构" class="headerlink" title="服务器架构"></a>服务器架构</h2><p>基本架构参照之前给公司项目做的<a href="http://blog.clawz.me/2013/09/30/13-mobile-game-cluster-design/"> 架构 </a>。当架构有改变时，及时修改这篇博客，或者新博客与这篇相互引用和注解。 </p>
+<p>不同的部分，加个大厅，大厅里显示房间状态，这样玩家就自己选择闲的房间去玩，这样就不需要做负载均衡的算法了。 </p>
+<h3 id="账户系统"><a href="#账户系统" class="headerlink" title="账户系统"></a>账户系统</h3><p>游戏自身不做账号密码这种用户系统，只用第三方的账户，如微博账户等来连接到我们游戏。或者更简单点，这块儿只模拟下微博等第三方用户系统的登陆了。 </p>
+<p>第三方账户连接到我们游戏，我们本地只由自增长的 uid 生成器来生成一个 int 的 uid 即可，将第三方的 platformUid 和我们的 localUid 做个关联映射。 </p>
+<h3 id="大厅"><a href="#大厅" class="headerlink" title="大厅"></a>大厅</h3><p>大厅可以做成短连接，玩家选择游戏及房间的时候才去大厅刷新下当前的各房间负载情况。 </p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>用 walk。（待详细规划） </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -108,7 +113,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/效率-协作-管理/">效率&协作&管理</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -118,7 +123,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" data-title="公司内部图书馆试运行 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/10/31/13-game-platform/" data-title="休闲游戏平台架构 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -132,18 +137,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2014/11/15/macbook-qian-yi-shu-ju-da-zhe-teng/" title="MacBook 换新之迁移数据大折腾">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  MacBook 换新之迁移数据大折腾</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/10/13/jin-qi-php-mysql-you-hua/"  title="近期对 PHP 与 MySQL 相关的优化">
+<a href="/2013/10/19/13-game-cluster-design-detail-2/"  title="集群实现细节（2）-玩家在线状态续">
  <strong>下一篇：</strong><br/> 
- <span>近期对 PHP 与 MySQL 相关的优化
+ <span>集群实现细节（2）-玩家在线状态续
 </span>
 </a>
 </div>
@@ -152,7 +157,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/" data-title="公司内部图书馆试运行" data-url="http://blog.clawz.me/2014/10/29/gong-si-tu-shu-guan-shi-yun-xing/"></div>
+	<div class="ds-thread" data-thread-key="2013/10/31/13-game-platform/" data-title="休闲游戏平台架构" data-url="http://blog.clawz.me/2013/10/31/13-game-platform/"></div>
 </section>
 
 
@@ -162,7 +167,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景和目标"><span class="toc-number">1.</span> <span class="toc-text">背景和目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器架构"><span class="toc-number">2.</span> <span class="toc-text">服务器架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#账户系统"><span class="toc-number">2.1.</span> <span class="toc-text">账户系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#大厅"><span class="toc-number">2.2.</span> <span class="toc-text">大厅</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端"><span class="toc-number">3.</span> <span class="toc-text">客户端</span></a></li></ol>
  
   </div>
 
