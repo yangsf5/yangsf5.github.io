@@ -1,0 +1,502 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Pomelo 0.5.5 源码分析（2）-通信 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="客户端与服务器的通信客户端的通信在 pomelo-client 里封装了。 
+服务器与客户端的通信在 connector 里。底层提供 WebSocket、TCP 和 socket.io 三种方式的通信。 
+connector 组件（components/connector.js）组件构造函数里会 this.connector 从 opts 里取 connector，或者默认为 connector">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pomelo 0.5.5 源码分析（2）-通信">
+<meta property="og:url" content="http://blog.clawz.me/2013/09/05/13-pomelo-read-source-2/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="客户端与服务器的通信客户端的通信在 pomelo-client 里封装了。 
+服务器与客户端的通信在 connector 里。底层提供 WebSocket、TCP 和 socket.io 三种方式的通信。 
+connector 组件（components/connector.js）组件构造函数里会 this.connector 从 opts 里取 connector，或者默认为 connector">
+<meta property="og:updated_time" content="2016-07-11T07:22:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pomelo 0.5.5 源码分析（2）-通信">
+<meta name="twitter:description" content="客户端与服务器的通信客户端的通信在 pomelo-client 里封装了。 
+服务器与客户端的通信在 connector 里。底层提供 WebSocket、TCP 和 socket.io 三种方式的通信。 
+connector 组件（components/connector.js）组件构造函数里会 this.connector 从 opts 里取 connector，或者默认为 connector">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/09/05/13-pomelo-read-source-2/" title="Pomelo 0.5.5 源码分析（2）-通信" itemprop="url">Pomelo 0.5.5 源码分析（2）-通信</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2013-09-05T15:09:00.000Z" itemprop="datePublished"> 发表于 2013-09-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端与服务器的通信"><span class="toc-number">1.</span> <span class="toc-text">客户端与服务器的通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#connector-组件（components-connector-js）"><span class="toc-number">1.1.</span> <span class="toc-text">connector 组件（components/connector.js）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hybridconnector-的实现"><span class="toc-number">1.2.</span> <span class="toc-text">hybridconnector 的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hybrid-switcher-js"><span class="toc-number">1.2.1.</span> <span class="toc-text">hybrid/switcher.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hybridsocket-js"><span class="toc-number">1.2.2.</span> <span class="toc-text">hybridsocket.js</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#server-组件"><span class="toc-number">1.3.</span> <span class="toc-text">server 组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器之间的通信"><span class="toc-number">2.</span> <span class="toc-text">服务器之间的通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#框架调用"><span class="toc-number">3.</span> <span class="toc-text">框架调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session"><span class="toc-number">4.</span> <span class="toc-text">session</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#session-组件（components-session-js）"><span class="toc-number">4.1.</span> <span class="toc-text">session 组件（components/session.js）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sessionService"><span class="toc-number">4.2.</span> <span class="toc-text">sessionService</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Session（object）"><span class="toc-number">4.2.1.</span> <span class="toc-text">Session（object）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MockLocalSession（object）"><span class="toc-number">4.2.2.</span> <span class="toc-text">MockLocalSession（object）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SessionService（object）"><span class="toc-number">4.2.3.</span> <span class="toc-text">SessionService（object）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session的使用"><span class="toc-number">4.3.</span> <span class="toc-text">session的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pomelo-rpc"><span class="toc-number">5.</span> <span class="toc-text">pomelo-rpc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-client"><span class="toc-number">5.1.</span> <span class="toc-text">rpc-client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-server"><span class="toc-number">5.2.</span> <span class="toc-text">rpc-server</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="客户端与服务器的通信"><a href="#客户端与服务器的通信" class="headerlink" title="客户端与服务器的通信"></a>客户端与服务器的通信</h2><p>客户端的通信在 pomelo-client 里封装了。 </p>
+<p>服务器与客户端的通信在 connector 里。底层提供 WebSocket、TCP 和 socket.io 三种方式的通信。 </p>
+<h3 id="connector-组件（components-connector-js）"><a href="#connector-组件（components-connector-js）" class="headerlink" title="connector 组件（components/connector.js）"></a>connector 组件（components/connector.js）</h3><p>组件构造函数里会 <code>this.connector</code> 从 opts 里取 connector，或者默认为 connectors/sioconnector.js。（connector 的实现 sioconnector 和 hybridconnector） </p>
+<p>组件的 <code>start</code> 里会将 <code>this.server\this.session\this.connection</code> 分别映射到 <code>app</code> 的对应的组件上。 </p>
+<p>组件的 <code>afterStart</code> 里 <code>this.connector.start</code>，并监听 <code>this.connector</code> 的 connection 事件。 </p>
+<p>connection 事件处理为： 将 connection 关联一个 session，监听 socket 的 message 事件，接受到 message 时 decode message，再将 message 交给 server 组件的 <code>handle</code>，处理完回调里再将返回信息在 connector 组件的 <code>send</code> 里处理。 </p>
+<p>另外监听 session 的 bind 事件，处理函数为，调用 <code>connection.addLoginedUser</code>。 </p>
+<p>组件里的 send，encode reponse 的 message，然后交给 schedule 组件的 schedule。 </p>
+<h3 id="hybridconnector-的实现"><a href="#hybridconnector-的实现" class="headerlink" title="hybridconnector 的实现"></a>hybridconnector 的实现</h3><p>connectors/hybridconnector.js 以及connectors/hybird。hyrbird 实现了原生 Socket 和 WebSocket 两种。 </p>
+<p><code>hybridconnector.start</code> 里会 <code>this.tcpServer=net.createServer</code>，然后把以这个 <code>tcpServer</code> 为参数创建一个 switcher。之后在 switcher 的 connection 事件里将 <code>tcpsocket</code> 装进 <code>hybridsocket</code>。 </p>
+<h4 id="hybrid-switcher-js"><a href="#hybrid-switcher-js" class="headerlink" title="hybrid/switcher.js"></a>hybrid/switcher.js</h4><p>switcher 构造函数接受一个 server 参数，并创建 <code>this.wsprocessor</code> 和 <code>this.tcpprocessor</code>。 </p>
+<p>switcher 监听参数 server 的 connection 事件，事件处理函数里监听原生 socket 的 data 事件，判断 data 是否有 HTTP 头，如果有，则调用 <code>wsprocessor.add</code>，这个 <code>add</code> 会向外 emit ‘connection’（事件参数为原生 socket），并向 socket emit ‘data’ 事件；否则非HTTP，则调用 <code>tcpprocessor.add</code>，这个 add 会以刚才的原生 socket 为参数创建一个 tcpsocket，同时向 tcpprocessor emit ‘connection’（事件参数为原生 tcpsocket）、向这个原生 socket emit ‘data’ 事件。 </p>
+<p>switcher也监听了 <code>this.wsprocessor</code> 和 <code>this.tcpprocessor</code> 的 connection 事件，处理为向 switcher 自己 emit ‘connection’。总结，switcher 的职责，将 socket 的字节流 data 拼成包，以 message 事件向外 emit 一个个的完成包 msg。 </p>
+<p>刚才提到的 tcpsocket.js 这里处理原生 socket 的操作。监听了原生 socket 的 ‘data’、’end’、’error’、’close’ 事件。例如在 ‘data’ 处理时，当读入的流长度够一个包的 body 后就向 tcpsocket emit ‘message’。 </p>
+<h4 id="hybridsocket-js"><a href="#hybridsocket-js" class="headerlink" title="hybridsocket.js"></a>hybridsocket.js</h4><p>将 Socket 和 WebSocket 封装为统一接口。构造函数里接受一个 id 和 socket 参数。 </p>
+<p><code>hybridsocket</code> 监听 <code>tcpsocket</code> 的 ‘message’ 事件，将 msg decode，之后处理。例如 <code>Package.TYPE_DATA</code> 类型的 msg，就将这个 msg 再向 <code>hybridsocket</code> 自己 emit 一个 ‘message’ 事件，其他可能是 ‘handshake’ 或 ‘heartbeat’ 事件。 </p>
+<h3 id="server-组件"><a href="#server-组件" class="headerlink" title="server 组件"></a>server 组件</h3><p>官方描述如下“模块使服务器具备处理客户端请求的能力。该模块主要实现了 filter 服务，根据当前服务器类型，加载对应 handler 目录下的代码，并决定一个请求应该是在当前服务器处理还是应该路由给其他服务器处理。”，下面看看代码流程。 </p>
+<p>组件的start里初始化filter和handler。 </p>
+<h2 id="服务器之间的通信"><a href="#服务器之间的通信" class="headerlink" title="服务器之间的通信"></a>服务器之间的通信</h2><h2 id="框架调用"><a href="#框架调用" class="headerlink" title="框架调用"></a>框架调用</h2><h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><h3 id="session-组件（components-session-js）"><a href="#session-组件（components-session-js）" class="headerlink" title="session 组件（components/session.js）"></a>session 组件（components/session.js）</h3><p>session 组件直接用的 <code>common/service/sessionService</code>。 </p>
+<h3 id="sessionService"><a href="#sessionService" class="headerlink" title="sessionService"></a>sessionService</h3><h4 id="Session（object）"><a href="#Session（object）" class="headerlink" title="Session（object）"></a>Session（object）</h4><p>Session 里维护的 socket 和 user 信息的之间的对应关系。每个 socket 有个对应的 Session，验证用户身份后就将他们绑定。 </p>
+<p>Session 构造函数接受参数 <code>socket id\frontendId\socket\service</code>。 </p>
+<p>Session通过 <code>bind\unbind</code> 函数将 uid 绑到 this.uid 里，并 emit ‘bind’’unbind’ 事件。 </p>
+<p>Session的 <code>set\get</code> 函数来给 Session 设取值，由 <code>this.settings</code> 维护。 </p>
+<p>Session的 <code>send\sendBatch</code> 都是直接通过构造时传入的那个 socket 来操作。 </p>
+<h4 id="MockLocalSession（object）"><a href="#MockLocalSession（object）" class="headerlink" title="MockLocalSession（object）"></a>MockLocalSession（object）</h4><h4 id="SessionService（object）"><a href="#SessionService（object）" class="headerlink" title="SessionService（object）"></a>SessionService（object）</h4><p>负责对 Session 的管理。构造函数里将 <code>this.sessions</code> 和 <code>this.uidMap</code> 初始为空表。 </p>
+<p>SessionService 的 <code>create</code> 负责 new Session，并放到 <code>this.sessions</code> 里。 </p>
+<p><code>bind\unbind</code> 函数负责将传入的 siduid 对应绑定到 <code>this.sessions\this.uidMap</code> 里。<code>uidMap</code> 里每个元素是个数组，所以每个 uid 可以对应多个 session？（这个以后再具体了解下） </p>
+<p><code>sendMessage\sendMessageByUid</code> 根据 siduid 往对应的 session 或 sessions 发消息。 </p>
+<p>其他函数不一一列举了。  </p>
+<h3 id="session的使用"><a href="#session的使用" class="headerlink" title="session的使用"></a>session的使用</h3><p>看了下 chatofpomelo 里，是在 connector/handler/entryHandler.js 里的 <code>enter</code> 函数，直接用了 <code>session.bind</code>。简单用法就是在自己项目的验证 uid 后自己绑定。 </p>
+<h2 id="pomelo-rpc"><a href="#pomelo-rpc" class="headerlink" title="pomelo-rpc"></a>pomelo-rpc</h2><h3 id="rpc-client"><a href="#rpc-client" class="headerlink" title="rpc-client"></a>rpc-client</h3><h3 id="rpc-server"><a href="#rpc-server" class="headerlink" title="rpc-server"></a>rpc-server</h3><p>lib/rpc-server/server 将远程调用处理下，加到 <code>opts.services</code> 里，然后通过 gateway 来 listen 端口和处理 message。 </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/源码分析/">源码分析</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2013/09/05/13-pomelo-read-source-2/" data-title="Pomelo 0.5.5 源码分析（2）-通信 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
+  <strong>上一篇：</strong><br/>
+  <span>
+  新博客和新工作</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2013/08/15/13-pomelo-read-source-1/"  title="Pomelo 0.5.5 源码分析（1）-组件">
+ <strong>下一篇：</strong><br/> 
+ <span>Pomelo 0.5.5 源码分析（1）-组件
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2013/09/05/13-pomelo-read-source-2/" data-title="Pomelo 0.5.5 源码分析（2）-通信" data-url="http://blog.clawz.me/2013/09/05/13-pomelo-read-source-2/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端与服务器的通信"><span class="toc-number">1.</span> <span class="toc-text">客户端与服务器的通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#connector-组件（components-connector-js）"><span class="toc-number">1.1.</span> <span class="toc-text">connector 组件（components/connector.js）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hybridconnector-的实现"><span class="toc-number">1.2.</span> <span class="toc-text">hybridconnector 的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hybrid-switcher-js"><span class="toc-number">1.2.1.</span> <span class="toc-text">hybrid/switcher.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hybridsocket-js"><span class="toc-number">1.2.2.</span> <span class="toc-text">hybridsocket.js</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#server-组件"><span class="toc-number">1.3.</span> <span class="toc-text">server 组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器之间的通信"><span class="toc-number">2.</span> <span class="toc-text">服务器之间的通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#框架调用"><span class="toc-number">3.</span> <span class="toc-text">框架调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session"><span class="toc-number">4.</span> <span class="toc-text">session</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#session-组件（components-session-js）"><span class="toc-number">4.1.</span> <span class="toc-text">session 组件（components/session.js）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sessionService"><span class="toc-number">4.2.</span> <span class="toc-text">sessionService</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Session（object）"><span class="toc-number">4.2.1.</span> <span class="toc-text">Session（object）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MockLocalSession（object）"><span class="toc-number">4.2.2.</span> <span class="toc-text">MockLocalSession（object）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SessionService（object）"><span class="toc-number">4.2.3.</span> <span class="toc-text">SessionService（object）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session的使用"><span class="toc-number">4.3.</span> <span class="toc-text">session的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pomelo-rpc"><span class="toc-number">5.</span> <span class="toc-text">pomelo-rpc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-client"><span class="toc-number">5.1.</span> <span class="toc-text">rpc-client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc-server"><span class="toc-number">5.2.</span> <span class="toc-text">rpc-server</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>6</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
