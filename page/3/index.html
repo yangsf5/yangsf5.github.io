@@ -69,6 +69,27 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
+    <a href="/2013/12/06/13-game-cluster-design-detail-3/" title="集群实现细节（3）-DB 集群" itemprop="url">
+  
+    <h1 itemprop="name">集群实现细节（3）-DB 集群</h1>
+    
+     
+           <p itemprop="description" >纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
+如果每个玩家 1M 数据，总约 9765G，不算热备，需要 81</p>
+        
+    
+    <time datetime="2013-12-06T08:53:00.000Z" itemprop="datePublished">2013-12-06</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
     <a href="/2013/12/05/13-mongodb-research/" title="了解 MongoDB" itemprop="url">
   
     <h1 itemprop="name">了解 MongoDB</h1>
@@ -257,28 +278,6 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 
 
 
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2013/09/30/13-mobile-game-cluster-design/" title="休闲手游服务器集群扩展思考" itemprop="url">
-  
-    <h1 itemprop="name">休闲手游服务器集群扩展思考</h1>
-    
-     
-           <p itemprop="description" >目标能横向扩展，架构要简单，能做到负载均衡，避免单节点负载太轻的资源浪费。 
-数据存储的 DB 集群数据存储类型有多种。 
-非交互性的个人数据可通过简单的 ID 分段。ID 为 1~10000 的玩家个人数据存储在 DB1，ID 为 10001~20000 的玩家个人数据存储在 </p>
-        
-    
-    <time datetime="2013-09-30T02:46:00.000Z" itemprop="datePublished">2013-09-30</time>
-  </a>
-</section>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix unexpand">
     <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
@@ -347,7 +346,7 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 		  
 		
 		  
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>11</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>12</sup></a></li>
 		  
 		
 		  

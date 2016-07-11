@@ -256,16 +256,15 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2013/12/06/13-game-cluster-design-detail-3/" title="集群实现细节（3）-DB 集群" itemprop="url">
+    <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">
   
-    <h1 itemprop="name">集群实现细节（3）-DB 集群</h1>
+    <h1 itemprop="name">集群实现细节（4）-冷热数据划分及同步</h1>
     
      
-           <p itemprop="description" >纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
-如果每个玩家 1M 数据，总约 9765G，不算热备，需要 81</p>
+           <p itemprop="description" >玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 </p>
         
     
-    <time datetime="2013-12-06T08:53:00.000Z" itemprop="datePublished">2013-12-06</time>
+    <time datetime="2013-12-13T07:58:00.000Z" itemprop="datePublished">2013-12-13</time>
   </a>
 </section>
 
@@ -342,7 +341,7 @@
 		  
 		
 		  
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>11</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>12</sup></a></li>
 		  
 		
 		  

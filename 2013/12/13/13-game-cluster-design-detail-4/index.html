@@ -4,67 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>用「微信读书 APP」3 个半月看完 14 本书 | 三疯的技术博客</title>
+    <title>集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="看完了这 14 本书自从 2016 年 2 月初开始用「微信读书 APP」来看《微信力量》到现在，3 个半月左右时间看完了 14 本书：
-
-《微信力量》
-《微信思维》
-《微信帝国》
-《领导梯队》
-《MacTalk 人生元编程》
-《MacTalk 跨越边界》
-《腾讯方法》
-《激荡三十年（上卷）》
-《激荡三十年（下卷）》
-《30 年后，你拿什么养活自己？》
-《生命不息，折腾不止》
-《复盘》
-《从 0">
+    <meta name="description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
+观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用「微信读书 APP」3 个半月看完 14 本书">
-<meta property="og:url" content="http://blog.clawz.me/2016/05/24/wei-xin-du-shu-app-tui-jian/index.html">
+<meta property="og:title" content="集群实现细节（4）-冷热数据划分及同步">
+<meta property="og:url" content="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="看完了这 14 本书自从 2016 年 2 月初开始用「微信读书 APP」来看《微信力量》到现在，3 个半月左右时间看完了 14 本书：
-
-《微信力量》
-《微信思维》
-《微信帝国》
-《领导梯队》
-《MacTalk 人生元编程》
-《MacTalk 跨越边界》
-《腾讯方法》
-《激荡三十年（上卷）》
-《激荡三十年（下卷）》
-《30 年后，你拿什么养活自己？》
-《生命不息，折腾不止》
-《复盘》
-《从 0">
-<meta property="og:image" content="http://blog.clawz.me/images/wei-xin-du-shu-14-ben.png">
-<meta property="og:updated_time" content="2016-06-26T10:26:47.000Z">
+<meta property="og:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
+观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+<meta property="og:updated_time" content="2016-07-11T12:35:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用「微信读书 APP」3 个半月看完 14 本书">
-<meta name="twitter:description" content="看完了这 14 本书自从 2016 年 2 月初开始用「微信读书 APP」来看《微信力量》到现在，3 个半月左右时间看完了 14 本书：
-
-《微信力量》
-《微信思维》
-《微信帝国》
-《领导梯队》
-《MacTalk 人生元编程》
-《MacTalk 跨越边界》
-《腾讯方法》
-《激荡三十年（上卷）》
-《激荡三十年（下卷）》
-《30 年后，你拿什么养活自己？》
-《生命不息，折腾不止》
-《复盘》
-《从 0">
-<meta name="twitter:image" content="http://blog.clawz.me/images/wei-xin-du-shu-14-ben.png">
+<meta name="twitter:title" content="集群实现细节（4）-冷热数据划分及同步">
+<meta name="twitter:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
+观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -115,14 +74,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/05/24/wei-xin-du-shu-app-tui-jian/" title="用「微信读书 APP」3 个半月看完 14 本书" itemprop="url">用「微信读书 APP」3 个半月看完 14 本书</a>
+      <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">集群实现细节（4）-冷热数据划分及同步</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2016-05-24T15:28:00.000Z" itemprop="datePublished"> 发表于 2016-05-24</time>
+    <time datetime="2013-12-13T07:58:00.000Z" itemprop="datePublished"> 发表于 2013-12-13</time>
     
   </p>
 </header>
@@ -131,40 +90,30 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#看完了这-14-本书"><span class="toc-number">1.</span> <span class="toc-text">看完了这 14 本书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大概功能体验"><span class="toc-number">2.</span> <span class="toc-text">大概功能体验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个意外使用"><span class="toc-number">3.</span> <span class="toc-text">一个意外使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家数据在-Redis-与-MySQL-之间的同步"><span class="toc-number">1.</span> <span class="toc-text">玩家数据在 Redis 与 MySQL 之间的同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从本质出发-Review-我们的存储架构"><span class="toc-number">2.</span> <span class="toc-text">从本质出发 Review 我们的存储架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他架构展望"><span class="toc-number">4.</span> <span class="toc-text">其他架构展望</span></a></li></ol>
 		
 		</div>
 		
-		<p><img src="/images/wei-xin-du-shu-14-ben.png" alt="读了14本"></p>
-<h2 id="看完了这-14-本书"><a href="#看完了这-14-本书" class="headerlink" title="看完了这 14 本书"></a>看完了这 14 本书</h2><p>自从 2016 年 2 月初开始用「微信读书 APP」来看《微信力量》到现在，3 个半月左右时间看完了 14 本书：</p>
+		<h2 id="玩家数据在-Redis-与-MySQL-之间的同步"><a href="#玩家数据在-Redis-与-MySQL-之间的同步" class="headerlink" title="玩家数据在 Redis 与 MySQL 之间的同步"></a>玩家数据在 Redis 与 MySQL 之间的同步</h2><p>由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ </p>
+<p>观察需求特性，玩家上线加载到 Redis 做 Cache、定时更新持久层、玩家离线时清掉 Cache 并更新到持久层，都是 Redis 和 MySQL 之间的数据交互。这些可以放到一个服务里，单进程实现，或者集成到现在的逻辑服务器里。 </p>
+<p>方便实现，做下限制。玩家登陆的逻辑服务器记为他的 owner 服务器，每个玩家数据的 Redis/MySQL 同步只由他 owner 来做。 这样问题就简化了。 </p>
+<p>这里有些做法是突然想到的，就像《暗时间》里提到的联想式的，而不是归纳演绎的。最近在看《暗时间》，好书，里边就提到边写边思考，思考时“大脑内存”有上限的，边写就能把部分思考分支换出笔记这种“硬盘”上，然后大脑专心思考其中一两个分支，想的差不多，再回过头将“笔记硬盘”上的数据换入“大脑内存”……将正在思考的东西写博客的习惯已经形成一段时间了，看了书后，更深切体会到这种好处。 </p>
+<p>如果逻辑服务器宕机，它上边的玩家就掉线了，而这台逻辑服务器是不能对这些玩家做离线数据持久化的。这种情况需要进一步思考TODO。另外之前这种玩家怎么标记为离线，需要再想一遍，也TODO了。 </p>
+<h2 id="从本质出发-Review-我们的存储架构"><a href="#从本质出发-Review-我们的存储架构" class="headerlink" title="从本质出发 Review 我们的存储架构"></a>从本质出发 Review 我们的存储架构</h2><p>不要走的太远而忘了为什么出发，从本质上思考，弃掉那些不必要的思考分支，简化问题。 </p>
+<p>本质我们的架构是为实现游戏的玩法目标来做的，另一方面我们考虑开发成本、维护成本、机器成本。好的架构是权衡目标实现程度和这些成本的耗费。 </p>
+<p>目标是实现同一国家的玩家不分区分服。之前缓存和持久化都是用 Redis 来做，开发成本和维护成本都挺低的。但是需要很多机器。现在控制机器成本，所以需要分析我们数据的特点，将冷数据放到 MySQL 这种机器需求量少的数据库。具体到表的分析这里就不方便贴了。说下大概分类： </p>
 <ul>
-<li>《微信力量》</li>
-<li>《微信思维》</li>
-<li>《微信帝国》</li>
-<li>《领导梯队》</li>
-<li>《MacTalk 人生元编程》</li>
-<li>《MacTalk 跨越边界》</li>
-<li>《腾讯方法》</li>
-<li>《激荡三十年（上卷）》</li>
-<li>《激荡三十年（下卷）》</li>
-<li>《30 年后，你拿什么养活自己？》</li>
-<li>《生命不息，折腾不止》</li>
-<li>《复盘》</li>
-<li>《从 0 到 1》</li>
-<li>《硅谷钢铁侠》</li>
+<li>（1）离线玩家的冷数据，离线玩家的私人数据，不需也不能与别人交互的； </li>
+<li>（2）离线玩家的热数据，例如名字，好友是想看到离线好友的名字的； </li>
+<li>（3）在线玩家的一直更新的数据，例如经验值，游戏货币等； </li>
+<li>（4）在线玩家的到强实时玩法时才更新的数据。 </li>
 </ul>
-<p>这个欣慰的成果，我认为归功于这个 APP 的体验好，使用起来很便利。注意，我不是一个专业产品经理，所以下边的体验只局限于一个稍微爱读点书人的个人使用感受，而非专业的产品评测方面的体验报告。</p>
-<h2 id="大概功能体验"><a href="#大概功能体验" class="headerlink" title="大概功能体验"></a>大概功能体验</h2><p>微信出品，直接用微信登录，不需要另外再注册账号了。</p>
-<p>微信出品，直接关联微信关系链，有个好友排名。排名是根据阅读时长来的，这个排名本身不重要，但是每次看排行时就有这个画面“咦，这么巧，你也在看书啊？”、“恩，是啊，好巧”，感觉挺好的，感觉你不是一个人，不是一个人在看。</p>
-<p>自带书城，类似于亚马逊上的 Kindle 电子书商店。读书这个 APP 里买书用的是 APP 自己的货币——书币，可以用微信很方便的充值为 1:1 的书币。另外买书还有很多种方式，例如买一赠一，就是自己买完一本可以免费送给好友一本；再例如赠一得一，就是免费送好友一本，还有接受了，自己再免费得一本。还有直接购买免费书这个当然也是有的。</p>
-<p>阅读时长可以兑换书币，兑换规则是“读书 30 分钟可兑换 1 书币。每周最多兑换 10 书币”。我每周看 5 个小时以上，就是每周能兑换满 10 个书币，看完这么多本我到现在还没有自己掏过腰包。当然，咱又不指着这个财务自由，只是一种白手起家的仪式感。也不完全是白手起家了，起步资金（书币）是 APP 首次登录有个随机红包，随出 33 块之多，后来 APP 又给每个人发了个定额的 20 块的红包。</p>
-<p>发现功能，这里能看见好友读的新书，可以理解为好友的读书动态。这里还有个本周热榜，这个是此 APP 全部用户范围的阅读排行。《硅谷钢铁侠》我就是从某周的榜单里发现的，后知后觉为时不晚。</p>
-<p>书架，就是自己的电子书放的地方。书都是一字排开的放在书架上。为了避免书架占的屏幕太长，看完的书我就设置为归档了，归档的书在一个集中的二级收纳框里。另外这个书架里的内容，好友是看的见的，所以有个下边的辅助功能。</p>
-<p>书还可以设置私密阅读。例如好基友 PY 哥重温《金瓶梅传奇》又不想让好友知道，他可以将这本书设置为私密阅读，这样 PY 哥的好友就不会从他的书架里发现这本书了，这本书也不会出现在好友的“发现”界面里了。这个功能我也用了，之前好奇《男人装》杂志里会是啥内容，瞄了两本，内容的品位太差，排版也惨不忍睹。然后这个东西还出现好友的“发现”界面里了，无力吐槽，不得不将之设为私密阅读。</p>
-<p>划线、做笔记、加书签这些电子阅读器的基本功能就不细说了。</p>
-<p>分享想法。可以很方便的在这个 APP 内分享自己的、看好友的想法，也可以很方便的分享到微信朋友圈等。这个我目前用的不多。</p>
-<h2 id="一个意外使用"><a href="#一个意外使用" class="headerlink" title="一个意外使用"></a>一个意外使用</h2><p>我现在维护一个共同学习的小群，阅读是群内主要内容。刚好「微信读书 APP」上自带一个阅读时长的统计，群里的阅读打卡目标就简单粗暴的定为大家每周在「微信读书 APP」上至少阅读两个半小时，大约是每个工作日阅读半小时。时间要求的比较短，是因为考虑到大家一般还会用其他介质来阅读、学习。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>用什么东西做什么事情，每个人都有自己的评估，而且单个人在人生每个阶段对同一件事的评估也是不一样的。所以，我不试图去说服大家做什么事情，而只是让大家了解一个产品，做选择时或许可以做下参考。</p>
+<p>（1）里的数据无疑问放在 MySQL 里。（2）里的数据还得根据情况看是否一致放在 Redis 里，即离线的玩家这部分数据也放在 Redis 里。（3）里的数据无疑问在线是放到 Redis 里。（4）里的数据可以根据情况考虑下延迟加载什么的，即玩家上线时这部分数据不马上加载到 Redis，而是等玩家开始这个玩法时才从 MySQL 里加载到 Redis 里。这个需要考虑这个玩法的数据量以及是否玩家参与度高。 </p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>先了解 MySQL 单表数据上限、然后 MySQL 单库上限。这里的上限指不影响效率的上限，而不是物理上限。拿到上限数据后，做预分库分表。分库分表也要好好想想。 </p>
+<p>查了下，MySQL 5.1里 InnoDB 引擎表空间最大容量为 64TB。在查我们公司服务器配置表里硬盘，最低有 100G 的，最高 600 多 G 的。 </p>
+<p>初步确定 MySQL 的 sharding 和 partition 为这样：不同物理机之间的 sharding 为分个大的 ID 段，单个物理机上即单库内的如果表还是很大就做自己的 partition。最终看上线怎么定，再定这个跨机 sharding 的 ID 段长度，至于单机的 partition，对代码来说是不需要管的，运维根据性能搞就行了。 </p>
+<p>先简单算下，每人 100k，500w 人一个 sharding，需要大约 500G 空间。 </p>
+<h2 id="其他架构展望"><a href="#其他架构展望" class="headerlink" title="其他架构展望"></a>其他架构展望</h2><p>有单机内容；需要联网时才联网；弱联网时弱联网，强实时时做强实时联网。一直纠结这个会不会影响现在的存储架构，但是想了下，不大影响，变的只是链接形式，玩家数据处理还是一样的。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -172,7 +121,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/工具/">工具</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -182,7 +131,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2016/05/24/wei-xin-du-shu-app-tui-jian/" data-title="用「微信读书 APP」3 个半月看完 14 本书 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -196,18 +145,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/06/10/kuai-su-hui-fu-bei-da-duan-de-si-kao/" title="如何快速恢复被打断的思考">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  如何快速恢复被打断的思考</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2016/01/05/2015-zong-jie/"  title="不按常理的 2015 年终总结">
+<a href="/2013/12/06/13-game-cluster-design-detail-3/"  title="集群实现细节（3）-DB 集群">
  <strong>下一篇：</strong><br/> 
- <span>不按常理的 2015 年终总结
+ <span>集群实现细节（3）-DB 集群
 </span>
 </a>
 </div>
@@ -216,7 +165,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/05/24/wei-xin-du-shu-app-tui-jian/" data-title="用「微信读书 APP」3 个半月看完 14 本书" data-url="http://blog.clawz.me/2016/05/24/wei-xin-du-shu-app-tui-jian/"></div>
+	<div class="ds-thread" data-thread-key="2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步" data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/"></div>
 </section>
 
 
@@ -226,7 +175,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#看完了这-14-本书"><span class="toc-number">1.</span> <span class="toc-text">看完了这 14 本书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大概功能体验"><span class="toc-number">2.</span> <span class="toc-text">大概功能体验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个意外使用"><span class="toc-number">3.</span> <span class="toc-text">一个意外使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家数据在-Redis-与-MySQL-之间的同步"><span class="toc-number">1.</span> <span class="toc-text">玩家数据在 Redis 与 MySQL 之间的同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从本质出发-Review-我们的存储架构"><span class="toc-number">2.</span> <span class="toc-text">从本质出发 Review 我们的存储架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他架构展望"><span class="toc-number">4.</span> <span class="toc-text">其他架构展望</span></a></li></ol>
  
   </div>
 
