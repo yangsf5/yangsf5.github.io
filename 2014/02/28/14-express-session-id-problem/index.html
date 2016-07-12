@@ -4,26 +4,41 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>pure virtual method called | 三疯的技术博客</title>
+    <title>Express 的 session 中间件 sessionID 问题 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
+    <meta name="description" content="session 中间件里的 sessionID（以下简称sid）的算法为 24byte 的全随机。sid 重复的可能性比较小，但理论上还是有重复的可能。
+session 中间件的 session 维护流程为： 
+
+新 session 的创建 
+
+将 option 里配的 sessionStore 挂到 req 上； 
+修改 res.end 函数，在原函数基础上加入 req.session.save">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pure virtual method called">
-<meta property="og:url" content="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/index.html">
+<meta property="og:title" content="Express 的 session 中间件 sessionID 问题">
+<meta property="og:url" content="http://blog.clawz.me/2014/02/28/14-express-session-id-problem/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
-<meta property="og:updated_time" content="2016-06-27T16:11:23.000Z">
+<meta property="og:description" content="session 中间件里的 sessionID（以下简称sid）的算法为 24byte 的全随机。sid 重复的可能性比较小，但理论上还是有重复的可能。
+session 中间件的 session 维护流程为： 
+
+新 session 的创建 
+
+将 option 里配的 sessionStore 挂到 req 上； 
+修改 res.end 函数，在原函数基础上加入 req.session.save">
+<meta property="og:updated_time" content="2016-07-12T06:09:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pure virtual method called">
-<meta name="twitter:description" content="今天出现一个报错pure virtual method called，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。
-我今天的错误是make之前没有make clean，导致派生类的实现还是以前的版本。">
+<meta name="twitter:title" content="Express 的 session 中间件 sessionID 问题">
+<meta name="twitter:description" content="session 中间件里的 sessionID（以下简称sid）的算法为 24byte 的全随机。sid 重复的可能性比较小，但理论上还是有重复的可能。
+session 中间件的 session 维护流程为： 
+
+新 session 的创建 
+
+将 option 里配的 sessionStore 挂到 req 上； 
+修改 res.end 函数，在原函数基础上加入 req.session.save">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +89,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2008/12/10/08-pure-virtual-method-called/" title="pure virtual method called" itemprop="url">pure virtual method called</a>
+      <a href="/2014/02/28/14-express-session-id-problem/" title="Express 的 session 中间件 sessionID 问题" itemprop="url">Express 的 session 中间件 sessionID 问题</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2008-12-10T03:00:00.000Z" itemprop="datePublished"> 发表于 2008-12-10</time>
+    <time datetime="2014-02-28T07:35:00.000Z" itemprop="datePublished"> 发表于 2014-02-28</time>
     
   </p>
 </header>
@@ -94,8 +109,27 @@
 		
 		</div>
 		
-		<p>今天出现一个报错<code>pure virtual method called</code>，错误的意思调用了抽象基类的函数。一般是因为派生类没重写这个纯虚函数。</p>
-<p>我今天的错误是<code>make</code>之前没有<code>make clean</code>，导致派生类的实现还是以前的版本。</p>
+		<p>session 中间件里的 sessionID（以下简称sid）的算法为 24byte 的全随机。sid 重复的可能性比较小，但理论上还是有重复的可能。</p>
+<p>session 中间件的 session 维护流程为： </p>
+<ul>
+<li><p>新 session 的创建 </p>
+<ol>
+<li>将 option 里配的 sessionStore 挂到 req 上； </li>
+<li>修改 <code>res.end</code> 函数，在原函数基础上加入 <code>req.session.save</code> 操作，就是往 sessionStore 里存 session； </li>
+<li>新 session 的接入，因为是新 session，所以 cookie 里没有 sid 信息。随机一个 sid，以此 sid 来创建 session，然后将 session 绑到 req 上；然后将 req 和 res 交给下个中间件或流程处理。 </li>
+</ol>
+</li>
+<li><p>旧 session 接入 </p>
+<ol>
+<li>同上边的第 1 步； </li>
+<li>同上边的第 2 步； </li>
+<li>cookie 里有 sid，根据这个 sid 去 sessionStore 里取回 session 信息；如果 session 过期就取不到 session了，就像上边的第 3 步里那样重新创建一个 session。 </li>
+</ol>
+</li>
+</ul>
+<p>为了完全消除 sid 的重复性带来的影响，就要检查新创建的 sid 是否已经存在与 sessionStore 里了。 </p>
+<p>session 中间件的结构在 Express 的以后版本中还会修改，所以我不想动 session 中间件的源码。于是只能在新 session 创建后的我自己的逻辑流程中来处理。逻辑流程中，当 HTTP 包为登陆验证包时，将 session 中间件给创建的 session 的 sid 拿到 sessionStore 里去查下是否已被使用，如果使用就干掉当前 session，并通知当前客户端重试。 </p>
+<p>干掉当前 session 有个技巧，就是直接 <code>req.session=null;</code> 这样即可，因为修改后的 <code>res.end</code> 里，判断如果 <code>req.session</code> 未定义，就不会再去调用 <code>req.session.save</code> 了。当前 session 是一定不能让他 <code>save</code> 的，否则就拿当前用户的信息覆盖了之前用此 sid 的用户，造成那个用户后续逻辑混乱。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -103,7 +137,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  <a class="article-category-link" href="/categories/Node-js/">Node.js</a>
 </div>
 
 
@@ -113,7 +147,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/" data-title="pure virtual method called | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/02/28/14-express-session-id-problem/" data-title="Express 的 session 中间件 sessionID 问题 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -127,18 +161,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2008/12/14/08-huan-chong-qu-mei-shua-xin/" title="缓冲区没有刷新">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  缓冲区没有刷新</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2008/11/21/08-bian-chang-jie-gou-ti/"  title="变长结构体的技巧">
+<a href="/2014/02/19/14-js-has-not-block-scope/"  title="JavaScript 变量不支持块级作用域">
  <strong>下一篇：</strong><br/> 
- <span>变长结构体的技巧
+ <span>JavaScript 变量不支持块级作用域
 </span>
 </a>
 </div>
@@ -147,7 +181,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2008/12/10/08-pure-virtual-method-called/" data-title="pure virtual method called" data-url="http://blog.clawz.me/2008/12/10/08-pure-virtual-method-called/"></div>
+	<div class="ds-thread" data-thread-key="2014/02/28/14-express-session-id-problem/" data-title="Express 的 session 中间件 sessionID 问题" data-url="http://blog.clawz.me/2014/02/28/14-express-session-id-problem/"></div>
 </section>
 
 
