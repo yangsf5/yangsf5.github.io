@@ -4,26 +4,38 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客</title>
+    <title>Docker 应用调研 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+    <meta name="description" content="背景项目里编译打包客户端程序时经常出现问题，有环境不一致问题或者代码冲突问题。 
+之前了解过 Docker 可以应用环境作为一个一体化的服务来使用，所以想看看 Docker 是否能给我们客户端同学提供些方便。 
+主要关注点
+Docker 能运行在哪些操作系统，Mac、Linux、Windows？ 
+
+都可以，Docker 现在 release 到 0.10.0 版了，还没到 1.0 的正式版。官方">
 <meta property="og:type" content="article">
-<meta property="og:title" content="集群实现细节（4）-冷热数据划分及同步">
-<meta property="og:url" content="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/index.html">
+<meta property="og:title" content="Docker 应用调研">
+<meta property="og:url" content="http://blog.clawz.me/2014/04/26/14-docker-usage-research/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
-<meta property="og:updated_time" content="2016-07-11T12:35:15.000Z">
+<meta property="og:description" content="背景项目里编译打包客户端程序时经常出现问题，有环境不一致问题或者代码冲突问题。 
+之前了解过 Docker 可以应用环境作为一个一体化的服务来使用，所以想看看 Docker 是否能给我们客户端同学提供些方便。 
+主要关注点
+Docker 能运行在哪些操作系统，Mac、Linux、Windows？ 
+
+都可以，Docker 现在 release 到 0.10.0 版了，还没到 1.0 的正式版。官方">
+<meta property="og:updated_time" content="2016-07-12T06:40:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="集群实现细节（4）-冷热数据划分及同步">
-<meta name="twitter:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+<meta name="twitter:title" content="Docker 应用调研">
+<meta name="twitter:description" content="背景项目里编译打包客户端程序时经常出现问题，有环境不一致问题或者代码冲突问题。 
+之前了解过 Docker 可以应用环境作为一个一体化的服务来使用，所以想看看 Docker 是否能给我们客户端同学提供些方便。 
+主要关注点
+Docker 能运行在哪些操作系统，Mac、Linux、Windows？ 
+
+都可以，Docker 现在 release 到 0.10.0 版了，还没到 1.0 的正式版。官方">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -74,14 +86,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">集群实现细节（4）-冷热数据划分及同步</a>
+      <a href="/2014/04/26/14-docker-usage-research/" title="Docker 应用调研" itemprop="url">Docker 应用调研</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-12-13T07:58:00.000Z" itemprop="datePublished"> 发表于 2013-12-13</time>
+    <time datetime="2014-04-26T08:05:00.000Z" itemprop="datePublished"> 发表于 2014-04-26</time>
     
   </p>
 </header>
@@ -90,30 +102,26 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家数据在-Redis-与-MySQL-之间的同步"><span class="toc-number">1.</span> <span class="toc-text">玩家数据在 Redis 与 MySQL 之间的同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从本质出发-Review-我们的存储架构"><span class="toc-number">2.</span> <span class="toc-text">从本质出发 Review 我们的存储架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他架构展望"><span class="toc-number">4.</span> <span class="toc-text">其他架构展望</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要关注点"><span class="toc-number">2.</span> <span class="toc-text">主要关注点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论不乐观"><span class="toc-number">3.</span> <span class="toc-text">结论不乐观</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="玩家数据在-Redis-与-MySQL-之间的同步"><a href="#玩家数据在-Redis-与-MySQL-之间的同步" class="headerlink" title="玩家数据在 Redis 与 MySQL 之间的同步"></a>玩家数据在 Redis 与 MySQL 之间的同步</h2><p>由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ </p>
-<p>观察需求特性，玩家上线加载到 Redis 做 Cache、定时更新持久层、玩家离线时清掉 Cache 并更新到持久层，都是 Redis 和 MySQL 之间的数据交互。这些可以放到一个服务里，单进程实现，或者集成到现在的逻辑服务器里。 </p>
-<p>方便实现，做下限制。玩家登陆的逻辑服务器记为他的 owner 服务器，每个玩家数据的 Redis/MySQL 同步只由他 owner 来做。 这样问题就简化了。 </p>
-<p>这里有些做法是突然想到的，就像《暗时间》里提到的联想式的，而不是归纳演绎的。最近在看《暗时间》，好书，里边就提到边写边思考，思考时“大脑内存”有上限的，边写就能把部分思考分支换出笔记这种“硬盘”上，然后大脑专心思考其中一两个分支，想的差不多，再回过头将“笔记硬盘”上的数据换入“大脑内存”……将正在思考的东西写博客的习惯已经形成一段时间了，看了书后，更深切体会到这种好处。 </p>
-<p>如果逻辑服务器宕机，它上边的玩家就掉线了，而这台逻辑服务器是不能对这些玩家做离线数据持久化的。这种情况需要进一步思考TODO。另外之前这种玩家怎么标记为离线，需要再想一遍，也TODO了。 </p>
-<h2 id="从本质出发-Review-我们的存储架构"><a href="#从本质出发-Review-我们的存储架构" class="headerlink" title="从本质出发 Review 我们的存储架构"></a>从本质出发 Review 我们的存储架构</h2><p>不要走的太远而忘了为什么出发，从本质上思考，弃掉那些不必要的思考分支，简化问题。 </p>
-<p>本质我们的架构是为实现游戏的玩法目标来做的，另一方面我们考虑开发成本、维护成本、机器成本。好的架构是权衡目标实现程度和这些成本的耗费。 </p>
-<p>目标是实现同一国家的玩家不分区分服。之前缓存和持久化都是用 Redis 来做，开发成本和维护成本都挺低的。但是需要很多机器。现在控制机器成本，所以需要分析我们数据的特点，将冷数据放到 MySQL 这种机器需求量少的数据库。具体到表的分析这里就不方便贴了。说下大概分类： </p>
-<ul>
-<li>（1）离线玩家的冷数据，离线玩家的私人数据，不需也不能与别人交互的； </li>
-<li>（2）离线玩家的热数据，例如名字，好友是想看到离线好友的名字的； </li>
-<li>（3）在线玩家的一直更新的数据，例如经验值，游戏货币等； </li>
-<li>（4）在线玩家的到强实时玩法时才更新的数据。 </li>
+		<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>项目里编译打包客户端程序时经常出现问题，有环境不一致问题或者代码冲突问题。 </p>
+<p>之前了解过 <a href="https://www.docker.io/" target="_blank" rel="external">Docker</a> 可以应用环境作为一个一体化的服务来使用，所以想看看 Docker 是否能给我们客户端同学提供些方便。 </p>
+<h2 id="主要关注点"><a href="#主要关注点" class="headerlink" title="主要关注点"></a>主要关注点</h2><ul>
+<li><p>Docker 能运行在哪些操作系统，Mac、Linux、Windows？ </p>
+<blockquote>
+<p>都可以，Docker 现在 release 到 0.10.0 版了，还没到 1.0 的正式版。官方不推荐将当前的 Docker 运用在生产环境中。 </p>
+<p>Docker 内部开发是在 Ubuntu 上进行了，所以 Ubuntu 上支持最好。Mac 和 Windows 这些的 Docker 运行方式，现在是在操作系统上装虚拟机（如VirtualBox），再在虚拟机里运行使用 Docker。 </p>
+</blockquote>
+</li>
+<li><p>Docker 容器里能运行什么环境，Mac、Linux、Windows？ </p>
+<blockquote>
+<p>Docker 里能运行的系统称为 image，目前 image 大多是 Linux。这也挺正常的，Mac 和 Windows 都是商业收费的，怎么可能随便让搭建 image。 </p>
+</blockquote>
+</li>
 </ul>
-<p>（1）里的数据无疑问放在 MySQL 里。（2）里的数据还得根据情况看是否一致放在 Redis 里，即离线的玩家这部分数据也放在 Redis 里。（3）里的数据无疑问在线是放到 Redis 里。（4）里的数据可以根据情况考虑下延迟加载什么的，即玩家上线时这部分数据不马上加载到 Redis，而是等玩家开始这个玩法时才从 MySQL 里加载到 Redis 里。这个需要考虑这个玩法的数据量以及是否玩家参与度高。 </p>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>先了解 MySQL 单表数据上限、然后 MySQL 单库上限。这里的上限指不影响效率的上限，而不是物理上限。拿到上限数据后，做预分库分表。分库分表也要好好想想。 </p>
-<p>查了下，MySQL 5.1里 InnoDB 引擎表空间最大容量为 64TB。在查我们公司服务器配置表里硬盘，最低有 100G 的，最高 600 多 G 的。 </p>
-<p>初步确定 MySQL 的 sharding 和 partition 为这样：不同物理机之间的 sharding 为分个大的 ID 段，单个物理机上即单库内的如果表还是很大就做自己的 partition。最终看上线怎么定，再定这个跨机 sharding 的 ID 段长度，至于单机的 partition，对代码来说是不需要管的，运维根据性能搞就行了。 </p>
-<p>先简单算下，每人 100k，500w 人一个 sharding，需要大约 500G 空间。 </p>
-<h2 id="其他架构展望"><a href="#其他架构展望" class="headerlink" title="其他架构展望"></a>其他架构展望</h2><p>有单机内容；需要联网时才联网；弱联网时弱联网，强实时时做强实时联网。一直纠结这个会不会影响现在的存储架构，但是想了下，不大影响，变的只是链接形式，玩家数据处理还是一样的。 </p>
+<h2 id="结论不乐观"><a href="#结论不乐观" class="headerlink" title="结论不乐观"></a>结论不乐观</h2><p>所以我想用 Docker 来服务我们客户端环境搭建的话，image 的事情还得自己搞下。 </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -121,7 +129,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
+  <a class="article-category-link" href="/categories/工具/">工具</a>
 </div>
 
 
@@ -131,7 +139,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/04/26/14-docker-usage-research/" data-title="Docker 应用调研 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -145,18 +153,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/12/16/13-game-cluster-design-detail-5/" title="集群实现细节（5）-登陆流程修改">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  集群实现细节（5）-登陆流程修改</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/12/06/13-game-cluster-design-detail-3/"  title="集群实现细节（3）-DB 集群">
+<a href="/2014/04/14/14-ioc/"  title="控制反转">
  <strong>下一篇：</strong><br/> 
- <span>集群实现细节（3）-DB 集群
+ <span>控制反转
 </span>
 </a>
 </div>
@@ -165,7 +173,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步" data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/"></div>
+	<div class="ds-thread" data-thread-key="2014/04/26/14-docker-usage-research/" data-title="Docker 应用调研" data-url="http://blog.clawz.me/2014/04/26/14-docker-usage-research/"></div>
 </section>
 
 
@@ -175,7 +183,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家数据在-Redis-与-MySQL-之间的同步"><span class="toc-number">1.</span> <span class="toc-text">玩家数据在 Redis 与 MySQL 之间的同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从本质出发-Review-我们的存储架构"><span class="toc-number">2.</span> <span class="toc-text">从本质出发 Review 我们的存储架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他架构展望"><span class="toc-number">4.</span> <span class="toc-text">其他架构展望</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要关注点"><span class="toc-number">2.</span> <span class="toc-text">主要关注点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论不乐观"><span class="toc-number">3.</span> <span class="toc-text">结论不乐观</span></a></li></ol>
  
   </div>
 
