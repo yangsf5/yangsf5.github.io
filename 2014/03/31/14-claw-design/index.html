@@ -4,29 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客</title>
+    <title>claw 设计草稿 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
+    <meta name="description" content="目标参考云风 skynet，实现 Go 版本的开源服务器引擎。 
+细节服务按服务来拆模块的好处不说了。只说 Go 来的实现方式。Go 里有 channel 和 goroutine。消息队列和轻量级线程都天然解决了。 
+服务间的通信同进程内的服务之间通信，直接往对方 channel 发消息即可。不同进程里靠各进程自己的 harbor 服务来转发。harbor 服务来负责集群间的通信。 
+集群里设置一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pomelo 0.5.5 源码分析（1）-组件">
-<meta property="og:url" content="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/index.html">
+<meta property="og:title" content="claw 设计草稿">
+<meta property="og:url" content="http://blog.clawz.me/2014/03/31/14-claw-design/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
-<meta property="og:updated_time" content="2016-07-11T07:00:17.000Z">
+<meta property="og:description" content="目标参考云风 skynet，实现 Go 版本的开源服务器引擎。 
+细节服务按服务来拆模块的好处不说了。只说 Go 来的实现方式。Go 里有 channel 和 goroutine。消息队列和轻量级线程都天然解决了。 
+服务间的通信同进程内的服务之间通信，直接往对方 channel 发消息即可。不同进程里靠各进程自己的 harbor 服务来转发。harbor 服务来负责集群间的通信。 
+集群里设置一">
+<meta property="og:updated_time" content="2016-07-12T06:16:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pomelo 0.5.5 源码分析（1）-组件">
-<meta name="twitter:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
+<meta name="twitter:title" content="claw 设计草稿">
+<meta name="twitter:description" content="目标参考云风 skynet，实现 Go 版本的开源服务器引擎。 
+细节服务按服务来拆模块的好处不说了。只说 Go 来的实现方式。Go 里有 channel 和 goroutine。消息队列和轻量级线程都天然解决了。 
+服务间的通信同进程内的服务之间通信，直接往对方 channel 发消息即可。不同进程里靠各进程自己的 harbor 服务来转发。harbor 服务来负责集群间的通信。 
+集群里设置一">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +80,14 @@ createApp 时会调 Application.init 来做初始化。">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/08/15/13-pomelo-read-source-1/" title="Pomelo 0.5.5 源码分析（1）-组件" itemprop="url">Pomelo 0.5.5 源码分析（1）-组件</a>
+      <a href="/2014/03/31/14-claw-design/" title="claw 设计草稿" itemprop="url">claw 设计草稿</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-08-15T12:31:00.000Z" itemprop="datePublished"> 发表于 2013-08-15</time>
+    <time datetime="2014-03-31T03:09:00.000Z" itemprop="datePublished"> 发表于 2014-03-31</time>
     
   </p>
 </header>
@@ -93,35 +96,20 @@ createApp 时会调 Application.init 来做初始化。">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#chatofpomelo-的开启流程"><span class="toc-number">1.</span> <span class="toc-text">chatofpomelo 的开启流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件的挂载"><span class="toc-number">2.</span> <span class="toc-text">组件的挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">3.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附官方组件-Wiki"><span class="toc-number">3.1.</span> <span class="toc-text">附官方组件 Wiki</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#细节"><span class="toc-number">2.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#服务"><span class="toc-number">2.1.</span> <span class="toc-text">服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务间的通信"><span class="toc-number">2.2.</span> <span class="toc-text">服务间的通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组播"><span class="toc-number">2.3.</span> <span class="toc-text">组播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志"><span class="toc-number">2.4.</span> <span class="toc-text">日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#已实现的服务"><span class="toc-number">3.</span> <span class="toc-text">已实现的服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#master-和-harbor"><span class="toc-number">3.1.</span> <span class="toc-text">master 和 harbor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gate"><span class="toc-number">3.2.</span> <span class="toc-text">gate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web"><span class="toc-number">3.3.</span> <span class="toc-text">web</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目地址"><span class="toc-number">4.</span> <span class="toc-text">项目地址</span></a></li></ol>
 		
 		</div>
 		
-		<p>由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 </p>
-<h2 id="chatofpomelo-的开启流程"><a href="#chatofpomelo-的开启流程" class="headerlink" title="chatofpomelo 的开启流程"></a>chatofpomelo 的开启流程</h2><p><code>Pomelo.createApp</code> 出来 Application，然后 <code>Application.start</code> 就开启了。 </p>
-<p><code>createApp</code> 时会调 <code>Application.init</code> 来做初始化。 </p>
-<p><code>init</code> 里调 <code>AppUtil.defaultConfiguration</code> 来读入默认配置。例如从 master.json 里读入 master 配置（Application.master），从 servers.json 里读入服务器集群各进程的 type、host 和 port 配置（可以通过 <code>Application.get(&quot;__serverMap__&quot;)</code> 获取）。 </p>
-<h2 id="组件的挂载"><a href="#组件的挂载" class="headerlink" title="组件的挂载"></a>组件的挂载</h2><p>组件放在 components 目录下。各组件可以通过 <code>Pomelo.components</code> 或者直接通过 Pomelo 来按名取。也可以通过 <code>Application.components</code> 来按名取（每个组件的名字在自己的 name 属性里，通常为 JS 文件名加前后双下划线，例如 connector.js 的组件名为 <code>__connector__</code>）。 </p>
-<p>下面看下组件的挂载和运行。</p>
-<p>Pomelo 里会遍历 componets 目录里的各个 JS 文件，然后 require 到 Pomelo 里和 <code>Pomelo.components</code> 里。 </p>
-<p><code>Application.start</code> 里先调用 <code>AppUtil.loadDefaultComponents</code>，<code>loadDefaultComponents</code> 里会根据 <code>Application.serverType</code> 来 <code>Application.load</code> 需要的 components。 </p>
-<p><code>Application.load</code> 里会将 Pomelo 里的 components 放到自己的 components 里。 </p>
-<p><code>Application.start/stop/afterStart</code> 等方法会统一执行各 components 里的对应 <code>start/stop/afterStart</code>等方法。 </p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这篇发表后，在 Google 里搜了下（我的一点恶趣味：经常发表随笔后会看看搜索引擎收录了没）<code>Pomelo 源码分析 组件</code>，发现了 Pomelo 官方 Wiki 里关于组件的说明，奇怪之前准备看组件时没搜到。分析源码之前也浏览了下官方 Wiki，应该是偏向于了解大概了，各细节没了太大印象。 </p>
-<p>不过官方已经有了也没关系，随笔给人参考的价值变小后，就当自己的笔记吧。 </p>
-<p>另外网上也有些 Pomelo 的源码分析了，但是看了眼，跟我想要的不太一样。 </p>
-<h3 id="附官方组件-Wiki"><a href="#附官方组件-Wiki" class="headerlink" title="附官方组件 Wiki"></a>附官方组件 Wiki</h3><ul>
-<li><p>Pomelo-Framework 里的组件部分：</p>
-<blockquote>
-<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-Framework" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-Framework</a>   </p>
-</blockquote>
-</li>
-<li><p>Pomelo-组件：</p>
-<blockquote>
-<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6</a>   </p>
-</blockquote>
-</li>
-</ul>
+		<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>参考云风 skynet，实现 Go 版本的开源服务器引擎。 </p>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>按服务来拆模块的好处不说了。只说 Go 来的实现方式。Go 里有 channel 和 goroutine。消息队列和轻量级线程都天然解决了。 </p>
+<h3 id="服务间的通信"><a href="#服务间的通信" class="headerlink" title="服务间的通信"></a>服务间的通信</h3><p>同进程内的服务之间通信，直接往对方 channel 发消息即可。不同进程里靠各进程自己的 harbor 服务来转发。harbor 服务来负责集群间的通信。 </p>
+<p>集群里设置一个 master 服务来做全局的名字服务，主要用于登记和同步集群里各个进程开启的各个服务。所有 harbor 启动后向 master 注册自己，master 向所有 harbor 广播同步新加入的这个机器。 </p>
+<h3 id="组播"><a href="#组播" class="headerlink" title="组播"></a>组播</h3><p>经常需要向某几个服务广播一个消息，组播问题。multicast 服务来管理组播。 </p>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>使用 glog。 </p>
+<h2 id="已实现的服务"><a href="#已实现的服务" class="headerlink" title="已实现的服务"></a>已实现的服务</h2><h3 id="master-和-harbor"><a href="#master-和-harbor" class="headerlink" title="master 和 harbor"></a>master 和 harbor</h3><p>暂时 master 做为 harbor 的中心控制器的。后续会改进，做成 harbor 之间两两通信，减少对 master 的单点依赖。 </p>
+<h3 id="gate"><a href="#gate" class="headerlink" title="gate"></a>gate</h3><p>gate 用来做通常的网络监听用。目前的很简单，用户需要向这个服务器注册自己的包解析和处理器。 </p>
+<h3 id="web"><a href="#web" class="headerlink" title="web"></a>web</h3><p>web 负责 http 的监听，template 的加载 cache，几个通用函数的提取。 </p>
+<h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><p>项目地址：<code>https://github.com/yangsf5/claw</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -129,7 +117,7 @@ createApp 时会调 Application.init 来做初始化。">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/源码分析/">源码分析</a>
+  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
 </div>
 
 
@@ -139,7 +127,7 @@ createApp 时会调 Application.init 来做初始化。">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/03/31/14-claw-design/" data-title="claw 设计草稿 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -153,18 +141,18 @@ createApp 时会调 Application.init 来做初始化。">
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/09/05/13-pomelo-read-source-2/" title="Pomelo 0.5.5 源码分析（2）-通信">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  Pomelo 0.5.5 源码分析（2）-通信</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/08/12/13-nodejs-mobile-game-server-research/"  title="Node.js 手游服务器调研">
+<a href="/2014/02/28/14-express-session-id-problem/"  title="Express 的 session 中间件 sessionID 问题">
  <strong>下一篇：</strong><br/> 
- <span>Node.js 手游服务器调研
+ <span>Express 的 session 中间件 sessionID 问题
 </span>
 </a>
 </div>
@@ -173,7 +161,7 @@ createApp 时会调 Application.init 来做初始化。">
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件" data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/"></div>
+	<div class="ds-thread" data-thread-key="2014/03/31/14-claw-design/" data-title="claw 设计草稿" data-url="http://blog.clawz.me/2014/03/31/14-claw-design/"></div>
 </section>
 
 
@@ -183,7 +171,7 @@ createApp 时会调 Application.init 来做初始化。">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#chatofpomelo-的开启流程"><span class="toc-number">1.</span> <span class="toc-text">chatofpomelo 的开启流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件的挂载"><span class="toc-number">2.</span> <span class="toc-text">组件的挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">3.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附官方组件-Wiki"><span class="toc-number">3.1.</span> <span class="toc-text">附官方组件 Wiki</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#细节"><span class="toc-number">2.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#服务"><span class="toc-number">2.1.</span> <span class="toc-text">服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务间的通信"><span class="toc-number">2.2.</span> <span class="toc-text">服务间的通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组播"><span class="toc-number">2.3.</span> <span class="toc-text">组播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志"><span class="toc-number">2.4.</span> <span class="toc-text">日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#已实现的服务"><span class="toc-number">3.</span> <span class="toc-text">已实现的服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#master-和-harbor"><span class="toc-number">3.1.</span> <span class="toc-text">master 和 harbor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gate"><span class="toc-number">3.2.</span> <span class="toc-text">gate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web"><span class="toc-number">3.3.</span> <span class="toc-text">web</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目地址"><span class="toc-number">4.</span> <span class="toc-text">项目地址</span></a></li></ol>
  
   </div>
 
