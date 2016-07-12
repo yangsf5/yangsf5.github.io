@@ -4,29 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Facebook 接入 | 三疯的技术博客</title>
+    <title>JavaScript 变量不支持块级作用域 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
-如果为前端接入，需要封装出 JS 的接口。 
-接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
+    <meta name="description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
+后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
+后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Facebook 接入">
-<meta property="og:url" content="http://blog.clawz.me/2013/08/08/13-facebook-connect/index.html">
+<meta property="og:title" content="JavaScript 变量不支持块级作用域">
+<meta property="og:url" content="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
-如果为前端接入，需要封装出 JS 的接口。 
-接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
-<meta property="og:updated_time" content="2016-07-08T11:40:52.000Z">
+<meta property="og:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
+后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
+后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
+<meta property="og:updated_time" content="2016-07-12T05:53:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Facebook 接入">
-<meta name="twitter:description" content="需求我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 
-如果为前端接入，需要封装出 JS 的接口。 
-接入方式需求里涉及到了玩家间的利益交互，如这里的可以向好友送">
+<meta name="twitter:title" content="JavaScript 变量不支持块级作用域">
+<meta name="twitter:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
+后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
+后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/08/08/13-facebook-connect/" title="Facebook 接入" itemprop="url">Facebook 接入</a>
+      <a href="/2014/02/19/14-js-has-not-block-scope/" title="JavaScript 变量不支持块级作用域" itemprop="url">JavaScript 变量不支持块级作用域</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-08-08T04:53:00.000Z" itemprop="datePublished"> 发表于 2013-08-08</time>
+    <time datetime="2014-02-19T09:00:00.000Z" itemprop="datePublished"> 发表于 2014-02-19</time>
     
   </p>
 </header>
@@ -93,23 +93,17 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接入方式"><span class="toc-number">2.</span> <span class="toc-text">接入方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#server-side-接入"><span class="toc-number">2.1.</span> <span class="toc-text">server-side 接入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#client-side-接入"><span class="toc-number">2.2.</span> <span class="toc-text">client-side 接入</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附上被研究的代码"><span class="toc-number">2.</span> <span class="toc-text">附上被研究的代码</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>我方游戏服务器为一套 Node.js 框架下开发的，手机 App 前端为 JavaScript。现在需要将游戏接入 Facebook，要求能用 Facebook 登陆我方游戏，并可以取到玩家的 Facebook 好友等信息、可以向好友送礼，还可以向玩家 Facebook 增加游戏状态。 </p>
-<p>如果为前端接入，需要封装出 JS 的接口。 </p>
-<h2 id="接入方式"><a href="#接入方式" class="headerlink" title="接入方式"></a>接入方式</h2><p>需求里涉及到了玩家间的利益交互，如这里的可以向好友送礼。需要确认游戏里这些利益交互（现在的利益可能较弱，但需要考虑将来的利益交互规划）被外挂刷后是否对游戏有影响。 </p>
-<p>如果影响较大，例如刷了很多物品，让游戏失去平衡——RPG 里可能是装备特牛，休闲游戏可能是道具很多，更有利于冲击排行榜等。就需要将 Facebook 的接入方式定为 server-side 接入。如果影响较小，就无所谓，可以像单机游戏那样在前端做接入，Facebook 的好友信息等由前端传到我们服务器。 </p>
-<h3 id="server-side-接入"><a href="#server-side-接入" class="headerlink" title="server-side 接入"></a>server-side 接入</h3><p>官方的 <code>https://developers.facebook.com/docs/sdks/</code> 里收录的第三方 Node.js 的 SDK 在 <code>https://github.com/amachang/facebook-node-sdk</code> 。 </p>
-<p>这种是 Node.js 开的本地网站，然后本地网站可以开个网址做 Facebook 的接入验证，之后取玩家的 Facebook 信息，可以调封装好的 Facebook API。效果可以开代理看下 <code>http://claw-fb-off.herokuapp.com</code> 。 </p>
-<p>但是不知我们服务器的 Node.js 和前端 App 的 JS 之间是否支持这种网页式的交互。咨询了 Node.js 框架组的同学，表示不行，我自己没做过这方面的东西，所以还是要请游戏组同学看看。 </p>
-<p>另外咨询了众多项目组，做过接入的都是前端接入，还没有做过 server-side 接入的。 </p>
-<h3 id="client-side-接入"><a href="#client-side-接入" class="headerlink" title="client-side 接入"></a>client-side 接入</h3><ul>
-<li>官方提供 Native iOS 和 Android API 的 SDK。 </li>
-<li>另外也提供 JavaScript SDK（<code>https://developers.facebook.com/docs/reference/javascript/</code>），貌似也是网页形式，不知我们前端是否支持？ </li>
-<li>EziSocial-Plugin 为 C++ 编写，但是这个是收费的，游戏组确认要用吗？   </li>
-</ul>
+		<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。</p>
+<p>后边代码中变量 <code>originalHash</code> 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。</p>
+<p>后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 <code>originalHash</code> 作用域为 <code>function cookieSession(req, res, next)</code>，后边的 <code>res.writeHead</code> 里对他的访问就是闭包变量访问，是没有问题的。</p>
+<h2 id="附上被研究的代码"><a href="#附上被研究的代码" class="headerlink" title="附上被研究的代码"></a>附上被研究的代码</h2><p>因为代码较长也可能多次修改，这次使用 GitHub Gist 方式托管代码。</p>
+<p>虽然 GitHub Gist 做代码片段的版本控制很好使，但国内访问可能不稳定，当大家没看见下边的代码时，请自行科学上网，访问：<code>https://gist.github.com/yangsf5/9088398</code>。</p>
+<p>代码如下：</p>
+<script src="https://gist.github.com/yangsf5/9088398.js"></script>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -127,7 +121,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/08/08/13-facebook-connect/" data-title="Facebook 接入 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/" data-title="JavaScript 变量不支持块级作用域 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -141,18 +135,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/08/12/13-nodejs-mobile-game-server-research/" title="Node.js 手游服务器调研">
+ <a href="/2014/07/09/new-blog-and-new-job/" title="新博客和新工作">
   <strong>上一篇：</strong><br/>
   <span>
-  Node.js 手游服务器调研</span>
+  新博客和新工作</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/07/17/13-lazy-cook/"  title="懒人厨房">
+<a href="/2014/02/14/14-http-client-agent-with-cookie/"  title="支持 Cookie 的 HTTP 客户端 Agent">
  <strong>下一篇：</strong><br/> 
- <span>懒人厨房
+ <span>支持 Cookie 的 HTTP 客户端 Agent
 </span>
 </a>
 </div>
@@ -161,7 +155,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/08/08/13-facebook-connect/" data-title="Facebook 接入" data-url="http://blog.clawz.me/2013/08/08/13-facebook-connect/"></div>
+	<div class="ds-thread" data-thread-key="2014/02/19/14-js-has-not-block-scope/" data-title="JavaScript 变量不支持块级作用域" data-url="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/"></div>
 </section>
 
 
@@ -171,7 +165,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接入方式"><span class="toc-number">2.</span> <span class="toc-text">接入方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#server-side-接入"><span class="toc-number">2.1.</span> <span class="toc-text">server-side 接入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#client-side-接入"><span class="toc-number">2.2.</span> <span class="toc-text">client-side 接入</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附上被研究的代码"><span class="toc-number">2.</span> <span class="toc-text">附上被研究的代码</span></a></li></ol>
  
   </div>
 

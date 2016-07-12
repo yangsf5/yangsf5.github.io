@@ -256,15 +256,17 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2014/02/14/14-http-client-agent-with-cookie/" title="支持 Cookie 的 HTTP 客户端 Agent" itemprop="url">
+    <a href="/2014/02/19/14-js-has-not-block-scope/" title="JavaScript 变量不支持块级作用域" itemprop="url">
   
-    <h1 itemprop="name">支持 Cookie 的 HTTP 客户端 Agent</h1>
+    <h1 itemprop="name">JavaScript 变量不支持块级作用域</h1>
     
      
-           <p itemprop="description" >当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Ag</p>
+           <p itemprop="description" >分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
+后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
+后来查了下 </p>
         
     
-    <time datetime="2014-02-14T03:45:00.000Z" itemprop="datePublished">2014-02-14</time>
+    <time datetime="2014-02-19T09:00:00.000Z" itemprop="datePublished">2014-02-19</time>
   </a>
 </section>
 
@@ -311,7 +313,7 @@
 		  
 		
 		  
-			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>2</sup></a></li>
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>3</sup></a></li>
 		  
 		
 		  
