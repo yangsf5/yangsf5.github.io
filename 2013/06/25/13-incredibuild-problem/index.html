@@ -23,7 +23,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 fail to create process这个错误提示，第一反应就是用户没权限，查看了用户之后，提示这个用户就是管理员。后来各种倒腾都无果。 
 权限的问题一时没解决，想别的办法…… 
 试出一个办法：点开任务栏右下角的 IncrediBuild">
-<meta property="og:updated_time" content="2016-07-08T10:29:57.000Z">
+<meta property="og:updated_time" content="2016-07-12T07:50:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IncrediBuild 编译问题">
 <meta name="twitter:description" content="自己工作机在 VC 点 IncrediBuild 编译时总是显示 fail to create process，周围同事却都没问题。这里记下解决的过程。 
@@ -108,7 +108,7 @@ fail to create process这个错误提示，第一反应就是用户没权限，�
 <p>于是找到 Agent 开启 <code>Batch Build</code> 时的进程为 BatchFile.exe，但是在自己写的bat 里单独启动 BatchFile，启动后弹出 <code>Batch Build</code>，选择编译后却也还是创建不了进程错误。 </p>
 <p>偶然在 VC 的工具栏的 IncrediBuild 选项里也发现了 <code>Batch Build</code> 选项，弹出的 <code>Batch Build</code> 也是不能创建线程。再次扫兴。 </p>
 <p>所以想，是不是因为做为 VC 的插件和 bat 里启动运行时没有创建进程的权限。而在 Agent 独立进程里运行时能拿到权限？ </p>
-<p>最后某此搜什么东西，憋见一个说法，“右键菜单Win7管理员身份运行”。如果就特么搞定了。  </p>
+<p>最后某此搜什么东西，憋见一个说法，“右键菜单Win7管理员身份运行”。结果就特么搞定了。  </p>
 <p>解决办法大概是：Win7 启动 VC 时以管理员身份运行，程序鼠标右键有那个选项。另外也可以看看快捷方式里设置。之后从 VC 里 load 你的项目。更方便的是将你的 VC 程序，打开属性的兼容性标签，特权等级里勾上以管理员身份运行此程序。（设置之后我在 TotalCommand 里不能直接双击启动 <code>**.sln</code>，只好右键选择 VC 来启动） </p>
 <p>随后想是不是 TotalCommand 里起的进程没管理员权限，后来试了试不是这样的…… </p>
 <p>总结，我的 Win7 用户不是真宗的管理员，虽然控制面板里提示了是！ </p>
