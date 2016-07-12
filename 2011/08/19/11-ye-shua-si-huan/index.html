@@ -4,29 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>集群实现细节（2）-玩家在线状态续 | 三疯的技术博客</title>
+    <title>夜刷四环 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="玩家离线由于离线的状况多，常见的玩家自己拿自己的账号的离线，也有自己的账号在多个设备来挤掉线，还有就是被非法的人使用时的挤掉线。这里应该将玩家理解为一个账号，下边尽量用账号来表述。 
-网络断开或者主动离开游戏这时玩家所在的服务器在玩家 net.close 时加入向通信 Redis 汇报的逻辑，即通信 Redis 里删除这个玩家的在线纪录。 
-同服重复登陆时的 Kick首先肯定要踢掉之前登陆的链接。">
+    <meta name="description" content="刚才从家里（八角地铁站）出发，沿长安街往东到五棵松地铁站。然后开始往北顺时针单刷夜刷四环一圈。
+TRIP DIST：83.32km  —— 四环路内侧一圈加上八角游乐园地铁到五棵松地铁的往返。
+TRIP TIME：3:34:37  —— 轮子转的时间。现实时间为 19:00~23:20，4 个小时 20 分钟。大部分非骑行时间是等红灯，70公里处——大约在东四环南路端休息大概10分钟，消耗一块巧克">
 <meta property="og:type" content="article">
-<meta property="og:title" content="集群实现细节（2）-玩家在线状态续">
-<meta property="og:url" content="http://blog.clawz.me/2013/10/19/13-game-cluster-design-detail-2/index.html">
+<meta property="og:title" content="夜刷四环">
+<meta property="og:url" content="http://blog.clawz.me/2011/08/19/11-ye-shua-si-huan/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="玩家离线由于离线的状况多，常见的玩家自己拿自己的账号的离线，也有自己的账号在多个设备来挤掉线，还有就是被非法的人使用时的挤掉线。这里应该将玩家理解为一个账号，下边尽量用账号来表述。 
-网络断开或者主动离开游戏这时玩家所在的服务器在玩家 net.close 时加入向通信 Redis 汇报的逻辑，即通信 Redis 里删除这个玩家的在线纪录。 
-同服重复登陆时的 Kick首先肯定要踢掉之前登陆的链接。">
-<meta property="og:updated_time" content="2016-07-11T10:43:17.000Z">
+<meta property="og:description" content="刚才从家里（八角地铁站）出发，沿长安街往东到五棵松地铁站。然后开始往北顺时针单刷夜刷四环一圈。
+TRIP DIST：83.32km  —— 四环路内侧一圈加上八角游乐园地铁到五棵松地铁的往返。
+TRIP TIME：3:34:37  —— 轮子转的时间。现实时间为 19:00~23:20，4 个小时 20 分钟。大部分非骑行时间是等红灯，70公里处——大约在东四环南路端休息大概10分钟，消耗一块巧克">
+<meta property="og:updated_time" content="2016-07-12T10:15:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="集群实现细节（2）-玩家在线状态续">
-<meta name="twitter:description" content="玩家离线由于离线的状况多，常见的玩家自己拿自己的账号的离线，也有自己的账号在多个设备来挤掉线，还有就是被非法的人使用时的挤掉线。这里应该将玩家理解为一个账号，下边尽量用账号来表述。 
-网络断开或者主动离开游戏这时玩家所在的服务器在玩家 net.close 时加入向通信 Redis 汇报的逻辑，即通信 Redis 里删除这个玩家的在线纪录。 
-同服重复登陆时的 Kick首先肯定要踢掉之前登陆的链接。">
+<meta name="twitter:title" content="夜刷四环">
+<meta name="twitter:description" content="刚才从家里（八角地铁站）出发，沿长安街往东到五棵松地铁站。然后开始往北顺时针单刷夜刷四环一圈。
+TRIP DIST：83.32km  —— 四环路内侧一圈加上八角游乐园地铁到五棵松地铁的往返。
+TRIP TIME：3:34:37  —— 轮子转的时间。现实时间为 19:00~23:20，4 个小时 20 分钟。大部分非骑行时间是等红灯，70公里处——大约在东四环南路端休息大概10分钟，消耗一块巧克">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -77,14 +77,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/10/19/13-game-cluster-design-detail-2/" title="集群实现细节（2）-玩家在线状态续" itemprop="url">集群实现细节（2）-玩家在线状态续</a>
+      <a href="/2011/08/19/11-ye-shua-si-huan/" title="夜刷四环" itemprop="url">夜刷四环</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2013-10-19T01:41:00.000Z" itemprop="datePublished"> 发表于 2013-10-19</time>
+    <time datetime="2011-08-18T16:38:52.000Z" itemprop="datePublished"> 发表于 2011-08-19</time>
     
   </p>
 </header>
@@ -93,21 +93,14 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家离线"><span class="toc-number">1.</span> <span class="toc-text">玩家离线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络断开或者主动离开游戏"><span class="toc-number">1.1.</span> <span class="toc-text">网络断开或者主动离开游戏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同服重复登陆时的-Kick"><span class="toc-number">1.2.</span> <span class="toc-text">同服重复登陆时的 Kick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异服登陆时的-Kick"><span class="toc-number">1.3.</span> <span class="toc-text">异服登陆时的 Kick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同一账号的同瞬间多起登陆事件"><span class="toc-number">2.</span> <span class="toc-text">同一账号的同瞬间多起登陆事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">3.</span> <span class="toc-text">后记</span></a></li></ol>
+			
 		
 		</div>
 		
-		<h2 id="玩家离线"><a href="#玩家离线" class="headerlink" title="玩家离线"></a>玩家离线</h2><p>由于离线的状况多，常见的玩家自己拿自己的账号的离线，也有自己的账号在多个设备来挤掉线，还有就是被非法的人使用时的挤掉线。这里应该将玩家理解为一个账号，下边尽量用账号来表述。 </p>
-<h3 id="网络断开或者主动离开游戏"><a href="#网络断开或者主动离开游戏" class="headerlink" title="网络断开或者主动离开游戏"></a>网络断开或者主动离开游戏</h3><p>这时玩家所在的服务器在玩家 <code>net.close</code> 时加入向通信 Redis 汇报的逻辑，即通信 Redis 里删除这个玩家的在线纪录。 </p>
-<h3 id="同服重复登陆时的-Kick"><a href="#同服重复登陆时的-Kick" class="headerlink" title="同服重复登陆时的 Kick"></a>同服重复登陆时的 Kick</h3><p>首先肯定要踢掉之前登陆的链接。因为同服时新旧链接都在这个服务器上，逻辑上简单，允许新链接的登陆比较好处理，但是后边有其他考虑。 </p>
-<h3 id="异服登陆时的-Kick"><a href="#异服登陆时的-Kick" class="headerlink" title="异服登陆时的 Kick"></a>异服登陆时的 Kick</h3><p>首先也是踢掉之前的登陆。需要在之前登陆到的服务器将该账号的链接断开并整理数据存储之后，才能允许在新的服务器登陆。 </p>
-<p>旧服务器清理完该玩家后，向通信 Redis 报告删除该账号的在线状态。新服务器需要知道玩家已经在旧服被 Kick 完了才可以让玩家登陆。刚才同服时提到的允许新链接立刻登陆的问题，这里就变的比较不可控了。美好的过程是，新链接接入后挂起在新服，等异服踢完后，继续做新链接的登陆操作。但是这需要新旧服之间的同步逻辑，需要将新服玩家做个状态机为维护这种挂起或继续登陆状态。另外还要考虑这个期间玩家又在另一个服登陆。要考虑的东西很多…… </p>
-<p>还有一种有问题的处理方式，即新服只是向老服发送踢人指令，新服自己却马上进入新链接的登陆操作。这样的问题是，即使业务逻辑简单到不会发生数据不同步问题，但登陆操作不会一定成功。新服登陆完向通信 Redis 报告玩家在线，旧服踢完要向通信 Redis 报告玩家离线。这两个操作异步时，如果旧服的离线报告在后，通信 Redis 上就会错误的记录账号当前不在线…… </p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最终重复登陆问题简单处理方法：账号登陆时，只要检测到该账号同服或异服已登陆，先将旧链接踢掉，再将新链接断开。就给玩家一个提示“账号已登录，请稍后重试”，让玩家自己来多操作几次，直到旧链接被踢完。 </p>
-<h2 id="同一账号的同瞬间多起登陆事件"><a href="#同一账号的同瞬间多起登陆事件" class="headerlink" title="同一账号的同瞬间多起登陆事件"></a>同一账号的同瞬间多起登陆事件</h2><p>上边重复登陆的检查还有一种情况不能防止，就是瞬间的多个客户端用同一账号登陆。同服时由于 Node.js 的异步，异服时由于天然异步，检查该账号是否已登陆与将当前链接成功登陆并向通信 Redis 报告这些操作不具原子性。 </p>
-<p>所以在最后向通信 Redis 写入上线状态时再次判断是否已登陆（即判断是否被瞬时并发的另一个客户端的登陆给标记为已上线了）。Redis 里用 hsetnx 代替 hset，前者在数据已经被设置时操作失败。 </p>
-<p>需要在最后向通信 Redis 写入玩家在线状态时为原子操作。这个原子就交给 Redis 的事务吧。<br>    （这个事物下周再添加。） </p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>刚接触不久或者本身逻辑就复杂的东西（例如分布式）很多思考的结果不及时记录的话，后边容易忘记当初的理由，导致需要冗余的重复思考。所以现在博客写琐碎些，记载些细节的思考。 </p>
+		<p>刚才从家里（八角地铁站）出发，沿长安街往东到五棵松地铁站。然后开始往北顺时针单刷夜刷四环一圈。</p>
+<p>TRIP DIST：83.32km  —— 四环路内侧一圈加上八角游乐园地铁到五棵松地铁的往返。</p>
+<p>TRIP TIME：3:34:37  —— 轮子转的时间。现实时间为 19:00~23:20，4 个小时 20 分钟。大部分非骑行时间是等红灯，70公里处——大约在东四环南路端休息大概10分钟，消耗一块巧克力补充体力。</p>
+<p>AVG SPEED：23.29km/h。<br>MAX SPEED：35.42km/h。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -115,7 +108,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/架构设计/">架构设计</a>
+  <a class="article-category-link" href="/categories/生活-运动-情感/">生活&运动&情感</a>
 </div>
 
 
@@ -125,7 +118,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/10/19/13-game-cluster-design-detail-2/" data-title="集群实现细节（2）-玩家在线状态续 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2011/08/19/11-ye-shua-si-huan/" data-title="夜刷四环 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -139,18 +132,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/10/31/13-game-platform/" title="休闲游戏平台架构">
+ <a href="/2012/02/26/12-qq-clear-screen/" title="QQ 清屏映射到快捷键 Alt+D">
   <strong>上一篇：</strong><br/>
   <span>
-  休闲游戏平台架构</span>
+  QQ 清屏映射到快捷键 Alt+D</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/10/17/13-game-cluster-design-detail-1/"  title="集群实现细节（1）-异服通信和压测">
+<a href="/2011/08/10/11-shi-san-ling-shui-ku/"  title="十三陵水库流水账作业">
  <strong>下一篇：</strong><br/> 
- <span>集群实现细节（1）-异服通信和压测
+ <span>十三陵水库流水账作业
 </span>
 </a>
 </div>
@@ -159,7 +152,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2013/10/19/13-game-cluster-design-detail-2/" data-title="集群实现细节（2）-玩家在线状态续" data-url="http://blog.clawz.me/2013/10/19/13-game-cluster-design-detail-2/"></div>
+	<div class="ds-thread" data-thread-key="2011/08/19/11-ye-shua-si-huan/" data-title="夜刷四环" data-url="http://blog.clawz.me/2011/08/19/11-ye-shua-si-huan/"></div>
 </section>
 
 
@@ -169,7 +162,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩家离线"><span class="toc-number">1.</span> <span class="toc-text">玩家离线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络断开或者主动离开游戏"><span class="toc-number">1.1.</span> <span class="toc-text">网络断开或者主动离开游戏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同服重复登陆时的-Kick"><span class="toc-number">1.2.</span> <span class="toc-text">同服重复登陆时的 Kick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异服登陆时的-Kick"><span class="toc-number">1.3.</span> <span class="toc-text">异服登陆时的 Kick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同一账号的同瞬间多起登陆事件"><span class="toc-number">2.</span> <span class="toc-text">同一账号的同瞬间多起登陆事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">3.</span> <span class="toc-text">后记</span></a></li></ol>
+ 
  
   </div>
 
