@@ -21,7 +21,7 @@ GitHub Pages 原理每个人">
 <meta property="og:description" content="介绍GitHub 是我们程序员以码会友的地方。多的不说了。不知道 GitHub 的同学不是本篇目标读者。：）
 GitHub Pages 让你的网站直接托管在 GitHub 的服务器上，不用付一毛钱。更新维护网站内容很简单，就简单的 git commit + git push 即可，因为 GitHub Pages 就是 GitHub 上的一个 Git 代码仓库。
 GitHub Pages 原理每个人">
-<meta property="og:updated_time" content="2016-07-14T12:06:57.000Z">
+<meta property="og:updated_time" content="2016-07-16T17:06:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 GitHub Pages 免费搭建博客">
 <meta name="twitter:description" content="介绍GitHub 是我们程序员以码会友的地方。多的不说了。不知道 GitHub 的同学不是本篇目标读者。：）
@@ -93,14 +93,14 @@ GitHub Pages 原理每个人">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-原理"><span class="toc-number">2.</span> <span class="toc-text">GitHub Pages 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-World"><span class="toc-number">3.</span> <span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#咦，要自己写-HTML？"><span class="toc-number">4.</span> <span class="toc-text">咦，要自己写 HTML？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo"><span class="toc-number">6.</span> <span class="toc-text">Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建步骤"><span class="toc-number">7.</span> <span class="toc-text">搭建步骤</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-原理"><span class="toc-number">2.</span> <span class="toc-text">GitHub Pages 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-的-Hello-World"><span class="toc-number">3.</span> <span class="toc-text">GitHub Pages 的 Hello World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#咦，要自己写-HTML？"><span class="toc-number">4.</span> <span class="toc-text">咦，要自己写 HTML？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo"><span class="toc-number">6.</span> <span class="toc-text">Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建-Hexo-的基本思路"><span class="toc-number">7.</span> <span class="toc-text">搭建 Hexo 的基本思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Hexo"><span class="toc-number">7.1.</span> <span class="toc-text">安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo-的本地-Hello-World"><span class="toc-number">7.2.</span> <span class="toc-text">Hexo 的本地 Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将本地-Hello-World-发布到-GitHub-Pages-上"><span class="toc-number">7.3.</span> <span class="toc-text">将本地 Hello World 发布到 GitHub Pages 上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装-Jacman-的基本思路"><span class="toc-number">8.</span> <span class="toc-text">安装 Jacman 的基本思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的写博客及发布整体流程"><span class="toc-number">9.</span> <span class="toc-text">我的写博客及发布整体流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶话题"><span class="toc-number">10.</span> <span class="toc-text">进阶话题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">11.</span> <span class="toc-text">后续</span></a></li></ol>
 		
 		</div>
 		
 		<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>GitHub 是我们程序员以码会友的地方。多的不说了。不知道 GitHub 的同学不是本篇目标读者。：）</p>
 <p><a href="https://pages.github.com/" target="_blank" rel="external">GitHub Pages</a> 让你的网站直接托管在 GitHub 的服务器上，不用付一毛钱。更新维护网站内容很简单，就简单的 <code>git commit</code> + <code>git push</code> 即可，因为 GitHub Pages 就是 GitHub 上的一个 Git 代码仓库。</p>
 <h2 id="GitHub-Pages-原理"><a href="#GitHub-Pages-原理" class="headerlink" title="GitHub Pages 原理"></a>GitHub Pages 原理</h2><p>每个人的 Pages 自身是个特殊的 GitHub 项目。往这里 <code>git push</code> 自己网站的各种 .html 文件，然后就可以通过 xxx.github.io 来访问你的网站了，例如我的就是 <code>yangsf5.github.io</code>。</p>
-<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>见 <a href="https://pages.github.com/" target="_blank" rel="external">Pages 官网</a>。</p>
+<h2 id="GitHub-Pages-的-Hello-World"><a href="#GitHub-Pages-的-Hello-World" class="headerlink" title="GitHub Pages 的 Hello World"></a>GitHub Pages 的 Hello World</h2><p>见 <a href="https://pages.github.com/" target="_blank" rel="external">Pages 官网</a>。</p>
 <p>以我的账户为例，我的用户名是 yangsf5。</p>
 <ul>
 <li>创建 Pages 专门的代码库，库名为 <code>yangsf5.github.io</code>。</li>
@@ -138,7 +138,99 @@ GitHub Pages 原理每个人">
 </ul>
 <p>我是根据这些做了大概评估，选择的 Hexo。</p>
 <p>主题就选的 Jacman。Jacman 直接集成一些中文博客常用的插件，例如多说评论、DISQUS 评论，百度统计、Google 统计，分类、标签、归档、标签云、友情链接、微博秀等。</p>
-<h2 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h2><p>搭建步骤看 Hexo 和 Jacman 的官方文档即可，网上也有很多总结，这里就不赘述了。后续根据大家的反馈，会补述些常见的误解或者大家很难搞定的问题的解决方案。</p>
+<h2 id="搭建-Hexo-的基本思路"><a href="#搭建-Hexo-的基本思路" class="headerlink" title="搭建 Hexo 的基本思路"></a>搭建 Hexo 的基本思路</h2><p>详细请见 <a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external"> Hexo 官方中文文档 </a>，这里说下基本思路。</p>
+<h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><ul>
+<li>GitHub 肯定是要 Git 的，没有 Git 和 GitHub 账户的不要说话。</li>
+<li>Hexo 是 Node.js 写的，所以需要先安装好 Node.js。安装好之后就有了 Node.js 的包管理工具 npm。</li>
+<li>使用 npm 来便捷安装 Hexo：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Hexo-的本地-Hello-World"><a href="#Hexo-的本地-Hello-World" class="headerlink" title="Hexo 的本地 Hello World"></a>Hexo 的本地 <code>Hello World</code></h3><ul>
+<li><p>在本地创建一个 Hexo 工作文件夹 <code>myblog</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init myblog</span><br><span class="line">$ cd myblog</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>myblog 下文件如下：</p>
+<ul>
+<li>_config.yml 是 Hexo 的配置。</li>
+<li>node_modules 是每个 Node.js 项目的依赖代码库，不用管。</li>
+<li>package.json 是每个 Node.js 项目的依赖库说明，不用管。</li>
+<li>scaffolds 模板文件夹，高端话题。非高级用户不用管。</li>
+<li>source 文件夹就是我们放原始 Markdown 写的文章的地方。每次发布上传文章时都要先将这里的原始 Markdown 格式文件编译成 HTML 文件。source 文件夹下默认带了 _post 文件夹，且后者里边有篇默认的 Markdown 文章，即 hello-world.md 文件。</li>
+<li>themes 文件夹里放的是主题，主题就是大家博客的页面布局、样式等。上边安装时带了一个默认主题 <code>landscape</code>，自己可以往这里放自定义主题。</li>
+</ul>
+</li>
+<li><p>本地运行 myblog 站点，在 myblog 路径下运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>去浏览器访问 <code>http://localhost:4000/</code> 就会神奇的看见咱们默认主题 <code>landscape</code> 风格的博客了。博客里默认自带了一篇 <code>Hello World</code> 文章。</p>
+</li>
+</ul>
+<h3 id="将本地-Hello-World-发布到-GitHub-Pages-上"><a href="#将本地-Hello-World-发布到-GitHub-Pages-上" class="headerlink" title="将本地 Hello World 发布到 GitHub Pages 上"></a>将本地 <code>Hello World</code> 发布到 GitHub Pages 上</h3><ul>
+<li>刚才 <code>hexo s</code> 之后大家看见了本地站点的样子，但是肯定会好奇整个站点的 HTML、CSS 等文件在哪呢？去 myblog 文件夹下找也没找到啊。这个应该是 Hexo 运行的时候直接将 themes 和 Markdown 文件的编译结果放自己的内存里了。</li>
+<li><p>想看编译后的站点文件，运行命令 <code>hexo generate</code> 或者 简写 <code>hexo g</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这时就能看见很多生成了很多 .html、.css、.js 文件，这些目标文件出现在新文件夹 myblog/public 里。public 里的文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2016/07/16/hello-world/index.html # 这里就是我们的 Hello World 文章</span><br><span class="line">archives/index.html # 这是归档页的首页</span><br><span class="line">archives/2016/index.html # 这是 2016 年归档的索引页面，每年级别归档</span><br><span class="line">archives/2016/07/index.html # 这是 2016 年 7 月的归档索引页面，每月级别的归档</span><br><span class="line">css/\* # 这里是 CSS 样式文件</span><br><span class="line">fancybox/\*</span><br><span class="line">index.html # 这是博客站点首页</span><br><span class="line">js/\* # 这里放的是 JavaScript 文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>由上可以看出通过 <code>hexo g</code> 就能生成&amp;更新博客站点的 HTML 文件。到这大家应该发现我们可以与文章开头的 GitHub Pages 的 Hello World 衔接上了，只需是将 public 里的文件传进 <code>yangsf5.github.io</code> 代码库里。</p>
+</li>
+<li><p>我们不必每次生成 public/* 后手动去提交更新我们的 *.github.io 代码库。Hexo 的命令 <code>hexo d -g</code> 可以帮我们生成并自动提交更新到代码库。只需将 myblog/_config.yml 里 <code>deploy</code> 段做下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yangsf5/yangsf5.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>别忘了将其中的 yangsf5 改为你自己的 GitHub 账户名。另外注意 .yml 文件的格式，缩进必须是空格，而不能是 TAB 字符。 然后执行如下命令即可发布：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令的输出最后一行提示错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这个说的不是 Git 命令，而是 Hexo 的一个 npm 包 <code>hexo-deployer-git</code>，装下即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后再 <code>hexo d -g</code> 后，去你的 *.github.io 就可以看见你的线上博客了。</p>
+</li>
+</ul>
+<p>以上基本步骤，其他的例如要修改网站 title 等，都可以看官方详细文档，大部分可以通过修改 _config.yml 即可。每次修改这个配置文件后想在本地看看效果，需要重启下 Hexo，即重新执行下 <code>hexo s</code>。</p>
+<h2 id="安装-Jacman-的基本思路"><a href="#安装-Jacman-的基本思路" class="headerlink" title="安装 Jacman 的基本思路"></a>安装 Jacman 的基本思路</h2><p>详细请见 <a href="https://github.com/wuchong/jacman" target="_blank" rel="external">Jacman GitHub</a>、<a href="http://jacman.wuchong.me/2014/11/20/how-to-use-jacman/" target="_blank" rel="external">如何使用 Jacman 主题</a>，这里做下补充说明。</p>
+<p>我把 Jacman 的主题做了点小修改，主要是把一些不想要的东西做了下精简，如果大家觉得我这个比官方那个更简洁，可以直接以我的 <code>https://github.com/yangsf5/jacman</code> 为起点 Fork 你的定制版。</p>
+<p>例如三癫 Fork 了我的修改版，变成她自己的 <code>https://github.com/KittyCookie/jacman</code>，她的 Jacman 之旅就是以这个姿势开始：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cd myblog/themes</span><br><span class="line">$ git clone https://github.com/KittyCookie/jacman.git</span><br><span class="line">$ cd jacman</span><br><span class="line">$ git checkout -b kittycookie yangsf5</span><br></pre></td></tr></table></figure></p>
+<p>注意上边最后一步，以我的分支 <code>yangsf5</code> 为起点创建了三癫自己的分支 <code>kittycookie</code>。这样大家自己的修改在自己分支上进行，以后合并 Jacman 官方的修改或者其他人的修改会更方便些。</p>
+<p>（<strong>注意：各种插件的标识要换成你自己的，否则就统计到我这里了。这是要付我精神损失费的。</strong>）</p>
+<p>多说的 shortname 不是你的昵称，而是要去 <code>http://duoshuo.com</code> 点击我要安装，注册你的多说二级域名。去掉 <code>.duoshuo.com</code> 部分，剩下的就是你的 shortname。</p>
+<p>后续按 Jacman 官方文档走就可以了。</p>
+<h2 id="我的写博客及发布整体流程"><a href="#我的写博客及发布整体流程" class="headerlink" title="我的写博客及发布整体流程"></a>我的写博客及发布整体流程</h2><ul>
+<li>在 Ulysses 里写好文章。（这个是我个人的工具，大家可以使用免费的 GitHub 官方开发的 Atom 或者其他 Markdown 编辑器）</li>
+<li>在 myblog 下创建 Markdown 文件。我没有使用 <code>hexo new</code>，而是直接在 source/_post 下创建文件，弄好头部标识，将 Ulysses 里文章的 Markdown 文本拷过来。</li>
+<li>保存好之后，在本地的 <code>http://localhost:4000/</code> 看下文章排版、分类什么的时候 OK，有问题就调整。</li>
+<li>没问题之后，<code>hexo d -g</code> 就直接发布了。</li>
+<li>然后去 <code>blog.clawz.me</code> 看看线上是否 OK。</li>
+</ul>
+<h2 id="进阶话题"><a href="#进阶话题" class="headerlink" title="进阶话题"></a>进阶话题</h2><p>不想用 *.github.io 这个域名，想用自己的域名：</p>
+<ul>
+<li>在 source 文件夹下创建 CNAME 文件，在里边写上你的域名，例如我的就是 <code>blog.clawz.me</code>。</li>
+<li>去你的 DNS 服务商那做下相应的设置。</li>
+<li>注意这里的 CNAME 文件一定要放到 source 文件夹下，而不是 public 文件下。放 public 下没用，每次 <code>hexo g</code> 的时候会自动将 public 里那些不存在于 source 里的文件删除。</li>
+</ul>
+<p>想在博客文章里放些图片：</p>
+<ul>
+<li>Markdown 有链接图片的语法。</li>
+<li>如果不想引用网络图片，而是直接将图片放在自己的站点里：<ul>
+<li>在 source 里创建文件夹 images；</li>
+<li>将图片拷到 images 里，例如图片文件 <code>source/images/clawz.jpg</code>；</li>
+<li>在文章里引用时直接 <code>![](/images/clawz.jpg)</code> 即可。</li>
+</ul>
+</li>
+</ul>
+<p>source 里的资源想用其他 Git 库来保存：</p>
+<ul>
+<li>_config.yml 里可以配置 source 的路径，不过绝对路径我没有试过。</li>
+<li>我自己是用一个专门的 Git Private 代码库 <code>writing</code> 来存的。然后将 <code>writing</code> 里的 blog_source 软链到 myblog 的 source 上。这样每次我调完 blog_source 里的 Markdown 格式，也会同步将修改同步到 <code>writing</code> 远端库里，防止丢失。</li>
+<li>Git Private 是要美刀的，如果不舍得这个花费，可以试试 <code>https://bitbucket.org/</code>，这是可以创建免费的私有库。</li>
+</ul>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>后续根据大家的反馈，会补述些常见的误解或者大家很难搞定的问题的解决方案。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -192,7 +284,7 @@ GitHub Pages 原理每个人">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-原理"><span class="toc-number">2.</span> <span class="toc-text">GitHub Pages 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-World"><span class="toc-number">3.</span> <span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#咦，要自己写-HTML？"><span class="toc-number">4.</span> <span class="toc-text">咦，要自己写 HTML？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo"><span class="toc-number">6.</span> <span class="toc-text">Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建步骤"><span class="toc-number">7.</span> <span class="toc-text">搭建步骤</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-原理"><span class="toc-number">2.</span> <span class="toc-text">GitHub Pages 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub-Pages-的-Hello-World"><span class="toc-number">3.</span> <span class="toc-text">GitHub Pages 的 Hello World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#咦，要自己写-HTML？"><span class="toc-number">4.</span> <span class="toc-text">咦，要自己写 HTML？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo"><span class="toc-number">6.</span> <span class="toc-text">Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建-Hexo-的基本思路"><span class="toc-number">7.</span> <span class="toc-text">搭建 Hexo 的基本思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Hexo"><span class="toc-number">7.1.</span> <span class="toc-text">安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo-的本地-Hello-World"><span class="toc-number">7.2.</span> <span class="toc-text">Hexo 的本地 Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将本地-Hello-World-发布到-GitHub-Pages-上"><span class="toc-number">7.3.</span> <span class="toc-text">将本地 Hello World 发布到 GitHub Pages 上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装-Jacman-的基本思路"><span class="toc-number">8.</span> <span class="toc-text">安装 Jacman 的基本思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的写博客及发布整体流程"><span class="toc-number">9.</span> <span class="toc-text">我的写博客及发布整体流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶话题"><span class="toc-number">10.</span> <span class="toc-text">进阶话题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">11.</span> <span class="toc-text">后续</span></a></li></ol>
  
   </div>
 
