@@ -1,0 +1,672 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>大三工作室项目 - 五子棋世界（2）：程序设计 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="说明此篇也是遵从当时的文档，不做太多修正。
+系统功能模块图
+系统流程图
+系统数据流图
+负载均衡策略图
+概要设计
+服务器端：
+主线程——网络监听线程；
+登录和注册线程池；
+维护游戏房间列表线程；
+游戏逻辑线程。
+
+
+客户端：
+大厅进程（接收通信包线程、主逻辑线程）；
+五子棋进程（接收通信包线程、主逻辑线程）。
+
+
+通信协议：
+
+客户端到服务器的登录消息、
+客户端到服务器的注册消息、
+客户端到服务器的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大三工作室项目 - 五子棋世界（2）：程序设计">
+<meta property="og:url" content="http://blog.clawz.me/2016/08/18/16/16-ask-game-2/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="说明此篇也是遵从当时的文档，不做太多修正。
+系统功能模块图
+系统流程图
+系统数据流图
+负载均衡策略图
+概要设计
+服务器端：
+主线程——网络监听线程；
+登录和注册线程池；
+维护游戏房间列表线程；
+游戏逻辑线程。
+
+
+客户端：
+大厅进程（接收通信包线程、主逻辑线程）；
+五子棋进程（接收通信包线程、主逻辑线程）。
+
+
+通信协议：
+
+客户端到服务器的登录消息、
+客户端到服务器的注册消息、
+客户端到服务器的">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-gong-neng-mo-kuai.png">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-xi-tong-liu-cheng.png">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-shu-ju-liu-cheng.png">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-fu-wu-qi-kuo-zhan.png">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-e-r.png">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game2-shu-ju-ku-biao.png">
+<meta property="og:updated_time" content="2016-08-18T12:52:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大三工作室项目 - 五子棋世界（2）：程序设计">
+<meta name="twitter:description" content="说明此篇也是遵从当时的文档，不做太多修正。
+系统功能模块图
+系统流程图
+系统数据流图
+负载均衡策略图
+概要设计
+服务器端：
+主线程——网络监听线程；
+登录和注册线程池；
+维护游戏房间列表线程；
+游戏逻辑线程。
+
+
+客户端：
+大厅进程（接收通信包线程、主逻辑线程）；
+五子棋进程（接收通信包线程、主逻辑线程）。
+
+
+通信协议：
+
+客户端到服务器的登录消息、
+客户端到服务器的注册消息、
+客户端到服务器的">
+<meta name="twitter:image" content="http://blog.clawz.me/images/16/16-ask-game2-gong-neng-mo-kuai.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/18/16/16-ask-game-2/" title="大三工作室项目 - 五子棋世界（2）：程序设计" itemprop="url">大三工作室项目 - 五子棋世界（2）：程序设计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-18T12:44:51.000Z" itemprop="datePublished"> 发表于 2016-08-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#说明"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统功能模块图"><span class="toc-number">2.</span> <span class="toc-text">系统功能模块图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统流程图"><span class="toc-number">3.</span> <span class="toc-text">系统流程图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统数据流图"><span class="toc-number">4.</span> <span class="toc-text">系统数据流图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡策略图"><span class="toc-number">5.</span> <span class="toc-text">负载均衡策略图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#概要设计"><span class="toc-number">6.</span> <span class="toc-text">概要设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-R-图"><span class="toc-number">7.</span> <span class="toc-text">E-R 图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库表设计"><span class="toc-number">8.</span> <span class="toc-text">数据库表设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——通信协议的制订"><span class="toc-number">9.</span> <span class="toc-text">详细设计之——通信协议的制订</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举所有要用到的消息标识"><span class="toc-number">9.1.</span> <span class="toc-text">枚举所有要用到的消息标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#各个消息的数据结构设计"><span class="toc-number">9.2.</span> <span class="toc-text">各个消息的数据结构设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——-Socket-发包形式统一"><span class="toc-number">10.</span> <span class="toc-text">详细设计之—— Socket 发包形式统一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——服务器的设计"><span class="toc-number">11.</span> <span class="toc-text">详细设计之——服务器的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置文件的设计"><span class="toc-number">11.1.</span> <span class="toc-text">配置文件的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ccache-库的应用"><span class="toc-number">11.2.</span> <span class="toc-text">ccache 库的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-的操作封装"><span class="toc-number">11.3.</span> <span class="toc-text">MySQL 的操作封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主程序设计"><span class="toc-number">11.4.</span> <span class="toc-text">主程序设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——客户端的设计"><span class="toc-number">12.</span> <span class="toc-text">详细设计之——客户端的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#大厅进程的设计"><span class="toc-number">12.1.</span> <span class="toc-text">大厅进程的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五子棋进程"><span class="toc-number">12.2.</span> <span class="toc-text">五子棋进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端套接字的共用"><span class="toc-number">12.3.</span> <span class="toc-text">客户端套接字的共用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端的数据同步"><span class="toc-number">12.4.</span> <span class="toc-text">客户端的数据同步</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>此篇也是遵从当时的文档，不做太多修正。</p>
+<h2 id="系统功能模块图"><a href="#系统功能模块图" class="headerlink" title="系统功能模块图"></a>系统功能模块图</h2><p><img src="/images/16/16-ask-game2-gong-neng-mo-kuai.png" alt=""></p>
+<h2 id="系统流程图"><a href="#系统流程图" class="headerlink" title="系统流程图"></a>系统流程图</h2><p><img src="/images/16/16-ask-game2-xi-tong-liu-cheng.png" alt=""></p>
+<h2 id="系统数据流图"><a href="#系统数据流图" class="headerlink" title="系统数据流图"></a>系统数据流图</h2><p><img src="/images/16/16-ask-game2-shu-ju-liu-cheng.png" alt=""></p>
+<h2 id="负载均衡策略图"><a href="#负载均衡策略图" class="headerlink" title="负载均衡策略图"></a>负载均衡策略图</h2><p><img src="/images/16/16-ask-game2-fu-wu-qi-kuo-zhan.png" alt=""></p>
+<h2 id="概要设计"><a href="#概要设计" class="headerlink" title="概要设计"></a>概要设计</h2><ul>
+<li>服务器端：<ul>
+<li>主线程——网络监听线程；</li>
+<li>登录和注册线程池；</li>
+<li>维护游戏房间列表线程；</li>
+<li>游戏逻辑线程。</li>
+</ul>
+</li>
+<li>客户端：<ul>
+<li>大厅进程（接收通信包线程、主逻辑线程）；</li>
+<li>五子棋进程（接收通信包线程、主逻辑线程）。</li>
+</ul>
+</li>
+<li><p>通信协议：</p>
+<ul>
+<li>客户端到服务器的登录消息、</li>
+<li>客户端到服务器的注册消息、</li>
+<li>客户端到服务器的检测ID消息、</li>
+<li>客户端到服务器的索求房间列表消息、</li>
+<li><p>客户端到服务器的进某个房间消息；</p>
+</li>
+<li><p>服务器到客户端的登录回应消息、</p>
+</li>
+<li>服务器到客户端的注册回应消息、</li>
+<li>服务器到客户端的房间列表消息、</li>
+<li><p>服务器到客户端的进某个房间的回应消息；</p>
+</li>
+<li><p>客户端到服务器的进某个桌子座位的消息、</p>
+</li>
+<li><p>客户端到服务器的房间聊天消息；</p>
+</li>
+<li><p>服务器到客户端的进某个桌子座位的回应消息、</p>
+</li>
+<li><p>服务器到客户端的聊天转发消息；</p>
+</li>
+<li><p>客户端到服务器的游戏数据消息、</p>
+</li>
+<li>客户端到服务器的游戏状态消息、</li>
+<li><p>客户端到服务器的聊天消息；</p>
+</li>
+<li><p>服务器到客户端的游戏数据转发消息、</p>
+</li>
+<li>服务器到客户端的准备回复消息、</li>
+<li>服务器到客户端的聊天转发消息、</li>
+<li><p>服务器到客户端的桌子玩家列表消息；</p>
+</li>
+<li><p>服务器到客户端的广播游戏状态消息。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="E-R-图"><a href="#E-R-图" class="headerlink" title="E-R 图"></a>E-R 图</h2><p><img src="/images/16/16-ask-game2-e-r.png" alt=""></p>
+<h2 id="数据库表设计"><a href="#数据库表设计" class="headerlink" title="数据库表设计"></a>数据库表设计</h2><p><img src="/images/16/16-ask-game2-shu-ju-ku-biao.png" alt=""></p>
+<h2 id="详细设计之——通信协议的制订"><a href="#详细设计之——通信协议的制订" class="headerlink" title="详细设计之——通信协议的制订"></a>详细设计之——通信协议的制订</h2><h3 id="枚举所有要用到的消息标识"><a href="#枚举所有要用到的消息标识" class="headerlink" title="枚举所有要用到的消息标识"></a>枚举所有要用到的消息标识</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">	ClientToLogin,</span><br><span class="line">	ClientToRegister,</span><br><span class="line">	ClientToCheckUid, <span class="comment">//检查 UID 是否被抢注</span></span><br><span class="line">	ClientToHall_RoomList,</span><br><span class="line">	ClientToHall_RoomNum,</span><br><span class="line"></span><br><span class="line">	LoginToClient,</span><br><span class="line">	RegisterToClient,</span><br><span class="line">	HallToClient_RoomList,</span><br><span class="line">	HallToClient_RoomNum,	<span class="comment">//check,tables and users of the room</span></span><br><span class="line"></span><br><span class="line">	ClientToRoom_TableNum,</span><br><span class="line">	ClientToRoom_Chat,</span><br><span class="line"></span><br><span class="line">	RoomToClient_TableNum,</span><br><span class="line">	RoomToClient_Chat,</span><br><span class="line"></span><br><span class="line">	ClientToTable_GameData,</span><br><span class="line">	ClientToTable_State,</span><br><span class="line">	ClientToTable_Chat,</span><br><span class="line"></span><br><span class="line">	TableToClient_GameData,</span><br><span class="line">	TableToClient_State,</span><br><span class="line">	TableToClient_Chat,</span><br><span class="line">	TableToClient_UserList,</span><br><span class="line"></span><br><span class="line">	Room_Mate_State <span class="comment">//server to client</span></span><br><span class="line">&#125;MSGTYPE;</span><br></pre></td></tr></table></figure>
+<h3 id="各个消息的数据结构设计"><a href="#各个消息的数据结构设计" class="headerlink" title="各个消息的数据结构设计"></a>各个消息的数据结构设计</h3><ul>
+<li>登录、注册、大厅消息协议设计：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">char</span> PWD[<span class="number">20</span>];</span><br><span class="line">&#125;ClientToLoginMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	<span class="keyword">int</span> image;</span><br><span class="line">	<span class="keyword">char</span> NickName[<span class="number">20</span>];</span><br><span class="line">&#125;ClientToHall_RoomNumMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">char</span> PWD[<span class="number">20</span>];</span><br><span class="line">	<span class="keyword">char</span> NickName[<span class="number">20</span>];</span><br><span class="line">	<span class="keyword">int</span> Image;</span><br><span class="line">&#125;ClientToRegisterMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> game_rank;</span><br><span class="line">	<span class="keyword">int</span> online;</span><br><span class="line">	<span class="keyword">int</span> MaxPlayers;</span><br><span class="line">	<span class="keyword">int</span> MaxTables;</span><br><span class="line">	<span class="keyword">int</span> minLevel;</span><br><span class="line">	<span class="keyword">int</span> maxLevel;</span><br><span class="line">&#125;shm_roominfo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	shm_roominfo s_room;</span><br><span class="line">&#125;send_roominfo;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>大厅里需要的消息协议设计：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	<span class="keyword">int</span> TableID;</span><br><span class="line">	<span class="keyword">int</span> SeatID;</span><br><span class="line">&#125;ClientToHall_TableNumMsg;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>桌子上的个消息协议设计：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	<span class="keyword">int</span> state; <span class="comment">//-2--leave room;-1--leave table normally;0--in table,no ready;1--ready;2--gaming;3--escape</span></span><br><span class="line">&#125;ClientToTable_StateMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> turn;</span><br><span class="line">	<span class="keyword">int</span> color;<span class="comment">//1 -- black; 2 -- white</span></span><br><span class="line">&#125;TableToClient_StateMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">	<span class="keyword">int</span> y;</span><br><span class="line">	<span class="keyword">int</span> is_win;</span><br><span class="line">&#125;TableToClient_GameDataMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">	<span class="keyword">int</span> y;</span><br><span class="line">&#125;ClientToTable_GameDataMsg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> UserID;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> RoomID;</span><br><span class="line">	<span class="keyword">char</span> buffer[<span class="number">50</span>];</span><br><span class="line">&#125;ClientToTable_ChatMsg;</span><br></pre></td></tr></table></figure>
+<h2 id="详细设计之——-Socket-发包形式统一"><a href="#详细设计之——-Socket-发包形式统一" class="headerlink" title="详细设计之—— Socket 发包形式统一"></a>详细设计之—— Socket 发包形式统一</h2><p>基础发包（收包亦然）均为发送字节流：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ag_writen</span><span class="params">(SOCKET sock, <span class="keyword">const</span> <span class="keyword">void</span> *vptr, <span class="keyword">size_t</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">size_t</span> nleft;</span><br><span class="line">	<span class="keyword">size_t</span> nwritten;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span> *ptr;</span><br><span class="line"></span><br><span class="line">	ptr = (<span class="keyword">const</span> <span class="keyword">char</span> *)vptr;</span><br><span class="line">	nleft = n;</span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		nwritten = send(sock, ptr, nleft, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (nwritten &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">				nwritten = <span class="number">0</span>;    <span class="comment">/* and call write() again */</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">return</span> (<span class="number">-1</span>);    <span class="comment">/* error */</span></span><br><span class="line">		&#125;        </span><br><span class="line">		nleft -= nwritten;</span><br><span class="line">		ptr += nwritten;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Read "n" bytes from a descriptor. */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ag_readn</span><span class="params">(SOCKET sock, <span class="keyword">void</span> *vptr, <span class="keyword">size_t</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">size_t</span> nleft;</span><br><span class="line">	<span class="keyword">size_t</span> nread;</span><br><span class="line">	<span class="keyword">char</span> *ptr;</span><br><span class="line"></span><br><span class="line">	ptr = (<span class="keyword">char</span> *)vptr;</span><br><span class="line">	nleft = n;</span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		nread = recv(sock, ptr, nleft, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (nread &lt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">				nread = <span class="number">0</span>;    <span class="comment">/* and call read() again */</span></span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (errno == EAGAIN)<span class="comment">//added by Ask u</span></span><br><span class="line">				<span class="keyword">break</span>;                    <span class="comment">//added by Ask u</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">return</span> (<span class="number">-1</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">break</span>;    <span class="comment">/* EOF */</span></span><br><span class="line"></span><br><span class="line">		nleft -= nread;</span><br><span class="line">		ptr += nread;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n - nleft);    <span class="comment">/* return &gt;= 0 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接收或发送错误时，服务器端直接关闭相应客户端的套接字，以保护服务器。</p>
+<h2 id="详细设计之——服务器的设计"><a href="#详细设计之——服务器的设计" class="headerlink" title="详细设计之——服务器的设计"></a>详细设计之——服务器的设计</h2><h3 id="配置文件的设计"><a href="#配置文件的设计" class="headerlink" title="配置文件的设计"></a>配置文件的设计</h3><p>格式：字段名 + “=” + 字段值，包括数据库连接配置文件、房间配置文件等。</p>
+<h3 id="ccache-库的应用"><a href="#ccache-库的应用" class="headerlink" title="ccache 库的应用"></a>ccache 库的应用</h3><p>一个共享内存的开源库，修改一些自己系统需求不同的部分。</p>
+<h3 id="MySQL-的操作封装"><a href="#MySQL-的操作封装" class="headerlink" title="MySQL 的操作封装"></a>MySQL 的操作封装</h3><p>将自己常用的几个操作所用的API封装到一起：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sql_connect</span><span class="params">(MYSQL *mysql, <span class="keyword">const</span> <span class="keyword">char</span> *host,<span class="keyword">const</span> <span class="keyword">char</span> *user, <span class="keyword">const</span> <span class="keyword">char</span> *pwd, <span class="keyword">const</span> <span class="keyword">char</span> *db)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RunSelect</span><span class="params">(MYSQL *mysql, MYSQL_RES *res, <span class="keyword">const</span> <span class="keyword">char</span> *sqlstr, <span class="keyword">char</span> *returned)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RunSql</span><span class="params">(MYSQL *mysql, <span class="keyword">const</span> <span class="keyword">char</span> *sqlstr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sql_close</span><span class="params">(MYSQL *mysql)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="主程序设计"><a href="#主程序设计" class="headerlink" title="主程序设计"></a>主程序设计</h3><p>（1）主线程——分析配置及监听线程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br></pre></td></tr></table></figure>
+<p>将配置文件里的信息读到程序里，并开始监听连接。主线程建立两个 cache，用来分别存放在线玩家信息和房间列表及在线信息。</p>
+<p>（2）登录和注册线程池：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_main</span><span class="params">(<span class="keyword">void</span> *args)</span></span>;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span>(MSGTYPE)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">		<span class="comment">//……</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个线程池的线程数量通常为 CPU 的数量乘以 2。由于各个服务器的 CPU 数量不一样，将这个设计为启动服务器程序时的一个参数。</p>
+<p>（3）维护游戏房间列表线程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_get_roomlist</span><span class="params">(<span class="keyword">void</span> *args)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>此线程定时遍历房间 cache，刷新在线人数，并遍历用户列表，将在线房间信息发送出去。</p>
+<p>（4）游戏逻辑线程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_epoll_gamelogic</span><span class="params">(<span class="keyword">void</span> *args)</span></span>;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span>(MSGTYPE)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">		<span class="comment">//……</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接收、处理、发送进出房间、进出桌子、游戏数据、聊天的消息。</p>
+<p>（5）统一出错处理的函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LogOut</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="详细设计之——客户端的设计"><a href="#详细设计之——客户端的设计" class="headerlink" title="详细设计之——客户端的设计"></a>详细设计之——客户端的设计</h2><h3 id="大厅进程的设计"><a href="#大厅进程的设计" class="headerlink" title="大厅进程的设计"></a>大厅进程的设计</h3><p>（1）主逻辑线程：</p>
+<ul>
+<li>处理所有客户端大厅的界面操作及发送消息到服务器；</li>
+<li>处理接收通信包线程转发来的消息。</li>
+<li>处理五子棋进程发送过来的数据及转发过来的服务器消息。</li>
+<li>启动五子棋进程时杀死接收通信包线程；</li>
+<li>关闭五子棋进程时重启接收通信包线程。</li>
+</ul>
+<p>（2）接收通信包线程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(MSGTYPE)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">	<span class="comment">//……</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用于接收服务器发过来的消息，根据消息类型直接处理或者转发给主线程。</p>
+<p>（3）给五子棋进程的数据：<br>通过管道，传递子进程初始化的平台需要数据。</p>
+<h3 id="五子棋进程"><a href="#五子棋进程" class="headerlink" title="五子棋进程"></a>五子棋进程</h3><p>（1）主逻辑线程：</p>
+<ul>
+<li>处理大厅进程发送过来的数据；</li>
+<li>处理五子棋界面上的所有操作及发送消息到服务器；</li>
+<li>处理接收通信包线程发送过来的服务器消息、中间处理后的数据。</li>
+</ul>
+<p>（2）接收通信包线程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(MSGTYPE)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">	<span class="comment">//……</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中间处理服务器发送过来的消息及转发一些消息到主线程。</p>
+<p>（3）给大厅的一些平台数据转发：<br>通过给大厅进程发送 <code>WM_COPYDATA</code> 消息来转发同房间玩家的桌子信息实时刷新及房间列表在线列表。</p>
+<h3 id="客户端套接字的共用"><a href="#客户端套接字的共用" class="headerlink" title="客户端套接字的共用"></a>客户端套接字的共用</h3><p>为了降低开销和简化同步，客户端的两个进程公用同一个套接字，具体设计为：<br>（1）大厅进程建立一个套接字与服务器建立连接，当新建五子棋进程时，获得子进程的进程号，并发送给大厅进程。<br>（2）大厅进程根据这个子进程（五子棋进程）号，用函数 <code>WSADuplicateSocket</code> 将自己的套接字复制一个并传递给子进程。子进程利用这个父进程传递过来的套接字跟服务器进行通信。</p>
+<h3 id="客户端的数据同步"><a href="#客户端的数据同步" class="headerlink" title="客户端的数据同步"></a>客户端的数据同步</h3><p>当大厅进程里建立五子棋进程后，立即关闭大厅自己的接收网络包线程；五子棋进程开启接收网络包线程。</p>
+<p>当五子棋玩毕，关掉此进程时，大厅检测到子进程的关闭，立即重启大厅的接收网络包线程。</p>
+<p>这样可以屏蔽共享套接字跟服务器通信的互相干扰。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/作品/">作品</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2016/08/18/16/16-ask-game-2/" data-title="大三工作室项目 - 五子棋世界（2）：程序设计 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/08/14/16/16-ask-game-1/"  title="大三工作室项目 - 五子棋世界（1）：需求分析与成品截图">
+ <strong>下一篇：</strong><br/> 
+ <span>大三工作室项目 - 五子棋世界（1）：需求分析与成品截图
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/08/18/16/16-ask-game-2/" data-title="大三工作室项目 - 五子棋世界（2）：程序设计" data-url="http://blog.clawz.me/2016/08/18/16/16-ask-game-2/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#说明"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统功能模块图"><span class="toc-number">2.</span> <span class="toc-text">系统功能模块图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统流程图"><span class="toc-number">3.</span> <span class="toc-text">系统流程图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统数据流图"><span class="toc-number">4.</span> <span class="toc-text">系统数据流图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡策略图"><span class="toc-number">5.</span> <span class="toc-text">负载均衡策略图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#概要设计"><span class="toc-number">6.</span> <span class="toc-text">概要设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-R-图"><span class="toc-number">7.</span> <span class="toc-text">E-R 图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库表设计"><span class="toc-number">8.</span> <span class="toc-text">数据库表设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——通信协议的制订"><span class="toc-number">9.</span> <span class="toc-text">详细设计之——通信协议的制订</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举所有要用到的消息标识"><span class="toc-number">9.1.</span> <span class="toc-text">枚举所有要用到的消息标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#各个消息的数据结构设计"><span class="toc-number">9.2.</span> <span class="toc-text">各个消息的数据结构设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——-Socket-发包形式统一"><span class="toc-number">10.</span> <span class="toc-text">详细设计之—— Socket 发包形式统一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——服务器的设计"><span class="toc-number">11.</span> <span class="toc-text">详细设计之——服务器的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置文件的设计"><span class="toc-number">11.1.</span> <span class="toc-text">配置文件的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ccache-库的应用"><span class="toc-number">11.2.</span> <span class="toc-text">ccache 库的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-的操作封装"><span class="toc-number">11.3.</span> <span class="toc-text">MySQL 的操作封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主程序设计"><span class="toc-number">11.4.</span> <span class="toc-text">主程序设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细设计之——客户端的设计"><span class="toc-number">12.</span> <span class="toc-text">详细设计之——客户端的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#大厅进程的设计"><span class="toc-number">12.1.</span> <span class="toc-text">大厅进程的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五子棋进程"><span class="toc-number">12.2.</span> <span class="toc-text">五子棋进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端套接字的共用"><span class="toc-number">12.3.</span> <span class="toc-text">客户端套接字的共用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端的数据同步"><span class="toc-number">12.4.</span> <span class="toc-text">客户端的数据同步</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lisp/" title="Lisp">Lisp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hack/" title="hack">hack<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/产品设计/" title="产品设计">产品设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/作品/" title="作品">作品<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://kittycookie.clawz.me" target="_blank" title="三癫那">三癫</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
