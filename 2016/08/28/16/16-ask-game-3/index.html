@@ -1,0 +1,581 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>大三工作室项目 - 五子棋世界（3）：压测、工作技术报告 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="压力测试写模拟客户端并发很多线程来做的压测。主要测试了注册登录模块。
+压测环境：
+
+服务器的机器配置：Linux，512M 内存，CPU 2.80 GHZ；
+模拟客户端的机器配置：Windows XP，256M 内存，CPU 2.80 GHZ；模拟客户端上还运行着 VS2005 和 QQ。
+
+压测数据：
+当时对测试结果的一点说明：服务器和客户端的配置都相当低，网络又相当的差，服务器的 Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告">
+<meta property="og:url" content="http://blog.clawz.me/2016/08/28/16/16-ask-game-3/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="压力测试写模拟客户端并发很多线程来做的压测。主要测试了注册登录模块。
+压测环境：
+
+服务器的机器配置：Linux，512M 内存，CPU 2.80 GHZ；
+模拟客户端的机器配置：Windows XP，256M 内存，CPU 2.80 GHZ；模拟客户端上还运行着 VS2005 和 QQ。
+
+压测数据：
+当时对测试结果的一点说明：服务器和客户端的配置都相当低，网络又相当的差，服务器的 Linux">
+<meta property="og:image" content="http://blog.clawz.me/images/16/16-ask-game3-ya-li-ce-shi.png">
+<meta property="og:updated_time" content="2016-08-28T10:54:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告">
+<meta name="twitter:description" content="压力测试写模拟客户端并发很多线程来做的压测。主要测试了注册登录模块。
+压测环境：
+
+服务器的机器配置：Linux，512M 内存，CPU 2.80 GHZ；
+模拟客户端的机器配置：Windows XP，256M 内存，CPU 2.80 GHZ；模拟客户端上还运行着 VS2005 和 QQ。
+
+压测数据：
+当时对测试结果的一点说明：服务器和客户端的配置都相当低，网络又相当的差，服务器的 Linux">
+<meta name="twitter:image" content="http://blog.clawz.me/images/16/16-ask-game3-ya-li-ce-shi.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/28/16/16-ask-game-3/" title="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告" itemprop="url">大三工作室项目 - 五子棋世界（3）：压测、工作技术报告</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-28T10:54:10.000Z" itemprop="datePublished"> 发表于 2016-08-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#压力测试"><span class="toc-number">1.</span> <span class="toc-text">压力测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作报告"><span class="toc-number">2.</span> <span class="toc-text">工作报告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术报告"><span class="toc-number">3.</span> <span class="toc-text">技术报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#系统的架构"><span class="toc-number">3.1.</span> <span class="toc-text">系统的架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开发工具"><span class="toc-number">3.2.</span> <span class="toc-text">开发工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关技术点"><span class="toc-number">3.3.</span> <span class="toc-text">相关技术点</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="压力测试"><a href="#压力测试" class="headerlink" title="压力测试"></a>压力测试</h2><p>写模拟客户端并发很多线程来做的压测。主要测试了注册登录模块。</p>
+<p>压测环境：</p>
+<ul>
+<li>服务器的机器配置：Linux，512M 内存，CPU 2.80 GHZ；</li>
+<li>模拟客户端的机器配置：Windows XP，256M 内存，CPU 2.80 GHZ；模拟客户端上还运行着 VS2005 和 QQ。</li>
+</ul>
+<p>压测数据：<br><img src="/images/16/16-ask-game3-ya-li-ce-shi.png" alt=""></p>
+<p>当时对测试结果的一点说明：服务器和客户端的配置都相当低，网络又相当的差，服务器的 Linux 对资源的设置好像也有的问题。在如此恶劣环境之下也能支持 1000 多连接并保持每秒，不好评价。</p>
+<p>以现在的视角来看，当时的测试还是差点意思的。其实，是差很多意思，哈哈哈。比如基本的游戏逻辑线程没有做测试。</p>
+<p>以下的工作报告和技术报告也是基本摘抄当时的相关文档。</p>
+<h2 id="工作报告"><a href="#工作报告" class="headerlink" title="工作报告"></a>工作报告</h2><ul>
+<li>上学期期中：<ul>
+<li>确定项目，了解项目所需知识及开发工具。<ul>
+<li>编程知识：Socket 编程、Windows SDK 编程。</li>
+<li>开发工具：VS2005、g++、GDB、Automake。</li>
+</ul>
+</li>
+<li>复习《C++ Primer》、《Windows 程序设计》。</li>
+<li>编写需求分析。</li>
+</ul>
+</li>
+<li>上学期期末：<ul>
+<li>学习项目所需知识：<ul>
+<li>《UNIX 环境高级编程》。</li>
+<li>g++ 和 GDB 的使用。</li>
+<li>Socket 编程。</li>
+<li>MySQL C API 编程。</li>
+</ul>
+</li>
+<li>编写了初步服务器程序、初步应用了 epoll 高效服务器网络模型、编写了客户端雏形。</li>
+<li>总结了一学期的学习和项目经历。</li>
+</ul>
+</li>
+<li>下学期期中：<ul>
+<li>学习项目所需知识：<ul>
+<li>学习了《UNIX 网络编程》。</li>
+<li>Automake 的使用。</li>
+</ul>
+</li>
+<li>制定了世界的通信协议。</li>
+<li>编写了完整的服务器程序和客户端程序。</li>
+<li>初步测试了项目功能。</li>
+</ul>
+</li>
+<li>下学期期末：<ul>
+<li>压力测试。</li>
+<li>完善了文档，总结了一学年的工作学习。</li>
+</ul>
+</li>
+</ul>
+<h2 id="技术报告"><a href="#技术报告" class="headerlink" title="技术报告"></a>技术报告</h2><h3 id="系统的架构"><a href="#系统的架构" class="headerlink" title="系统的架构"></a>系统的架构</h3><ul>
+<li>服务器端：<ul>
+<li>2 个登录注册线程</li>
+<li>1 个 epoll 网络线程 + 若干游戏逻辑线程</li>
+<li>1 个定时更新房间列表线程</li>
+</ul>
+</li>
+<li>客户端采取大厅 + 五子棋双进程（方便以后扩展更多游戏）</li>
+</ul>
+<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><ul>
+<li>服务器端：g++、GDB、Automake</li>
+<li>客户端：VS2005</li>
+</ul>
+<h3 id="相关技术点"><a href="#相关技术点" class="headerlink" title="相关技术点"></a>相关技术点</h3><ul>
+<li>Socket 编程：套接字编程是网络应用程序的基础。</li>
+<li>MySQL C API 编程：操作mysql数据库的函数接口。</li>
+<li>epoll + 多线程模型：<ul>
+<li>相比于 select ，epoll 做事件触发最大的好处在于它不会随着监听 fd 数目的增长而降低效率。</li>
+<li>多线程是并发程序的基础 。</li>
+</ul>
+</li>
+<li>Windows SDK 编程：直接使用 Windows 的 API 编程，API 使编程更具灵活性。</li>
+<li>共享内存编程：不同进程之间通信的高效模式，因为他们在同内存里直接存储数据，仿佛在同一进程里对数据进行操作。</li>
+<li>Windows 套接字共享编程：利用共享套接字，可以实现不同进程使用同一个套接。这样由大厅和游戏两个进程的客户端只需维护一个套接字，使开销降低了一半。</li>
+<li>C++ STL 编程：STL 里的很多容器和算法很方便和高效，用它编程，节省很多时间，并使代码看起来很清晰。</li>
+<li>自定义消息协议编写：服务器和客户端的通信，由于各个状态的数据不一样，消息必须被标识。</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/作品/">作品</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2016/08/28/16/16-ask-game-3/" data-title="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/08/18/16/16-ask-game-2/"  title="大三工作室项目 - 五子棋世界（2）：程序设计">
+ <strong>下一篇：</strong><br/> 
+ <span>大三工作室项目 - 五子棋世界（2）：程序设计
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/08/28/16/16-ask-game-3/" data-title="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告" data-url="http://blog.clawz.me/2016/08/28/16/16-ask-game-3/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#压力测试"><span class="toc-number">1.</span> <span class="toc-text">压力测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作报告"><span class="toc-number">2.</span> <span class="toc-text">工作报告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术报告"><span class="toc-number">3.</span> <span class="toc-text">技术报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#系统的架构"><span class="toc-number">3.1.</span> <span class="toc-text">系统的架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开发工具"><span class="toc-number">3.2.</span> <span class="toc-text">开发工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关技术点"><span class="toc-number">3.3.</span> <span class="toc-text">相关技术点</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lisp/" title="Lisp">Lisp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hack/" title="hack">hack<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/产品设计/" title="产品设计">产品设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/作品/" title="作品">作品<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://kittycookie.clawz.me" target="_blank" title="三癫那">三癫</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
