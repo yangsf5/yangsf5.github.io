@@ -1,0 +1,553 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="五子棋世界技术的一点声明细心的同学在看此系列的程序设计篇时，应该会对网络收发包部分的代码产生一个疑问，为什么其中两行代码有这个注释：12else if (errno == EAGAIN)//added by Ask u	break;           //added by Ask u
+如果项目都是你独立完成的，那作者全都是你 Ask u 呀，为什么还要多此一举？
+哈哈。当我这几天在看之前的文档时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖">
+<meta property="og:url" content="http://blog.clawz.me/2016/09/02/16/16-ask-game-4/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="五子棋世界技术的一点声明细心的同学在看此系列的程序设计篇时，应该会对网络收发包部分的代码产生一个疑问，为什么其中两行代码有这个注释：12else if (errno == EAGAIN)//added by Ask u	break;           //added by Ask u
+如果项目都是你独立完成的，那作者全都是你 Ask u 呀，为什么还要多此一举？
+哈哈。当我这几天在看之前的文档时">
+<meta property="og:updated_time" content="2016-09-02T00:44:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖">
+<meta name="twitter:description" content="五子棋世界技术的一点声明细心的同学在看此系列的程序设计篇时，应该会对网络收发包部分的代码产生一个疑问，为什么其中两行代码有这个注释：12else if (errno == EAGAIN)//added by Ask u	break;           //added by Ask u
+如果项目都是你独立完成的，那作者全都是你 Ask u 呀，为什么还要多此一举？
+哈哈。当我这几天在看之前的文档时">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/02/16/16-ask-game-4/" title="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖" itemprop="url">大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-01T23:50:00.000Z" itemprop="datePublished"> 发表于 2016-09-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#五子棋世界技术的一点声明"><span class="toc-number">1.</span> <span class="toc-text">五子棋世界技术的一点声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自学"><span class="toc-number">2.</span> <span class="toc-text">自学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一个插曲"><span class="toc-number">2.1.</span> <span class="toc-text">一个插曲</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#江西省学生电子电脑大赛"><span class="toc-number">3.</span> <span class="toc-text">江西省学生电子电脑大赛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#蹭到奖了"><span class="toc-number">4.</span> <span class="toc-text">蹭到奖了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贵人小雨"><span class="toc-number">5.</span> <span class="toc-text">贵人小雨</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="五子棋世界技术的一点声明"><a href="#五子棋世界技术的一点声明" class="headerlink" title="五子棋世界技术的一点声明"></a>五子棋世界技术的一点声明</h2><p>细心的同学在看此系列的程序设计篇时，应该会对网络收发包部分的代码产生一个疑问，为什么其中两行代码有这个注释：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (errno == EAGAIN)<span class="comment">//added by Ask u</span></span><br><span class="line">	<span class="keyword">break</span>;           <span class="comment">//added by Ask u</span></span><br></pre></td></tr></table></figure></p>
+<p>如果项目都是你独立完成的，那作者全都是你 Ask u 呀，为什么还要多此一举？</p>
+<p>哈哈。当我这几天在看之前的文档时，也有了这个疑问，但瞬间就明白了。以我当时的水准，有些高深代码得以 copy 起家，从技术书或者技术文档里 copy，然后再根据自己的场景做修缮。</p>
+<p>另外一个 copy 起家的技术点就是客户端五子棋棋谱的算法，起源于一本 VC 游戏编程的书。</p>
+<h2 id="自学"><a href="#自学" class="headerlink" title="自学"></a>自学</h2><p>五子棋世界里涉及到很多技术，大家可能会产生一个错觉，感觉我们学校软件工程系的编程教育很先进啊。其实不是的，列下系里开的课就知道了。</p>
+<p>开的编程相关课：</p>
+<ul>
+<li>大一：<ul>
+<li>《数字逻辑与计算机组成原理》</li>
+<li>《C 语言程序设计》</li>
+<li>《算法与数据结构》</li>
+</ul>
+</li>
+<li>大二：<ul>
+<li>《操作系统原理与技术》</li>
+<li>《数据库原理与技术》</li>
+<li>《ASP 程序设计》</li>
+<li>《Visual Basic 程序设计》</li>
+<li>《SQL Server 2000 数据库程序设计》</li>
+<li>《网页制作与网站设计》</li>
+</ul>
+</li>
+<li>大三：<ul>
+<li>《VC 程序设计》</li>
+<li>《计算机网络与通信技术》</li>
+<li>《Weblogic 系统配置与管理》</li>
+<li>《软件工程》</li>
+<li>《SQL Server 2000 应用与开发》</li>
+<li>《网络与信息安全技术》</li>
+<li>《Windows 系统配置与管理》</li>
+<li>《面向对象的设计与分析》</li>
+</ul>
+</li>
+<li>大四：<ul>
+<li>N/A</li>
+</ul>
+</li>
+</ul>
+<p>以上是从大学成绩表里摘抄的，有些可能是选修课，不去深究了。可以看出，课程偏基础。想深入学 C++、网络编程、Linux 相关开发就得自学。</p>
+<p>而自学之前，得先有人给咱们指路，帮咱拓宽视野，咱们这些懵懂的编程入门的学生自己是摸索不出来的。给我指路的是小雨，指的路是专攻 C++，从此我知道了 C++ 界的圣经《C++ Primer》并啃掉。再后来知道了 Linux/UNIX，目标就定成了 Linux C++ 服务器开发。</p>
+<h3 id="一个插曲"><a href="#一个插曲" class="headerlink" title="一个插曲"></a>一个插曲</h3><p>我先“偷学”了 C++，队长知道后忧伤的跟我说“你有高人指点怎么不跟我说？”然后他马上就去挑选进修语言，最后选择了 Java，理由是 Java 相对来说简单点。当时我还吐槽了这个理由，表示要搞就搞有挑战一点的。</p>
+<p>对，他也有一颗躁动的技术心。</p>
+<h2 id="江西省学生电子电脑大赛"><a href="#江西省学生电子电脑大赛" class="headerlink" title="江西省学生电子电脑大赛"></a>江西省学生电子电脑大赛</h2><p>在我选了对战平台之后，斌哥（之前的博客里以 Cullet 网名出现）选了 IM。这样我们就成了 QQ、QQ Game。</p>
+<p>但斌哥一开始下不定决心，怕搞不定网络编程，因为之前没怎么学过。我说“怕什么，搞不定，我帮你搞”。网络高并发方面后来我主要是 Linux 的 Epoll，他选了 Windows 下直接开服务器，所以他研究的是 Windows 的完成端口 IOCP。</p>
+<p>当大家的作品基本功能做完的时候，学生们接到了江西省学生电子电脑大赛的选拔通知。</p>
+<p>我和斌哥都报名了。我俩都认为，我们的两个作品相对那些 MIS 系统有很大亮点，所以都想在这次赛上有所作为。当时我俩很迅速达成共识，为了进一步加大各自的获奖几率，两个项目都写两个名。</p>
+<p>最终我们参赛报名为：</p>
+<ul>
+<li>五子棋世界，作者三疯、斌哥。</li>
+<li>IM，作者斌哥、三疯。</li>
+</ul>
+<p>正憧憬着呢，学院负责这个事情的老师开始初筛各项目。</p>
+<p>看斌哥的作品时，老师说不错。到我这时，老师嘀咕“你这个界面有点丑啊”……</p>
+<p>当时没反应过来，还年幼嘛，自认为使用的技术很有亮点，内在很美啊，老师怎么关注的是外在美？老师说他回去想想。</p>
+<p>斌哥的 IM 在界面上确实比我的好看，他用了第三方的美化界面库。我给老师演示时界面上各种背景都是默认的，就是那个丑不拉几的灰色。前几篇博客里的截图是后来参照 QQ Game 里的配色方案做了简单配色调整，后来我也没有再花时间去像斌哥那样加些美化界面库，我把时间用在调优服务器和游戏逻辑了。</p>
+<p>后来真的把我的刷了，理由是同学校同类型的作品只要一个，那当然选好看的。理由是参赛作品太多，评审老师基本只是看看文档里的作品界面截图，并不会去详细开启作品来玩来感叹你作品的技术先进性。</p>
+<p>关于评审老师只看截图这个，当时虽然不舒服，但还能理解。但是说我俩作品是同类型，我实在想不明白。难道因为都是网络编程？差很多好不好，一个聊天，一个游戏对战，你能说 QQ 和 QQ Game 是同类型的吗？但没处说理啊，人生就是这样。</p>
+<h2 id="蹭到奖了"><a href="#蹭到奖了" class="headerlink" title="蹭到奖了"></a>蹭到奖了</h2><p>最终斌哥的 IM 获得了本科组一等奖。我以第二作者的身份也蹭到了这个奖。蹭，是因为我们各自的作品都是独立开发的。他的 IM 项目上，我的贡献仅存在于偶尔帮忙调试个 C++、socket 通信。</p>
+<p>不过最终获奖证书是一人一份，而证书里的获奖者写的还挺懂“国情”。斌哥的当然是 <code>斌哥、三疯同学……一等奖</code>，而我的那份是 <code>三疯、斌哥……一等奖</code>。</p>
+<p>学院也兑现了承诺，获奖的同学会得到学院的奖金。金额好像是每人 400，斌哥当时手头紧，800 就都归他了，我完全没有异议，本来就没出力，而且已经蹭了名了。虽然我也一直缺钱。</p>
+<p>比赛官网公布角逐奖项作品时，我心怀不满的马上去看。然后看到网络分类的，越看越替自己不平。他们基本是只能最多两个人局域网对战或者聊天，只能服务器与客户端对战。就是最入门级的网络编程，服务器与客户端 1v1 通信。</p>
+<h2 id="贵人小雨"><a href="#贵人小雨" class="headerlink" title="贵人小雨"></a>贵人小雨</h2><p>前边提到的技术引路人小雨，在我的技术生涯中，属于一个很重要的启蒙贵人。</p>
+<p>当年，作为一颗含苞待放的技术花骨朵，我在积极探寻技术大千世界。左逛技术论坛，右加技术群。最后加了一个南昌技术交流群。此时群里有个叫小雨的刚回南昌创业不久。大二上学期快结束的某日，他在群里展示了他独自开发的播放器和某个更牛逼的 P2P 软件，群友们纷纷点 32 个赞，膜拜的五体投地，我也是膜拜行列之一。</p>
+<p>我单密小雨求收徒，人家不答应，客气的说有问题可以交流。就像沙漠深处的探险者看见了一口水井，我如饥似渴的找人“交流”，其实是单方面求指导、求方向、各种求……</p>
+<p>所以我从大二下学期之前的寒假就开始了 C++ 之旅，很幸运的先飞了很久……</p>
+<p>后来我和斌哥一起去了小雨的公司实习，有点故事在 <a href="http://blog.clawz.me/2008/10/23/xiao-yu-yao-wo-qu-ta-men-gong-si/">这篇博客</a> 里。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/作品/">作品</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2016/09/02/16/16-ask-game-4/" data-title="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/08/28/16/16-ask-game-3/"  title="大三工作室项目 - 五子棋世界（3）：压测、工作技术报告">
+ <strong>下一篇：</strong><br/> 
+ <span>大三工作室项目 - 五子棋世界（3）：压测、工作技术报告
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/09/02/16/16-ask-game-4/" data-title="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖" data-url="http://blog.clawz.me/2016/09/02/16/16-ask-game-4/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#五子棋世界技术的一点声明"><span class="toc-number">1.</span> <span class="toc-text">五子棋世界技术的一点声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自学"><span class="toc-number">2.</span> <span class="toc-text">自学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一个插曲"><span class="toc-number">2.1.</span> <span class="toc-text">一个插曲</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#江西省学生电子电脑大赛"><span class="toc-number">3.</span> <span class="toc-text">江西省学生电子电脑大赛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#蹭到奖了"><span class="toc-number">4.</span> <span class="toc-text">蹭到奖了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贵人小雨"><span class="toc-number">5.</span> <span class="toc-text">贵人小雨</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lisp/" title="Lisp">Lisp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hack/" title="hack">hack<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/产品设计/" title="产品设计">产品设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/作品/" title="作品">作品<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://kittycookie.clawz.me" target="_blank" title="三癫那">三癫</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
