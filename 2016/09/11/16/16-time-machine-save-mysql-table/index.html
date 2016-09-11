@@ -4,35 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>epoll 的各个事件触发条件测试 | 三疯的技术博客</title>
+    <title>Time Machine 华丽营救被污的 MySQL 表 | 三疯的技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="三疯">
     
 
     
-    <meta name="description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+    <meta name="description" content="之前换新 Mac 时，Time Machine 来做的 OS X 数据迁移，立了大功。最近又立一小功。
+作为一名程序员，我写了不少自己日常用的小工具，其中一些以 Web 形式搭建在自己的 Mac 上。
+像往常一样利用 Web 工具记录东西，不料写错了一个值。碰巧这个工具还没有开发修改记录的功能。那就只能手撸 MySQL 了。
+撸坏 MySQL 表下边表名和字段名都打了马赛克。
+相关字段是 type">
 <meta property="og:type" content="article">
-<meta property="og:title" content="epoll 的各个事件触发条件测试">
-<meta property="og:url" content="http://blog.clawz.me/2009/03/12/09-epoll-event-test/index.html">
+<meta property="og:title" content="Time Machine 华丽营救被污的 MySQL 表">
+<meta property="og:url" content="http://blog.clawz.me/2016/09/11/16/16-time-machine-save-mysql-table/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
-<meta property="og:updated_time" content="2016-07-03T05:52:14.000Z">
+<meta property="og:description" content="之前换新 Mac 时，Time Machine 来做的 OS X 数据迁移，立了大功。最近又立一小功。
+作为一名程序员，我写了不少自己日常用的小工具，其中一些以 Web 形式搭建在自己的 Mac 上。
+像往常一样利用 Web 工具记录东西，不料写错了一个值。碰巧这个工具还没有开发修改记录的功能。那就只能手撸 MySQL 了。
+撸坏 MySQL 表下边表名和字段名都打了马赛克。
+相关字段是 type">
+<meta property="og:updated_time" content="2016-09-11T01:01:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="epoll 的各个事件触发条件测试">
-<meta name="twitter:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+<meta name="twitter:title" content="Time Machine 华丽营救被污的 MySQL 表">
+<meta name="twitter:description" content="之前换新 Mac 时，Time Machine 来做的 OS X 数据迁移，立了大功。最近又立一小功。
+作为一名程序员，我写了不少自己日常用的小工具，其中一些以 Web 形式搭建在自己的 Mac 上。
+像往常一样利用 Web 工具记录东西，不料写错了一个值。碰巧这个工具还没有开发修改记录的功能。那就只能手撸 MySQL 了。
+撸坏 MySQL 表下边表名和字段名都打了马赛克。
+相关字段是 type">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -83,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2009/03/12/09-epoll-event-test/" title="epoll 的各个事件触发条件测试" itemprop="url">epoll 的各个事件触发条件测试</a>
+      <a href="/2016/09/11/16/16-time-machine-save-mysql-table/" title="Time Machine 华丽营救被污的 MySQL 表" itemprop="url">Time Machine 华丽营救被污的 MySQL 表</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
 		
   <p class="article-time">
-    <time datetime="2009-03-12T09:17:00.000Z" itemprop="datePublished"> 发表于 2009-03-12</time>
+    <time datetime="2016-09-11T00:51:00.000Z" itemprop="datePublished"> 发表于 2016-09-11</time>
     
   </p>
 </header>
@@ -99,18 +99,39 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#撸坏-MySQL-表"><span class="toc-number">1.</span> <span class="toc-text">撸坏 MySQL 表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Machine-拔刀相助"><span class="toc-number">2.</span> <span class="toc-text">Time Machine 拔刀相助</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Machine-使用经验"><span class="toc-number">3.</span> <span class="toc-text">Time Machine 使用经验</span></a></li></ol>
 		
 		</div>
 		
-		<ul>
-<li>listen fd，有新连接请求，触发 <code>EPOLLIN</code>。</li>
-<li>对端发送普通数据，触发 <code>EPOLLIN</code>。</li>
-<li>带外数据，只触发 <code>EPOLLPRI</code>。</li>
-<li>对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 <code>EPOLLIN</code> 和 <code>EPOLLRDHUP</code>，但是不触发 <code>EPOLLERR</code> 和 <code>EPOLLHUP</code>。关于这点，以前一直以为会触发 <code>EPOLLERR</code> 或者 <code>EPOLLHUP</code>。</li>
-<li>再 <code>man epoll_ctl</code> 看下后两个事件的说明，这两个应该是 Server 端出错才触发的。</li>
-<li>对端异常断开连接（只测了拔网线），没触发任何事件。</li>
+		<p>之前换新 Mac 时，Time Machine 来做的 <a href="http://blog.clawz.me/2014/11/15/macbook-qian-yi-shu-ju-da-zhe-teng/">OS X 数据迁移</a>，立了大功。最近又立一小功。</p>
+<p>作为一名程序员，我写了不少自己日常用的小工具，其中一些以 Web 形式搭建在自己的 Mac 上。</p>
+<p>像往常一样利用 Web 工具记录东西，不料写错了一个值。碰巧这个工具还没有开发修改记录的功能。那就只能手撸 MySQL 了。</p>
+<h2 id="撸坏-MySQL-表"><a href="#撸坏-MySQL-表" class="headerlink" title="撸坏 MySQL 表"></a>撸坏 MySQL 表</h2><p>下边表名和字段名都打了马赛克。</p>
+<p>相关字段是 <code>type</code>，开撸：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> table_x <span class="keyword">set</span> <span class="keyword">type</span>=<span class="number">4</span>;</span><br></pre></td></tr></table></figure></p>
+<p>撸完去刷新 Web 页面，傻了，所有记录的类型都变成 4 了。瞬间想起 SQL 语句没加 <code>where</code> 限定条件，正确的语句应该是这样：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> table_x <span class="keyword">set</span> <span class="keyword">type</span>=<span class="number">4</span> <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">2993</span>;</span><br></pre></td></tr></table></figure></p>
+<p>表里有近 3000 条数据啊，现在这近 3000 条数据的 <code>type</code> 字段都成为 <code>4</code> 了。像吃了苍蝇。</p>
+<h2 id="Time-Machine-拔刀相助"><a href="#Time-Machine-拔刀相助" class="headerlink" title="Time Machine 拔刀相助"></a>Time Machine 拔刀相助</h2><p>赶紧想办法恢复。首先貌似没有语句能撤销命令。</p>
+<p>然后，找我的定时备份库，但是这个定时设置的是每天一次。如果恢复到昨天，那昨天备份时刻到现在的几十条记录就得手动去改。还是有点麻烦。</p>
+<p>再想到 binlog，当时我没开启过 binlog，尴尬。</p>
+<p>灵机一动，我不是有 Time Machine 嘛。MySQL 的表的数据一般存储在各自独立的文件里，能恢复这个文件到之前一两个版本就行了。赶紧用下这个月光宝盒碰碰运气。</p>
+<p>于是用 Vim 打开 MySQL 的配置文件 <code>/etc/my.cnf</code>，找到 MySQL 的数据文件存储路径的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datadir = /usr/local/var/mysql</span><br></pre></td></tr></table></figure></p>
+<p>找到被搞坏表的数据文件路径，例如我这里的 <code>/usr/local/var/mysql/db_x/talbe_x.ibd</code>，然后打开 Time Machine，找到这个文件，就可以很方便的挑选中意的版本。我估算下时间，找到魔鬼命令之前的版本，选中后点击“恢复”按钮，啪叽，我那近 3000 条的数据就恢复了被搞坏前的版本。</p>
+<p>当然，我为了安全起见，在进入 TimeMachine 之前我把 MySQL Server 服务停掉了，恢复完数据文件再重启的。</p>
+<h2 id="Time-Machine-使用经验"><a href="#Time-Machine-使用经验" class="headerlink" title="Time Machine 使用经验"></a>Time Machine 使用经验</h2><p>先摘录下 Time Machine 偏好设置界面的说明：</p>
+<blockquote>
+<p>Time Machine 会保留：</p>
+<ul>
+<li>本地快照（只要空间允许）</li>
+<li>过去 24 小时的每小时备份</li>
+<li>过去一个月的每日备份</li>
+<li>过去所有月份的每周备份</li>
 </ul>
+<p>当备份磁盘装满时，最早的备份会被删除。</p>
+</blockquote>
+<p>我用的是一个带 USB 3.0 口的移动硬盘，我的容量是 1T，做了一个 300G 的分区专门做 Time Machine 备份盘。</p>
+<p>USB 3.0 速度会快些，现在应该是标配了吧。备份盘所需容量得看情况，我的 Mac 是 256G 硬盘，目前 Time Machine 占用了移动硬盘备份分区 300G 中的 270G 左右，显示备份数据的时间范围为 2016-05-14 ~ 2016-09-05 日。</p>
+<p>我一般是半个月到一个月才拿出移动硬盘做次备份。</p>
+<p>这次恢复 MySQL 表的数据文件，都不用拿移动硬盘，原因在偏好设置里也说明了。不是当你连接了移动硬盘时才做备份，平时它会将文件的版本变化存储在本地，当你连接移动硬盘时，只是将平时的备份算下增量，然后将这个增量拷贝到你的移动硬盘里。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -118,7 +139,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/网络编程/">网络编程</a>
+  <a class="article-category-link" href="/categories/工具/">工具</a>
 </div>
 
 
@@ -128,7 +149,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2016/09/11/16/16-time-machine-save-mysql-table/" data-title="Time Machine 华丽营救被污的 MySQL 表 | 三疯的技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -141,19 +162,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2009/04/30/09-tcp-nodelay-also-eagain/" title="EAGAIN 误会 TCP_NODELAY">
-  <strong>上一篇：</strong><br/>
-  <span>
-  EAGAIN 误会 TCP_NODELAY</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2009/01/10/09-fu-zhi-xie-cheng-deng-yu/"  title="这次把“=”写成了“==”">
+<a href="/2016/09/02/16/16-ask-game-4/"  title="大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖">
  <strong>下一篇：</strong><br/> 
- <span>这次把“=”写成了“==”
+ <span>大三工作室项目 - 五子棋世界（4）：贵人与江西省比赛蹭奖
 </span>
 </a>
 </div>
@@ -162,7 +175,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试" data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/"></div>
+	<div class="ds-thread" data-thread-key="2016/09/11/16/16-time-machine-save-mysql-table/" data-title="Time Machine 华丽营救被污的 MySQL 表" data-url="http://blog.clawz.me/2016/09/11/16/16-time-machine-save-mysql-table/"></div>
 </section>
 
 
@@ -172,7 +185,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#撸坏-MySQL-表"><span class="toc-number">1.</span> <span class="toc-text">撸坏 MySQL 表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Machine-拔刀相助"><span class="toc-number">2.</span> <span class="toc-text">Time Machine 拔刀相助</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Machine-使用经验"><span class="toc-number">3.</span> <span class="toc-text">Time Machine 使用经验</span></a></li></ol>
  
   </div>
 
