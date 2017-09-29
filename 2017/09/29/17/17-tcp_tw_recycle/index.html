@@ -1,0 +1,509 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>公司内网访问某业务系统经常卡 | 三疯的技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="三疯">
+    
+
+    
+    <meta name="description" content="问题表象患者：我们自己开发的一个工具系统，上边是很多提高开发效率的工具，且称为 B 系统。症状：我们的 B 系统从某段时间开始经常卡顿，经常打开页面需要 20-60 秒左右才显示出来。基本没法使用。
+追查 1 - 本地开发环境与线上都卡线上服务卡顿比较严重后，我们发现本地开发环境也很卡。暗喜，这种情况就好办，能在本地开发环境把问题调试出来。
+发现出规律，卡的页面，基本都是响应时间高达 1 分钟左右">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司内网访问某业务系统经常卡">
+<meta property="og:url" content="http://blog.clawz.me/2017/09/29/17/17-tcp_tw_recycle/index.html">
+<meta property="og:site_name" content="三疯的技术博客">
+<meta property="og:description" content="问题表象患者：我们自己开发的一个工具系统，上边是很多提高开发效率的工具，且称为 B 系统。症状：我们的 B 系统从某段时间开始经常卡顿，经常打开页面需要 20-60 秒左右才显示出来。基本没法使用。
+追查 1 - 本地开发环境与线上都卡线上服务卡顿比较严重后，我们发现本地开发环境也很卡。暗喜，这种情况就好办，能在本地开发环境把问题调试出来。
+发现出规律，卡的页面，基本都是响应时间高达 1 分钟左右">
+<meta property="og:image" content="http://blog.clawz.me/images/17/17-tcp_tw_recycle-initial_connection.jpg">
+<meta property="og:updated_time" content="2017-09-29T10:20:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="公司内网访问某业务系统经常卡">
+<meta name="twitter:description" content="问题表象患者：我们自己开发的一个工具系统，上边是很多提高开发效率的工具，且称为 B 系统。症状：我们的 B 系统从某段时间开始经常卡顿，经常打开页面需要 20-60 秒左右才显示出来。基本没法使用。
+追查 1 - 本地开发环境与线上都卡线上服务卡顿比较严重后，我们发现本地开发环境也很卡。暗喜，这种情况就好办，能在本地开发环境把问题调试出来。
+发现出规律，卡的页面，基本都是响应时间高达 1 分钟左右">
+<meta name="twitter:image" content="http://blog.clawz.me/images/17/17-tcp_tw_recycle-initial_connection.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
+    
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="三疯的技术博客">三疯的技术博客</a></h1>
+				<h2 class="blog-motto">为自动化而战</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:blog.clawz.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/29/17/17-tcp_tw_recycle/" title="公司内网访问某业务系统经常卡" itemprop="url">公司内网访问某业务系统经常卡</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="三疯" target="_blank" itemprop="author">三疯</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-29T10:20:00.000Z" itemprop="datePublished"> 发表于 2017-09-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题表象"><span class="toc-number">1.</span> <span class="toc-text">问题表象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-1-本地开发环境与线上都卡"><span class="toc-number">2.</span> <span class="toc-text">追查 1 - 本地开发环境与线上都卡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-2-某逻辑里瞬间并发执行很多-SQL-更新"><span class="toc-number">3.</span> <span class="toc-text">追查 2 - 某逻辑里瞬间并发执行很多 SQL 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-3-系统-B-被-IT-单独限流了吗"><span class="toc-number">4.</span> <span class="toc-text">追查 3 - 系统 B 被 IT 单独限流了吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-4-tcp-tw-recycle-与-NAT"><span class="toc-number">5.</span> <span class="toc-text">追查 4 - tcp_tw_recycle 与 NAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="问题表象"><a href="#问题表象" class="headerlink" title="问题表象"></a>问题表象</h2><p>患者：我们自己开发的一个工具系统，上边是很多提高开发效率的工具，且称为 B 系统。<br>症状：我们的 B 系统从某段时间开始经常卡顿，经常打开页面需要 20-60 秒左右才显示出来。基本没法使用。</p>
+<h2 id="追查-1-本地开发环境与线上都卡"><a href="#追查-1-本地开发环境与线上都卡" class="headerlink" title="追查 1 - 本地开发环境与线上都卡"></a>追查 1 - 本地开发环境与线上都卡</h2><p>线上服务卡顿比较严重后，我们发现本地开发环境也很卡。暗喜，这种情况就好办，能在本地开发环境把问题调试出来。</p>
+<p>发现出规律，卡的页面，基本都是响应时间高达 1 分钟左右，而且不是单一页面才出现这种情况。所以不是某个业务模块的个别逻辑问题，而应该是一个通用的大家都调用的基础模块的问题。按步骤调试后就很轻松的发现，系统 B 的每个页面都会向一个统计系统发送页面被访问的信息（分析 B 系统的功能被使用情况的）。</p>
+<p>这是一个 Http 的 Post 发送，并且是同步的方式发送。当时正好统计服务内部出现了问题，导致我们这个 Http 请求卡住直至超时返回。而这个超时默认的 1 分钟。</p>
+<p>发现了这个就很好改了，将这个 Http 请求放到一个异步的 Go 协程里去做。这样 Http 请求出问题，不会影响 B 系统自己的业务逻辑。另外这个 1 分钟的超时也太长了，当 B 系统与统计服务之间出问题时，我们 B 系统会堆积大量的这个 Http 请求的协程，占用很多资源。所以同时将这个超时时间改为了 5 秒。</p>
+<p>这个优化完成后，本地开发快如闪电。但是，发布到线上，改善了一些，但还是经常性卡顿，只是卡的时间短点儿。继续查。</p>
+<h2 id="追查-2-某逻辑里瞬间并发执行很多-SQL-更新"><a href="#追查-2-某逻辑里瞬间并发执行很多-SQL-更新" class="headerlink" title="追查 2 - 某逻辑里瞬间并发执行很多 SQL 更新"></a>追查 2 - 某逻辑里瞬间并发执行很多 SQL 更新</h2><p>然后怀疑，是否因为某逻辑里瞬间并发执行很多 SQL 更新，导致其他页面请不到 SQL 执行资源。</p>
+<p>基于此，查了数据库后台的监控，发现并没有太多的 InnoDB 锁等待。数据库各项指标也正常。伤感的同时，还是把这块先优化了看看。结果果然没起啥作用。</p>
+<h2 id="追查-3-系统-B-被-IT-单独限流了吗"><a href="#追查-3-系统-B-被-IT-单独限流了吗" class="headerlink" title="追查 3 - 系统 B 被 IT 单独限流了吗"></a>追查 3 - 系统 B 被 IT 单独限流了吗</h2><p>继续追查，了解到，B 的服务器上其他业务系统，内网访问也慢，而我们其他服务器上的服务，内网访问没有这个问题。同时，我们访问例如百度之类的外部网站并不卡。所以初步怀疑，是不是运维给我们这个 B 服务器的 IP 做了访问限流（可能是误配置）。</p>
+<p>与此同时，我拿起 Chrome 开发者工具，看控制台怎么报的时间消耗。如我所料，B 系统没有引用国外网站的链接，所以不是这个问题。但有收获，发现时间基本被消耗在 <code>Initial connection</code> 里。基本只要卡时，都是消耗在这个阶段。查资料，这个是建立 Socket 连接的三次握手阶段。</p>
+<p><img src="images/17/17-tcp_tw_recycle-initial_connection.jpg" alt=""></p>
+<p>同时我们发现用手机 4G 访问 B 服务，很流畅，而且几位同学纷纷表示在家里访问我们 B 服务时，也是快如闪电。这样我们就越来越怀疑是公司内网主动或者被动的对这个网站的访问做了限制。把问题反馈给运维同学，但是他们说没有发现什么问题。</p>
+<h2 id="追查-4-tcp-tw-recycle-与-NAT"><a href="#追查-4-tcp-tw-recycle-与-NAT" class="headerlink" title="追查 4 - tcp_tw_recycle 与 NAT"></a>追查 4 - <code>tcp_tw_recycle</code> 与 NAT</h2><p>继续追查，试了 <code>traceroute</code> 也没发现链路有什么问题。</p>
+<p>然后想起前几天查一个服务内存泄露问题，在 <code>/var/log/messages</code> 里发现每 5 分钟有个 SYN 攻击日志。当时忙别的，没有继续追查。抱着试试看的心态，继续从这里深入下。</p>
+<p>翻这个系统日志文件，找到日志：<br>possible SYN flooding on port 80. Sending cookies.</p>
+<p>搜索说是 <code>net.ipv4.tcp_max_syn_backlog</code> 配置的少导致的。同时把我引向了内核配置文件 <code>/etc/sysctl.conf</code> ，最简单的办法就是对比正常服务器和异常服务器的配置差异。于是，我将 B 系统的机器与另一个访问不卡的机器做对比，发现只差一个配置 <code>net.ipv4.tcp_tw_recycle</code>，B 机器上这个值配置的 1，而另外这个是 0 。虎躯一震，感觉快发现宝藏了。</p>
+<p>继续查，果然，资料显示这个选项可以快速回收 <code>TIME-WAIT</code> 状态的连接，但是会影响 NAT 网络状态下的客户端连接（具体原理这里不转述了），刚好大家是只在公司内网情况下才有这个卡的问题，对应上了。将配置改为 0 后，不卡了。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>另外关于 <code>TIME-WAIT</code>，命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># netstat -ant | awk &apos;/^tcp/&#123;print $NF&#125;&apos; | sort | uniq -c | sort -nr</span><br></pre></td></tr></table></figure></p>
+<p>看连接状态统计：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2386 TIME_WAIT</span><br><span class="line">1880 ESTABLISHED</span><br><span class="line">15 LISTEN</span><br><span class="line">15 CLOSE_WAIT</span><br><span class="line">2 FIN_WAIT2</span><br><span class="line">1 LAST_ACK</span><br></pre></td></tr></table></figure></p>
+<p>对比了两个服务器，配置为 1 的服务器的 <code>TIME-WAIT</code> 确实比 0 的 要少很多。把 B 的机器改为 1 后，也确实这个状态的数量上去了。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Golang/">Golang</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://blog.clawz.me/2017/09/29/17/17-tcp_tw_recycle/" data-title="公司内网访问某业务系统经常卡 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/12/07/16/16-mac-zhao-hang-u-pan/"  title="Mac 识别招行专业版 U 盘证书">
+ <strong>下一篇：</strong><br/> 
+ <span>Mac 识别招行专业版 U 盘证书
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/09/29/17/17-tcp_tw_recycle/" data-title="公司内网访问某业务系统经常卡" data-url="http://blog.clawz.me/2017/09/29/17/17-tcp_tw_recycle/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题表象"><span class="toc-number">1.</span> <span class="toc-text">问题表象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-1-本地开发环境与线上都卡"><span class="toc-number">2.</span> <span class="toc-text">追查 1 - 本地开发环境与线上都卡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-2-某逻辑里瞬间并发执行很多-SQL-更新"><span class="toc-number">3.</span> <span class="toc-text">追查 2 - 某逻辑里瞬间并发执行很多 SQL 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-3-系统-B-被-IT-单独限流了吗"><span class="toc-number">4.</span> <span class="toc-text">追查 3 - 系统 B 被 IT 单独限流了吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#追查-4-tcp-tw-recycle-与-NAT"><span class="toc-number">5.</span> <span class="toc-text">追查 4 - tcp_tw_recycle 与 NAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/ActionScript/" title="ActionScript">ActionScript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/C-C/" title="C/C++">C/C++<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lisp/" title="Lisp">Lisp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Node-js/" title="Node.js">Node.js<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Ruby/" title="Ruby">Ruby<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web-开发/" title="Web 开发">Web 开发<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hack/" title="hack">hack<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/产品设计/" title="产品设计">产品设计<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/作品/" title="作品">作品<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/招聘相关/" title="招聘相关">招聘相关<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/效率-协作-管理/" title="效率&amp;协作&amp;管理">效率&amp;协作&amp;管理<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/源码分析/" title="源码分析">源码分析<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/状态/" title="状态">状态<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/阶段总结/" title="阶段总结">阶段总结<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://kittycookie.clawz.me" target="_blank" title="三癫那">三癫</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taurance" target="_blank" title="好基友 PY 哥">PY 哥</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="三疯">三疯</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sheppardy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d9ab1641b915ff086b6167c9f8afe7f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
