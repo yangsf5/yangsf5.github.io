@@ -22,7 +22,7 @@
 追查 1 - 本地开发环境与线上都卡线上服务卡顿比较严重后，我们发现本地开发环境也很卡。暗喜，这种情况就好办，能在本地开发环境把问题调试出来。
 发现出规律，卡的页面，基本都是响应时间高达 1 分钟左右">
 <meta property="og:image" content="http://blog.clawz.me/images/17/17-tcp_tw_recycle-initial_connection.jpg">
-<meta property="og:updated_time" content="2017-09-29T10:20:09.000Z">
+<meta property="og:updated_time" content="2017-09-29T10:46:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="公司内网访问某业务系统经常卡">
 <meta name="twitter:description" content="问题表象患者：我们自己开发的一个工具系统，上边是很多提高开发效率的工具，且称为 B 系统。症状：我们的 B 系统从某段时间开始经常卡顿，经常打开页面需要 20-60 秒左右才显示出来。基本没法使用。
@@ -109,11 +109,11 @@
 <p>基于此，查了数据库后台的监控，发现并没有太多的 InnoDB 锁等待。数据库各项指标也正常。伤感的同时，还是把这块先优化了看看。结果果然没起啥作用。</p>
 <h2 id="追查-3-系统-B-被-IT-单独限流了吗"><a href="#追查-3-系统-B-被-IT-单独限流了吗" class="headerlink" title="追查 3 - 系统 B 被 IT 单独限流了吗"></a>追查 3 - 系统 B 被 IT 单独限流了吗</h2><p>继续追查，了解到，B 的服务器上其他业务系统，内网访问也慢，而我们其他服务器上的服务，内网访问没有这个问题。同时，我们访问例如百度之类的外部网站并不卡。所以初步怀疑，是不是运维给我们这个 B 服务器的 IP 做了访问限流（可能是误配置）。</p>
 <p>与此同时，我拿起 Chrome 开发者工具，看控制台怎么报的时间消耗。如我所料，B 系统没有引用国外网站的链接，所以不是这个问题。但有收获，发现时间基本被消耗在 <code>Initial connection</code> 里。基本只要卡时，都是消耗在这个阶段。查资料，这个是建立 Socket 连接的三次握手阶段。</p>
-<p><img src="images/17/17-tcp_tw_recycle-initial_connection.jpg" alt=""></p>
+<p><img src="/images/17/17-tcp_tw_recycle-initial_connection.jpg" alt=""></p>
 <p>同时我们发现用手机 4G 访问 B 服务，很流畅，而且几位同学纷纷表示在家里访问我们 B 服务时，也是快如闪电。这样我们就越来越怀疑是公司内网主动或者被动的对这个网站的访问做了限制。把问题反馈给运维同学，但是他们说没有发现什么问题。</p>
 <h2 id="追查-4-tcp-tw-recycle-与-NAT"><a href="#追查-4-tcp-tw-recycle-与-NAT" class="headerlink" title="追查 4 - tcp_tw_recycle 与 NAT"></a>追查 4 - <code>tcp_tw_recycle</code> 与 NAT</h2><p>继续追查，试了 <code>traceroute</code> 也没发现链路有什么问题。</p>
 <p>然后想起前几天查一个服务内存泄露问题，在 <code>/var/log/messages</code> 里发现每 5 分钟有个 SYN 攻击日志。当时忙别的，没有继续追查。抱着试试看的心态，继续从这里深入下。</p>
-<p>翻这个系统日志文件，找到日志：<br>possible SYN flooding on port 80. Sending cookies.</p>
+<p>翻这个系统日志文件，找到日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">possible SYN flooding on port 80. Sending cookies.</span><br></pre></td></tr></table></figure></p>
 <p>搜索说是 <code>net.ipv4.tcp_max_syn_backlog</code> 配置的少导致的。同时把我引向了内核配置文件 <code>/etc/sysctl.conf</code> ，最简单的办法就是对比正常服务器和异常服务器的配置差异。于是，我将 B 系统的机器与另一个访问不卡的机器做对比，发现只差一个配置 <code>net.ipv4.tcp_tw_recycle</code>，B 机器上这个值配置的 1，而另外这个是 0 。虎躯一震，感觉快发现宝藏了。</p>
 <p>继续查，果然，资料显示这个选项可以快速回收 <code>TIME-WAIT</code> 状态的连接，但是会影响 NAT 网络状态下的客户端连接（具体原理这里不转述了），刚好大家是只在公司内网情况下才有这个卡的问题，对应上了。将配置改为 0 后，不卡了。</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>另外关于 <code>TIME-WAIT</code>，命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># netstat -ant | awk &apos;/^tcp/&#123;print $NF&#125;&apos; | sort | uniq -c | sort -nr</span><br></pre></td></tr></table></figure></p>
