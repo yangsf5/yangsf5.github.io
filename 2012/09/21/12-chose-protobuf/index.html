@@ -11,19 +11,17 @@
     
 
     
-    <meta name="description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
-AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
+    <meta name="description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。  AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络通信序列化协议的选择">
 <meta property="og:url" content="http://blog.clawz.me/2012/09/21/12-chose-protobuf/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
-AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
+<meta property="og:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。  AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-03T10:35:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络通信序列化协议的选择">
-<meta name="twitter:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。 
-AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
+<meta name="twitter:description" content="背景介绍由于历史原因，使用了兄弟公司的框架，导致之前的通信序列化协议强制用的 JSON。我们项目为一个 Web 项目，前端 AS3，后端 PHP + Java，一开始只有 AS 与 PHP 短连接，后来为了一些逻辑的实时消息，加了 Java 来另作的长连接。  AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑可以写的很随意，这导致我们现在查问题非常棘手。另外 JSON 也浪">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -126,7 +124,7 @@ AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2012/09/21/12-chose-protobuf/" data-title="网络通信序列化协议的选择 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2012/09/21/12-chose-protobuf/" data-title="网络通信序列化协议的选择 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -249,6 +247,10 @@ AS 与 PHP 都是弱类型的语言，用 JSON 来序列化，网络通信逻辑
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

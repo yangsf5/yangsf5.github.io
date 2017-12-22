@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
-接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
-实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
+    <meta name="description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。  接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。  实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集群实现细节（1）-异服通信和压测">
 <meta property="og:url" content="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
-接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
-实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
+<meta property="og:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。  接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。  实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T10:35:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集群实现细节（1）-异服通信和压测">
-<meta name="twitter:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
-接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。 
-实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
+<meta name="twitter:description" content="背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。  接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单进程的服务器架构里部分模块扩展为支持这篇随笔里提到的集群架构。  实现的过程中碰到的一些需要仔细设计的细节，原则上还是">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -134,7 +129,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/" data-title="集群实现细节（1）-异服通信和压测 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/10/17/13-game-cluster-design-detail-1/" data-title="集群实现细节（1）-异服通信和压测 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -257,6 +252,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

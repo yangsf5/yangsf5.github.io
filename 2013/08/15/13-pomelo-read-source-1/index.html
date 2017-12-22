@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
+    <meta name="description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。  chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。  createApp 时会调 Application.init 来做初始化。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pomelo 0.5.5 源码分析（1）-组件">
 <meta property="og:url" content="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
+<meta property="og:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。  chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。  createApp 时会调 Application.init 来做初始化。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T07:00:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pomelo 0.5.5 源码分析（1）-组件">
-<meta name="twitter:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。 
-chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。 
-createApp 时会调 Application.init 来做初始化。">
+<meta name="twitter:description" content="由于才接触 Node.js 几天，看源码时各种细节和设计方法都得熟悉下。结合 chatofpomelo-websocket，先从 Pomelo 的使用入口开始看。  chatofpomelo 的开启流程Pomelo.createApp 出来 Application，然后 Application.start 就开启了。  createApp 时会调 Application.init 来做初始化。">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -113,12 +108,12 @@ createApp 时会调 Application.init 来做初始化。">
 <h3 id="附官方组件-Wiki"><a href="#附官方组件-Wiki" class="headerlink" title="附官方组件 Wiki"></a>附官方组件 Wiki</h3><ul>
 <li><p>Pomelo-Framework 里的组件部分：</p>
 <blockquote>
-<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-Framework" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-Framework</a>   </p>
+<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-Framework" target="_blank" rel="noopener">https://github.com/NetEase/pomelo/wiki/Pomelo-Framework</a>   </p>
 </blockquote>
 </li>
 <li><p>Pomelo-组件：</p>
 <blockquote>
-<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6" target="_blank" rel="external">https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6</a>   </p>
+<p><a href="https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">https://github.com/NetEase/pomelo/wiki/Pomelo-%E7%BB%84%E4%BB%B6</a>   </p>
 </blockquote>
 </li>
 </ul>
@@ -139,7 +134,7 @@ createApp 时会调 Application.init 来做初始化。">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/08/15/13-pomelo-read-source-1/" data-title="Pomelo 0.5.5 源码分析（1）-组件 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -262,6 +257,10 @@ createApp 时会调 Application.init 来做初始化。">
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

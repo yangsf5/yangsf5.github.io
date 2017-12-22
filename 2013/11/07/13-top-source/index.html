@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。
-程序很简单，基本都在 top.c 里。
-load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
+    <meta name="description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。 程序很简单，基本都在 top.c 里。 load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
 <meta property="og:type" content="article">
 <meta property="og:title" content="top 里显示的 CPU 百分比计算方式">
 <meta property="og:url" content="http://blog.clawz.me/2013/11/07/13-top-source/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。
-程序很简单，基本都在 top.c 里。
-load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
+<meta property="og:description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。 程序很简单，基本都在 top.c 里。 load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T11:43:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="top 里显示的 CPU 百分比计算方式">
-<meta name="twitter:description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。
-程序很简单，基本都在 top.c 里。
-load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
+<meta name="twitter:description" content="top 看到的 CPU 信息解释的不是很清晰，就看下源码怎么写的吧。 程序很简单，基本都在 top.c 里。 load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh(smpcpu);if (CHKw(Curwin, View_CPUSUM)) &amp;#123;	// display just the 1st /proc/stat line">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -106,7 +101,7 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 <p>第一行的 CPU 信息装入 <code>smpcpu[Cpu_tot]</code>，之后的 cpu0cpu1… 装入 <code>smpcpu[0]\smpcpu[1\...</code>。</p>
 <p><code>View_CPUSUM</code> 这个由 1 键来控制的那个开关，开关关闭时只显示 <code>smpcpu</code> 的 <code>Cpu_tot</code>，开关开启时显示的是 <code>smpcpu</code> 的下标 0~<code>Cpu_tot-1</code> 的成员。即，top 的默认在开头显示的 CPU 详细信息显示的是 /proc/stat 的第一行处理后，按下 1 键，显示的时 /proc/stat 后续各 CPU 数据。</p>
 <p>/proc/stat 里都是数字，下边看看 top 里显示的百分比怎么算的。</p>
-<p><code>CPU_t</code> 的定义：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// These typedefs attempt to ensure consistent 'ticks' handling</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> TIC_t;</span><br><span class="line"><span class="keyword">typedef</span>          <span class="keyword">long</span> <span class="keyword">long</span> SIC_t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This structure stores a frame's cpu tics used in history</span></span><br><span class="line"><span class="comment">// calculations.  It exists primarily for SMP support but serves</span></span><br><span class="line"><span class="comment">// all environments.</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> CPU_t &#123;</span><br><span class="line">	TIC_t u, n, s, i, w, x, y, z; <span class="comment">// as represented in /proc/stat</span></span><br><span class="line">	TIC_t u_sav, s_sav, n_sav, i_sav, w_sav, x_sav, y_sav, z_sav; <span class="comment">// in the order of our display</span></span><br><span class="line">	<span class="keyword">unsigned</span> id;  <span class="comment">// the CPU ID number</span></span><br><span class="line">&#125; CPU_t;</span><br></pre></td></tr></table></figure></p>
+<p><code>CPU_t</code> 的定义：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// These typedefs attempt to ensure consistent 'ticks' handling</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> TIC_t;</span><br><span class="line"><span class="keyword">typedef</span>          <span class="keyword">long</span> <span class="keyword">long</span> SIC_t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This structure stores a frame's cpu tics used in history</span></span><br><span class="line"><span class="comment">// calculations.  It exists primarily for SMP support but serves</span></span><br><span class="line"><span class="comment">// all environments.</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">CPU_t</span> &#123;</span></span><br><span class="line">	TIC_t u, n, s, i, w, x, y, z; <span class="comment">// as represented in /proc/stat</span></span><br><span class="line">	TIC_t u_sav, s_sav, n_sav, i_sav, w_sav, x_sav, y_sav, z_sav; <span class="comment">// in the order of our display</span></span><br><span class="line">	<span class="keyword">unsigned</span> id;  <span class="comment">// the CPU ID number</span></span><br><span class="line">&#125; CPU_t;</span><br></pre></td></tr></table></figure></p>
 <p>每次从 /proc/stat 取的数据称为一帧的数据，会从到 <code>CPU_t</code> 结构体的第一行成员里，上次的数据即上一帧的数据就拷到 <code>CPU_t</code> 的第二排带 <code>_sav</code> 后缀的成员里，一一对应。</p>
 <p><code>summaryhlp</code> 函数里计算我们想看的 CPU 各详细指标的百分比。只取部分代码或伪码做演示：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SIC_t u_frme, s_frme, n_frme, i_frme, w_frme, x_frme, y_frme, z_frme, tot_frme, tz;</span><br><span class="line"><span class="keyword">float</span> scale;</span><br><span class="line">u_frme = cpu-&gt;u - cpu-&gt;u_sav;</span><br><span class="line">s_frme = cpu-&gt;s - cpu-&gt;s_sav;</span><br><span class="line">...</span><br><span class="line">tot_frme = u_frme + s_frme + n_frme + i_frme + w_frme + x_frme + y_frme + z_frme;</span><br><span class="line"><span class="keyword">if</span> (tot_frme &lt; <span class="number">1</span>) tot_frme = <span class="number">1</span>;</span><br><span class="line">scale = <span class="number">100.0</span> / (<span class="keyword">float</span>)tot_frme;</span><br><span class="line"></span><br><span class="line">us% = (<span class="keyword">float</span>)u_frme * scale;</span><br><span class="line">sy% = (<span class="keyword">float</span>)s_frme * scale;</span><br><span class="line">...</span><br><span class="line">cpu-&gt;u_sav = cpu-&gt;u;</span><br><span class="line">cpu-&gt;s_sav = cpu-&gt;s;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
 <p>每个进程占cpu百分比计算：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Frame_tscale = <span class="number">100.0f</span> / ((<span class="keyword">float</span>)Hertz * (<span class="keyword">float</span>)et * (Rc.mode_irixps ? <span class="number">1</span> : Cpu_tot));</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> u = (<span class="keyword">float</span>)p-&gt;pcpu * Frame_tscale;</span><br></pre></td></tr></table></figure></p>
@@ -128,7 +123,7 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/11/07/13-top-source/" data-title="top 里显示的 CPU 百分比计算方式 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/11/07/13-top-source/" data-title="top 里显示的 CPU 百分比计算方式 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -251,6 +246,10 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

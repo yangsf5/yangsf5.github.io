@@ -11,19 +11,17 @@
     
 
     
-    <meta name="description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。  
-同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
+    <meta name="description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。   同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支持 Cookie 的 HTTP 客户端 Agent">
 <meta property="og:url" content="http://blog.clawz.me/2014/02/14/14-http-client-agent-with-cookie/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。  
-同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
+<meta property="og:description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。   同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-12T05:39:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支持 Cookie 的 HTTP 客户端 Agent">
-<meta name="twitter:description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。  
-同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
+<meta name="twitter:description" content="当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见这里。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。   同为 Express 作者写的方便模拟 HTTP Client 的 superagent">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -94,7 +92,7 @@
 		
 		</div>
 		
-		<p>当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见<a href="http://stackoverflow.com/questions/9920208/expressjs-raw-body" target="_blank" rel="external">这里</a>。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。  </p>
+		<p>当向 Express 服务器 post 二进制流时，服务器需要自己加个扩展，自己缓存下 raw body，具体做法见<a href="http://stackoverflow.com/questions/9920208/expressjs-raw-body" target="_blank" rel="noopener">这里</a>。这里只是用 UTF-8 的 string 来拼接的 raw body 容易出现编码不一致的情况。咱们可以用 Buffer 来做。具体做法也可以参考下边的 Agent 里的字节流拼接。  </p>
 <p>同为 Express 作者写的方便模拟 HTTP Client 的 superagent 里也是不支持二进制流的，需要 hack。superagent 里很多东西暂时用不到，所以懒的 hack 了，自己用 Node.js 标准库里的 HTTP 简单弄了个 Agent。主要是为了支持 Cookie 的使用。  </p>
 <p>因为代码较长也可能多次修改，这次使用 GitHub Gist 方式托管代码。</p>
 <p>虽然 GitHub Gist 做代码片段的版本控制很好使，但国内访问可能不稳定，当大家没看见下边的代码时，请自行科学上网，访问：<code>https://gist.github.com/yangsf5/8994756</code>。</p>
@@ -117,7 +115,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/02/14/14-http-client-agent-with-cookie/" data-title="支持 Cookie 的 HTTP 客户端 Agent | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/02/14/14-http-client-agent-with-cookie/" data-title="支持 Cookie 的 HTTP 客户端 Agent | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -240,6 +238,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

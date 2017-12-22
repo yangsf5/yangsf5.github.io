@@ -11,37 +11,17 @@
     
 
     
-    <meta name="description" content="Redis 调研优势相对于其他k-v数据库的优势：
-
-包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
-内存中运行；可以持久化。 
-相关网站： 
-http://redis.io/
-http://www.slideshare.net/hitkidnil/memcached-vs-redis
-h">
+    <meta name="description" content="Redis 调研优势相对于其他k-v数据库的优势：  包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。  内存中运行；可以持久化。  相关网站：  http://redis.io/ http://www.slideshare.net/hitkidnil/memcached-vs-redis h">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis 调研">
 <meta property="og:url" content="http://blog.clawz.me/2012/12/20/12-research-redis/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="Redis 调研优势相对于其他k-v数据库的优势：
-
-包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
-内存中运行；可以持久化。 
-相关网站： 
-http://redis.io/
-http://www.slideshare.net/hitkidnil/memcached-vs-redis
-h">
+<meta property="og:description" content="Redis 调研优势相对于其他k-v数据库的优势：  包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。  内存中运行；可以持久化。  相关网站：  http://redis.io/ http://www.slideshare.net/hitkidnil/memcached-vs-redis h">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-06T05:21:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 调研">
-<meta name="twitter:description" content="Redis 调研优势相对于其他k-v数据库的优势：
-
-包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 
-内存中运行；可以持久化。 
-相关网站： 
-http://redis.io/
-http://www.slideshare.net/hitkidnil/memcached-vs-redis
-h">
+<meta name="twitter:description" content="Redis 调研优势相对于其他k-v数据库的优势：  包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。  内存中运行；可以持久化。  相关网站：  http://redis.io/ http://www.slideshare.net/hitkidnil/memcached-vs-redis h">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -117,11 +97,11 @@ h">
 <li>包含复杂数据类型，例如 Strings、Lists、Hashes、Sets、Sorted sets 等。这些复杂数据类型的操作提供了原子操作，不用考虑锁。 </li>
 <li>内存中运行；可以持久化。 </li>
 <li>相关网站： </li>
-<li><a href="http://redis.io/" target="_blank" rel="external">http://redis.io/</a></li>
-<li><a href="http://www.slideshare.net/hitkidnil/memcached-vs-redis" target="_blank" rel="external">http://www.slideshare.net/hitkidnil/memcached-vs-redis</a></li>
-<li><a href="http://www.itlearner.com/article/4890" target="_blank" rel="external">http://www.itlearner.com/article/4890</a></li>
-<li><a href="http://timyang.net/data/redis-misunderstanding/" target="_blank" rel="external">http://timyang.net/data/redis-misunderstanding/</a></li>
-<li><a href="http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis" target="_blank" rel="external">http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis</a></li>
+<li><a href="http://redis.io/" target="_blank" rel="noopener">http://redis.io/</a></li>
+<li><a href="http://www.slideshare.net/hitkidnil/memcached-vs-redis" target="_blank" rel="noopener">http://www.slideshare.net/hitkidnil/memcached-vs-redis</a></li>
+<li><a href="http://www.itlearner.com/article/4890" target="_blank" rel="noopener">http://www.itlearner.com/article/4890</a></li>
+<li><a href="http://timyang.net/data/redis-misunderstanding/" target="_blank" rel="noopener">http://timyang.net/data/redis-misunderstanding/</a></li>
+<li><a href="http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis" target="_blank" rel="noopener">http://stackoverflow.com/questions/2873249/is-memcached-a-dinosaur-in-comparison-to-redis</a></li>
 </ul>
 <h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>官方不支持 Windows 版，有非官方的。这个不是太大问题。 </p>
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
@@ -130,7 +110,7 @@ h">
 </ul>
 <h2 id="使用者及口碑"><a href="#使用者及口碑" class="headerlink" title="使用者及口碑"></a>使用者及口碑</h2><p>暴雪、Stack Overflow、GitHub、Flickr 等等在使用 Redis。业内口碑非常好：</p>
 <ul>
-<li><a href="http://redis.io/topics/whos-using-redis" target="_blank" rel="external">http://redis.io/topics/whos-using-redis</a></li>
+<li><a href="http://redis.io/topics/whos-using-redis" target="_blank" rel="noopener">http://redis.io/topics/whos-using-redis</a></li>
 </ul>
 <h2 id="结合我们项目使用"><a href="#结合我们项目使用" class="headerlink" title="结合我们项目使用"></a>结合我们项目使用</h2><p>由于历史原因，数据库我们先后使用了兄弟公司的 k-v 数据库，和之后的 MySQL。 </p>
 <p>换数据库，是由于之前的 k-v 数据库只支持 key-value 对的存储，value 里以 JSON 串来存储。这样的存储方式不支持单个字段的更新以及高效的频繁排序等功能算法需求。而游戏编程很需要这些，所以花大气力弥补以前决策的失误，DB 换成了 MySQL。 </p>
@@ -163,7 +143,7 @@ h">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2012/12/20/12-research-redis/" data-title="Redis 调研 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2012/12/20/12-research-redis/" data-title="Redis 调研 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -286,6 +266,10 @@ h">
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
-原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
-当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
+    <meta name="description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。 原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。 当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
 <meta property="og:type" content="article">
 <meta property="og:title" content="缓冲区没有刷新">
 <meta property="og:url" content="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
-原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
-当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
+<meta property="og:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。 原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。 当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-06-28T15:46:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="缓冲区没有刷新">
-<meta name="twitter:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。
-原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。
-当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
+<meta name="twitter:description" content="单个流多用途时文件的流输出和输入一起做，读先前写的数据出现问题。向一个文件按 4 字节写了个 int 类型数据，然后读那个 int 值，结果报未定义类型错误。 原因是在读之前，没有刷新文件流，直接关闭那个输出流也可以——关闭流时会自动刷新。 当时这个弄了将近一天，当 cullet 同学提出要先关闭流时，我还是不相信问题在这。我的具体错误推断忘了，大概想法是：刚在书上看到，当同一个流用做多种事时，才">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -119,7 +114,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/" data-title="缓冲区没有刷新 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2008/12/14/08-huan-chong-qu-mei-shua-xin/" data-title="缓冲区没有刷新 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -242,6 +237,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

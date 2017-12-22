@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
-如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
-如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
+    <meta name="description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。  如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。  如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集群实现细节（3）-DB 集群">
 <meta property="og:url" content="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
-如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
-如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
+<meta property="og:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。  如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。  如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T12:25:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集群实现细节（3）-DB 集群">
-<meta name="twitter:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。 
-如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。 
-如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
+<meta name="twitter:description" content="纯 Redis 集群如果 Redis 不止做 Cache，也做持久化，那就得好好算算我们的业务规模需要多少台机器来支撑。1000w 注册玩家，每台机器 16G 内存（为了保证效率取 3/4 为可用，即 12G）。  如果每个玩家 1M 数据，总约 9765G，不算热备，需要 814 台机器。每台机器存储 1.2w 人。  如果每个玩家 16k 数据，总约 153G，不算热备，需要 13 台机器。每">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -133,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/" data-title="集群实现细节（3）-DB 集群 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/06/13-game-cluster-design-detail-3/" data-title="集群实现细节（3）-DB 集群 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -256,6 +251,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

@@ -11,28 +11,17 @@
     
 
     
-    <meta name="description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+    <meta name="description" content="listen fd，有新连接请求，触发 EPOLLIN。 对端发送普通数据，触发 EPOLLIN。 带外数据，只触发 EPOLLPRI。 对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。 再">
 <meta property="og:type" content="article">
 <meta property="og:title" content="epoll 的各个事件触发条件测试">
 <meta property="og:url" content="http://blog.clawz.me/2009/03/12/09-epoll-event-test/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+<meta property="og:description" content="listen fd，有新连接请求，触发 EPOLLIN。 对端发送普通数据，触发 EPOLLIN。 带外数据，只触发 EPOLLPRI。 对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。 再">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-03T05:52:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="epoll 的各个事件触发条件测试">
-<meta name="twitter:description" content="listen fd，有新连接请求，触发 EPOLLIN。
-对端发送普通数据，触发 EPOLLIN。
-带外数据，只触发 EPOLLPRI。
-对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。
-再">
+<meta name="twitter:description" content="listen fd，有新连接请求，触发 EPOLLIN。 对端发送普通数据，触发 EPOLLIN。 带外数据，只触发 EPOLLPRI。 对端正常关闭（程序里 close()，shell 下 kill 或 ctrl+c），触发 EPOLLIN 和 EPOLLRDHUP，但是不触发 EPOLLERR 和 EPOLLHUP。关于这点，以前一直以为会触发 EPOLLERR 或者 EPOLLHUP。 再">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -128,7 +117,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2009/03/12/09-epoll-event-test/" data-title="epoll 的各个事件触发条件测试 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -251,6 +240,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

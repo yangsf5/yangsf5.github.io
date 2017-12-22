@@ -11,19 +11,17 @@
     
 
     
-    <meta name="description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
-Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
+    <meta name="description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。  Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pomelo 源码分析（3）-pomelo-sync">
 <meta property="og:url" content="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
-Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
+<meta property="og:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。  Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T12:10:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pomelo 源码分析（3）-pomelo-sync">
-<meta name="twitter:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。 
-Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
+<meta name="twitter:description" content="现在分析的版本为 0.7 版。pomelo-sync，Pomelo 里用于解决游戏进程中需要持久化的数据在内存与存储系统之间的同步问题。  Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用户自行扩展的能力。用户只用在 app.use(plugin, opts) 就可以了，具体请看 Pomelo 的 application.js 里的 use 函数。需要这个">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -119,7 +117,7 @@ Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用�
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/" data-title="Pomelo 源码分析（3）-pomelo-sync | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/04/13-pomelo-read-source-3/" data-title="Pomelo 源码分析（3）-pomelo-sync | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -242,6 +240,10 @@ Pomelo 程序如何使用 pomelo-sync新版本的 Pomelo 里增强了支持用�
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

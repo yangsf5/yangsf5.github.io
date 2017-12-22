@@ -11,28 +11,17 @@
     
 
     
-    <meta name="description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
+    <meta name="description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。 一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。 慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。 问题原因：while 的退出变量没有自增，导致死循环了。   总">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试 Server 初始化时卡在某个点">
 <meta property="og:url" content="http://blog.clawz.me/2013/06/21/13-vc-debug-while/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
+<meta property="og:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。 一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。 慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。 问题原因：while 的退出变量没有自增，导致死循环了。   总">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-08T10:10:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试 Server 初始化时卡在某个点">
-<meta name="twitter:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。
-一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。
-慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。
-问题原因：while 的退出变量没有自增，导致死循环了。  
-总">
+<meta name="twitter:description" content="VC 初步调试，发现某个类的构造函数进了，但是在左花括号的地方就卡住了，没有往后走。 一开始挺惊奇，过会儿就想到，类的构造函数里会被编译器插入一些没有显示初始化的成员的初始化语句。所以将 F10 改为 F11 调试。 慢慢似乎找到问题函数了，正准备再重开调试继续跟时，朋友表示按下 VC 的暂停键，照做，“我擦——”之后是崇拜的口水。 问题原因：while 的退出变量没有自增，导致死循环了。   总">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -126,7 +115,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/06/21/13-vc-debug-while/" data-title="调试 Server 初始化时卡在某个点 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -249,6 +238,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

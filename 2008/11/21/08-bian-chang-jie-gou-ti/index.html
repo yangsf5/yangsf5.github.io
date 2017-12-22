@@ -11,25 +11,17 @@
     
 
     
-    <meta name="description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。
-所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;;
-count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。
-需要注意的地方：">
+    <meta name="description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。 所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;; count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。 需要注意的地方：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="变长结构体的技巧">
 <meta property="og:url" content="http://blog.clawz.me/2008/11/21/08-bian-chang-jie-gou-ti/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。
-所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;;
-count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。
-需要注意的地方：">
+<meta property="og:description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。 所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;; count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。 需要注意的地方：">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-06-28T16:06:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="变长结构体的技巧">
-<meta name="twitter:description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。
-所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;;
-count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。
-需要注意的地方：">
+<meta name="twitter:description" content="本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。 所以变长结构体只能这样了：1234struct _abc &amp;#123;	int count;	char str[0];&amp;#125;; count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。 需要注意的地方：">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -101,7 +93,7 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 		</div>
 		
 		<p>本来 C99 标准已经支持变长数组了，但是我们项目组客户端的开发人员用的是 VS2005，而微软的这个又不支持 C99。没办法，我们服务器端得兼容他们。</p>
-<p>所以变长结构体只能这样了：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> _abc &#123;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">0</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>所以变长结构体只能这样了：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">abc</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">0</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p>count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传递相应参数类型。</p>
 <p>需要注意的地方：</p>
 <ul>
@@ -124,7 +116,7 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2008/11/21/08-bian-chang-jie-gou-ti/" data-title="变长结构体的技巧 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2008/11/21/08-bian-chang-jie-gou-ti/" data-title="变长结构体的技巧 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -247,6 +239,10 @@ count 记录 str 数组的大小。不一定是 char 类型，可以用宏来传
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

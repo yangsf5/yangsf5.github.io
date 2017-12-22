@@ -11,22 +11,17 @@
     
 
     
-    <meta name="description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
-后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
-后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
+    <meta name="description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。 后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。 后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript 变量不支持块级作用域">
 <meta property="og:url" content="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
-后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
-后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
+<meta property="og:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。 后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。 后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-12T05:53:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript 变量不支持块级作用域">
-<meta name="twitter:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。
-后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。
-后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
+<meta name="twitter:description" content="分析在看 Express 的插件 connect 源码，cookieSession（代码片段后边附上）里有个变量作用域问题很费解。 后边代码中变量 originalHash 的使用问题，一开始我还以为是个 Bug，以为根据它定义的位置，在它的那个块结束时就没作用了。 后来查了下 JavaScript 的变量作用，才知道 JS 没有块级作用域，只有全局作用域和函数级作用域。所以这里的 origina">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -121,7 +116,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/" data-title="JavaScript 变量不支持块级作用域 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2014/02/19/14-js-has-not-block-scope/" data-title="JavaScript 变量不支持块级作用域 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -244,6 +239,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  

@@ -11,19 +11,17 @@
     
 
     
-    <meta name="description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+    <meta name="description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？  观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集群实现细节（4）-冷热数据划分及同步">
 <meta property="og:url" content="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/index.html">
 <meta property="og:site_name" content="三疯的技术博客">
-<meta property="og:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+<meta property="og:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？  观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-07-11T12:35:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集群实现细节（4）-冷热数据划分及同步">
-<meta name="twitter:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？ 
-观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
+<meta name="twitter:description" content="玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 MySQL 里做持久化）。这个同步的逻辑代码放哪呢？  观察需求特性，玩家上线加载到 Redis 做 Cache、定时更">
 
     
     <link rel="alternative" href="/atom.xml" title="三疯的技术博客" type="application/atom+xml">
@@ -131,7 +129,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://blog.clawz.me/2013/12/13/13-game-cluster-design-detail-4/" data-title="集群实现细节（4）-冷热数据划分及同步 | 三疯的技术博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -254,6 +252,10 @@
 		
 		  
 			<li><a href="/categories/生活-运动-情感/" title="生活&amp;运动&amp;情感">生活&amp;运动&amp;情感<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/疯癫正传/" title="疯癫正传">疯癫正传<sup>1</sup></a></li>
 		  
 		
 		  
