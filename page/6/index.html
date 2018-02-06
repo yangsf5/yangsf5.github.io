@@ -67,6 +67,26 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
+    <a href="/2013/12/13/13-game-cluster-design-detail-4/" title="集群实现细节（4）-冷热数据划分及同步" itemprop="url">
+  
+    <h1 itemprop="name">集群实现细节（4）-冷热数据划分及同步</h1>
+    
+     
+           <p itemprop="description" >玩家数据在 Redis 与 MySQL 之间的同步由于 Redis 操作可以保证多个进程读写同一个玩家数据时的原子性。所以之前多个逻辑服务器读写同一玩家数据时没有什么问题，但是现在 Redis 和 MySQL 之间需要同步玩家的数据（例如定时将 Redis 里的在线玩家数据刷进 </p>
+        
+    
+    <time datetime="2013-12-13T07:58:00.000Z" itemprop="datePublished">2013-12-13</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
     <a href="/2013/12/06/13-game-cluster-design-detail-3/" title="集群实现细节（3）-DB 集群" itemprop="url">
   
     <h1 itemprop="name">集群实现细节（3）-DB 集群</h1>
@@ -255,27 +275,6 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 
 
 
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2013/10/17/13-game-cluster-design-detail-1/" title="集群实现细节（1）-异服通信和压测" itemprop="url">
-  
-    <h1 itemprop="name">集群实现细节（1）-异服通信和压测</h1>
-    
-     
-           <p itemprop="description" >背景项目开始后，先敲定了大体可横向扩展的集群架构（这是个美好的期望），然后开始编写单进程的服务器底层和逻辑，让前边几个迭代周期的逻辑内容配合客户端跑起来了。 
-接着就是将单进程的架构扩展起来，设计上细化下架构的扩展。已写在前篇《休闲手游服务器集群扩展思考》里。最近的两周在将之前单</p>
-        
-    
-    <time datetime="2013-10-17T06:45:00.000Z" itemprop="datePublished">2013-10-17</time>
-  </a>
-</section>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix unexpand">
     <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
@@ -338,7 +337,7 @@ load里的cpu详细信息代码如下：1234567891011121314smpcpu = cpus_refresh
 		  
 		
 		  
-			<li><a href="/categories/工具/" title="工具">工具<sup>15</sup></a></li>
+			<li><a href="/categories/工具/" title="工具">工具<sup>16</sup></a></li>
 		  
 		
 		  
